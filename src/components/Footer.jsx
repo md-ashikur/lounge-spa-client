@@ -96,12 +96,12 @@ const Footer = () => {
             </li>
             <li>
               <a href="#" className="hover:underline">
-                LOCATION DE SALLE (jusqu'à 80 pers)
+                LOCATION DE SALLE (jusqu&apos;à 80 pers)
               </a>
             </li>
             <li>
               <a href="#" className="hover:underline">
-                ENTREPRISES (jusqu'à 80 pers)
+                ENTREPRISES (jusqu&apos;à 80 pers)
               </a>
             </li>
             <li>

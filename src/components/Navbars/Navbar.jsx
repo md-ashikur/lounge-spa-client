@@ -6,6 +6,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import darkLogo from "../../../public/images/1.png"
 import lightLogo from "../../../public/images/2.png"
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,12 +39,14 @@ const Navbar = () => {
        <div className="flex w-full col-span-2">
        {isMenuOpen ? (
           <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50 ">
-            <Image src={lightLogo} alt="" className="h-14 w-14"/>
+           <Link href="/"> <Image src={lightLogo} alt="" className="h-14 w-14"/></Link>
           
           </div>
         ) : (
           <div className=" text-2xl font-bold flex-shrink-0  md:left-4">
+            <Link href="/">
             <Image src={darkLogo} alt="" className="h-14 w-14"/>
+            </Link>
           </div>
         )}
        </div>
