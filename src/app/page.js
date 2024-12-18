@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div className="bg-secondary">
-      <Navbar />
+      
       <div className="h-screen ">
         <div className="flex flex-col items-center justify-center space-y-8 py-10">
         <h1 className="text-center text-primary text-xl">Un lieu de vie pour toutes vos envies !</h1>
@@ -17,7 +17,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Footer/>
+      
     </div>
   );
 }

@@ -61,7 +61,7 @@ const Navbar = () => {
             onMouseLeave={() => setDropdownOpen(null)}
           >
             <button className="hover:text-primary-100 flex items-center space-x-2 ">
-              <a href="lounge-spa">Lounge Spa</a>
+              <Link href="/lounge-spa">Lounge Spa</Link>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }}
@@ -79,8 +79,8 @@ const Navbar = () => {
                   exit="exit"
                   custom="left"
                 >
-                  <motion.a
-                    href="lounge-spa/journee"
+                  <motion.span
+                  
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -88,10 +88,10 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    Journée
-                  </motion.a>
-                  <motion.a
-                    href="#"
+                    <Link href={'/lounge-spa/journee'}>Journée</Link>
+                  </motion.span>
+                  <motion.span
+                  
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
@@ -99,8 +99,9 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    Nuitée
-                  </motion.a>
+                    <Link href={'/lounge-spa/nuitee'}>Nuitée</Link>
+                    
+                  </motion.span>
                 </motion.div>
               )}
             </AnimatePresence>

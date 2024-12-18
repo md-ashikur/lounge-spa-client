@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbars/Navbar";
 import React, { useState } from "react";
 import { Calendar } from "react-date-range"; // Install this package: `npm install react-date-range`
 import "react-date-range/dist/styles.css";
@@ -89,7 +91,9 @@ const MultiPageForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream text-brown p-6">
+    <div>
+      
+      <div className="min-h-screen bg-cream text-brown p-6">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         {/* Progress Bar */}
         <div className="flex items-center mb-8">
@@ -301,6 +305,9 @@ const MultiPageForm = () => {
           </button>
         </div>
       </div>
+    </div>
+
+   
     </div>
   );
 };
