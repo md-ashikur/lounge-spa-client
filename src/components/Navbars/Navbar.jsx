@@ -51,14 +51,14 @@ const Navbar = () => {
         {/* Desktop Menu */}
 
         <div className="text-sm text-semibold hidden md:flex space-x-4 col-span-8">
-          {/* Menu Item 1 */}
+          {/* Lounge Spa */}
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(1)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
             <button className="hover:text-primary-100 flex items-center space-x-2 ">
-              <span>Lounge Spa</span>
+              <a href="lounge-spa">Lounge Spa</a>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }}
@@ -77,7 +77,7 @@ const Navbar = () => {
                   custom="left"
                 >
                   <motion.a
-                    href="#"
+                    href="lounge-spa/journee"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
