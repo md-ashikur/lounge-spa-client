@@ -38,6 +38,7 @@ const Step1 = ({ onNext }) => {
 
   const tileDisabled = ({ date }) => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
 
     if (greenDeal) {
       const day = date.getDay();
@@ -46,7 +47,7 @@ const Step1 = ({ onNext }) => {
 
     if (lastMinute) {
       const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 2);
+      limitDate.setDate(limitDate.getDate() + 1);
       return date < today || date > limitDate;
     }
 
