@@ -10,22 +10,21 @@ const MultiPageForm = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [greenDeal, setGreenDeal] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [numberOfPeople, setNumberOfPeople] = useState(1);
+  const [selectedPeople, setSelectedPeople] = useState(1);
   const [spaOptions, setSpaOptions] = useState({
     none: false,
-    extraHour: false,
+    additionalHour: false,
     massage: false,
-    locationPeignoir: false,
-    accueilVIP: false,
+    robe: false,
+    vipWelcome: false,
   });
-  const [massagePeople, setMassagePeople] = useState(1);
-  const [massageDuration, setMassageDuration] = useState(20);
+  const [massageDuration, setMassageDuration] = useState(null);
 
   // Disable past dates
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const unavailableDates = ["", ""]; // Example unavailable dates
+  const unavailableDates = []; // Example unavailable dates
   const slots = greenDeal
     ? [
         "9h30 – 11h30",
@@ -56,36 +55,37 @@ const MultiPageForm = () => {
     return isPast || unavailableDates.includes(formattedDate);
   };
 
-  const handleSpaOptionChange = (option) => {
-    setSpaOptions({
-      ...spaOptions,
-      [option]: !spaOptions[option],
+  const toggleSpaOption = (option) => {
+    setSpaOptions((prevState) => {
+      const updatedOptions = { ...prevState, [option]: !prevState[option] };
+      // If "None" is selected, unselect all other options
+      if (updatedOptions.none) {
+        Object.keys(updatedOptions).forEach((key) => {
+          if (key !== "none") updatedOptions[key] = false;
+        });
+      }
+      return updatedOptions;
     });
-    // If "None" is selected, deselect all other options
-    if (option === "none" && !spaOptions.none) {
-      setSpaOptions({
-        none: true,
-        extraHour: false,
-        massage: false,
-        locationPeignoir: false,
-        accueilVIP: false,
-      });
-    }
+  };
+
+  const handleMassageDuration = (duration) => {
+    setMassageDuration(duration);
   };
 
   const calculateTotalCost = () => {
-    let total = 0;
-    if (spaOptions.extraHour) total += 45;
-    if (spaOptions.massage) total += 50;
-    if (spaOptions.locationPeignoir) total += 5;
-    if (spaOptions.accueilVIP) total += 35 * numberOfPeople;
+    let totalCost = 0;
 
-    // Add additional charges if applicable
-    if (spaOptions.massage && (selectedSlot.includes("19h30") || selectedDate.includes("Sunday"))) {
-      total += 10;
+    if (spaOptions.additionalHour) totalCost += 45;
+    if (spaOptions.massage) totalCost += 50;
+    if (spaOptions.robe) totalCost += 5;
+    if (spaOptions.vipWelcome) totalCost += 35 * selectedPeople;
+
+    // Add additional cost for evening slots or Sundays if selected
+    if (spaOptions.massage && (selectedSlot.includes("19h30") || selectedSlot.includes("22h"))) {
+      totalCost += 10;
     }
 
-    return total;
+    return totalCost;
   };
 
   return (
@@ -98,8 +98,7 @@ const MultiPageForm = () => {
               page >= 1 ? "bg-green-500" : "bg-gray-300"
             }`}
           ></div>
-          <div className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold mx-2">
-          </div>
+          <div className="w-6 h-6 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-bold mx-2"></div>
           <div
             className={`flex-1 h-2 rounded ${
               page >= 2 ? "bg-green-500" : "bg-gray-300"
@@ -114,8 +113,6 @@ const MultiPageForm = () => {
         {page === 1 && (
           <div>
             <h2 className="text-lg font-bold mb-4">Select Your Date</h2>
-
-            {/* Green Deal Toggle */}
             <div className="flex items-center mb-6">
               <span className="mr-4 font-semibold">Green Deal:</span>
               <button
@@ -150,7 +147,7 @@ const MultiPageForm = () => {
                       isPast
                         ? " text-gray-500 cursor-not-allowed"
                         : isUnavailableDay
-                        ? "text-red-500 "
+                        ? "text-red-500"
                         : "text-black"
                     }`}
                     style={{
@@ -161,7 +158,9 @@ const MultiPageForm = () => {
                   </div>
                 );
               }}
-              disabledDates={unavailableDates.map((date) => new Date(date))}
+              disabledDates={
+                unavailableDates.map((date) => new Date(date)) // Disable unavailable dates explicitly
+              }
               minDate={today} // Disable past dates for selection
             />
 
@@ -189,108 +188,97 @@ const MultiPageForm = () => {
           </div>
         )}
 
-        {/* Page 2: Summary and Spa Options */}
+        {/* Page 2: Select Number of People and Spa Options */}
         {page === 2 && (
           <div>
             <h2 className="text-lg font-bold mb-4">Review Your Selection</h2>
+
+            {/* Selected Date and Time */}
             <div className="mb-6">
-              <p className="font-semibold">Selected Date: {selectedDate}</p>
-              <p className="font-semibold">Selected Time Slot: {selectedSlot}</p>
-              <p className="font-semibold">Number of People: {numberOfPeople}</p>
+              <h3 className="font-semibold">Selected Date:</h3>
+              <p>{selectedDate}</p>
+              <h3 className="font-semibold mt-4">Selected Time Slot:</h3>
+              <p>{selectedSlot}</p>
             </div>
 
             {/* Select Number of People */}
-            <div className="flex items-center mb-6">
-              <button
-                className="p-2 border rounded"
-                onClick={() => setNumberOfPeople(Math.max(1, numberOfPeople - 1))}
-              >
-                -
-              </button>
-              <span className="mx-4">{numberOfPeople}</span>
-              <button
-                className="p-2 border rounded"
-                onClick={() => setNumberOfPeople(numberOfPeople + 1)}
-              >
-                +
-              </button>
-            </div>
-
-            {/* Spa Options */}
             <div className="mb-6">
-              <h3 className="font-semibold mb-4">Choose your Spa Options:</h3>
-              {[
-                { label: "None", name: "none", price: 0 },
-                { label: "1h supplémentaire", name: "extraHour", price: 45 },
-                {
-                  label: "Californian style massages with hot oils",
-                  name: "massage",
-                  price: 50,
-                },
-                { label: "Location de peignoir", name: "locationPeignoir", price: 5 },
-                { label: "Accueil VIP", name: "accueilVIP", price: 35 },
-              ].map((option) => (
-                <div
-                  key={option.name}
-                  className={`flex items-center p-4 border rounded mb-4 ${
-                    spaOptions[option.name] ? "bg-green-200" : "bg-gray-100"
-                  }`}
+              <h3 className="font-semibold">Select the number of people:</h3>
+              <div className="flex items-center">
+                <button
+                  onClick={() => setSelectedPeople(Math.max(1, selectedPeople - 1))}
+                  className="px-4 py-2 border rounded"
                 >
-                  <input
-                    type="checkbox"
-                    checked={spaOptions[option.name]}
-                    onChange={() => handleSpaOptionChange(option.name)}
-                    className="mr-4"
-                  />
-                  <span>{option.label}</span>
-                  {option.price > 0 && <span className="ml-4">+{option.price}€</span>}
-                </div>
-              ))}
+                  -
+                </button>
+                <span className="mx-4">{selectedPeople}</span>
+                <button
+                  onClick={() => setSelectedPeople(selectedPeople + 1)}
+                  className="px-4 py-2 border rounded"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
-            {/* Massage Options (only show if massage is selected) */}
-            {spaOptions.massage && (
-              <div>
-                <h4 className="font-semibold">Massages Options:</h4>
-                <div className="mb-4">
-                  <label>Number of People:</label>
-                  <select
-                    value={massagePeople}
-                    onChange={(e) => setMassagePeople(e.target.value)}
-                    className="w-full p-2 mt-2 border rounded"
+            {/* Choose your Spa options */}
+            <div className="mb-6">
+              <h3 className="font-semibold">Choose your Spa options:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { name: "None", icon: "❌" },
+                  { name: "1h supplémentaire (45€)", icon: "⏳" },
+                  {
+                    name: "Californian style massages with hot oils (50€)",
+                    icon: "💆‍♀️",
+                  },
+                  { name: "Location de peignoir (5€)", icon: "🧖‍♂️" },
+                  { name: "Accueil VIP (35€ / pers)", icon: "🎩" },
+                ].map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => toggleSpaOption(option.name.toLowerCase())}
+                    className={`p-4 border rounded ${
+                      spaOptions[option.name.toLowerCase()]
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-200"
+                    }`}
                   >
-                    {[...Array(numberOfPeople).keys()].map((i) => (
-                      <option key={i} value={i + 1}>
-                        {i + 1} Person{ i + 1 > 1 && 's' }
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <div className="flex items-center">
+                      <span className="mr-2">{option.icon}</span>
+                      <span>{option.name}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                <div className="mb-4">
-                  <label>Massage Duration:</label>
-                  <div className="flex items-center mt-2">
+            {/* Massage Duration if selected */}
+            {spaOptions.massage && (
+              <div className="mb-6">
+                <h3 className="font-semibold">Select Massage Duration:</h3>
+                <div className="flex gap-4">
+                  {["20min", "30min", "60min"].map((duration) => (
                     <button
-                      onClick={() => setMassageDuration(Math.max(20, massageDuration - 10))}
-                      className="p-2 border rounded"
+                      key={duration}
+                      onClick={() => handleMassageDuration(duration)}
+                      className={`p-4 border rounded ${
+                        massageDuration === duration
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-200"
+                      }`}
                     >
-                      -
+                      {duration}
                     </button>
-                    <span className="mx-4">{massageDuration} min</span>
-                    <button
-                      onClick={() => setMassageDuration(massageDuration + 10)}
-                      className="p-2 border rounded"
-                    >
-                      +
-                    </button>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
 
             {/* Total Cost */}
-            <div className="mb-6">
-              <h3 className="font-semibold">Total Cost: {calculateTotalCost()}€</h3>
+            <div className="mt-4">
+              <h3 className="font-semibold">Total Cost:</h3>
+              <p>{calculateTotalCost()}€</p>
             </div>
           </div>
         )}
