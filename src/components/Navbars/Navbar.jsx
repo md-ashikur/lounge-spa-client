@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
+import darkLogo from "../../../public/images/1.png"
+import lightLogo from "../../../public/images/2.png"
+import Image from "next/image";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,22 +32,25 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-secondary text-primary p-4">
-      <div className="flex justify-between md:grid md:grid-cols-3 md:justify-items-center content-center items-center">
+    <nav className="bg-secondary text-primary py-2 px-5 ">
+      <div className="max-w-[1400px] flex justify-between  md:grid md:grid-cols-12 md:justify-items-center content-center items-center lg:px-28">
         {/* Logo */}
-        {isMenuOpen ? (
-          <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50">
-            hi
+       <div className="flex w-full col-span-2">
+       {isMenuOpen ? (
+          <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50 ">
+            <Image src={lightLogo} alt="" className="h-14 w-14"/>
+          
           </div>
         ) : (
-          <div className="text-2xl font-bold flex-shrink-0  md:left-4">
-            logo
+          <div className=" text-2xl font-bold flex-shrink-0  md:left-4">
+            <Image src={darkLogo} alt="" className="h-14 w-14"/>
           </div>
         )}
+       </div>
 
         {/* Desktop Menu */}
 
-        <div className="text-sm text-semibold hidden md:flex space-x-4 items-end">
+        <div className="text-sm text-semibold hidden md:flex space-x-4 col-span-8">
           {/* Menu Item 1 */}
           <div
             className="relative"
@@ -245,10 +251,10 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div>
+        <div className="w-full col-span-2 flex justify-end">
           {/* Hamburger Menu */}
           <button
-            className="block md:flex space-x-8 items-right"
+            className=" block md:flex space-x-8 items-right"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <motion.div
