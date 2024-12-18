@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbars/Navbar";
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa6";
 import home from "../../public/images/home.png";
+import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div className="bg-secondary">
@@ -15,6 +16,8 @@ export default function Home() {
         </button>
         </div>
       </div>
+
+      <Footer/>
     </div>
   );
 }

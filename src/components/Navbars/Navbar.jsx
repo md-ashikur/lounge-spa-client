@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-secondary text-primary py-2 px-5 ">
+    <nav className="bg-secondary text-primary py-2 px-5 z-50 sticky top-0">
       <div className="max-w-[1400px] flex justify-between  md:grid md:grid-cols-12 md:justify-items-center content-center items-center lg:px-28">
         {/* Logo */}
        <div className="flex w-full col-span-2">
