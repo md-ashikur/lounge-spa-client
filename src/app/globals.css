@@ -8,16 +8,14 @@ body{
 
 /* Top Design Section */
 .top-design1 {
-    position: relative;
-    top: 22;
+   
     height:30px;
     background-color: #92796E; 
     clip-path: polygon(0 0%, 100% 0%, 100% 30%, 0% 100%);
   }
   
   .top-design2 {
-    position: relative;
-    top: 23;
+    
     height: 20px;
     background-color: #C8B8AD;
     clip-path: polygon(0 0%, 120% 84%, 100% 100%, 0% 100%);
