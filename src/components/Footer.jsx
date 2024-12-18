@@ -7,7 +7,9 @@ const Footer = () => {
    <div>
       {/* Top Design */}
       <div className="top-design2 "></div>
+ 
       <div className="top-design1 "></div>
+  
 
     <footer className="bg-primary font-light text-sm text-white py-10 px-20">
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">

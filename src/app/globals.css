@@ -11,7 +11,7 @@ body{
     position: relative;
     top: 22;
     height:30px;
-    background-color: #92796E; /* Cream Background */
+    background-color: #92796E; 
     clip-path: polygon(0 0%, 100% 0%, 100% 30%, 0% 100%);
   }
   
@@ -19,7 +19,7 @@ body{
     position: relative;
     top: 23;
     height: 20px;
-    background-color: #C8B8AD; /* Cream Background */
+    background-color: #C8B8AD;
     clip-path: polygon(0 0%, 120% 84%, 100% 100%, 0% 100%);
   }
   
