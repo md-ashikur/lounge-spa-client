@@ -18,14 +18,17 @@ module.exports = {
          
         },
         third: {
-          DEFAULT: "#30313D",
+          DEFAULT: "#1F2937",
          
         },
 
-        neutral: {
-          DEFAULT: "#FF3B22",
-         
+        // neutral: {
+        //   DEFAULT: "#1F2937", 
+        // },
+        white: {
+          DEFAULT: "#FFFFFF", 
         },
+
      
       },
     },

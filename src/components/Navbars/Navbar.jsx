@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { IoIosArrowDown } from "react-icons/io";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,39 +31,40 @@ const Navbar = () => {
   return (
     <nav className="bg-secondary text-primary p-4">
       <div className="flex justify-between md:grid md:grid-cols-3 md:justify-items-center content-center items-center">
-
         {/* Logo */}
         {isMenuOpen ? (
           <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50">
-           hi
+            hi
           </div>
-        ) :  <div className="text-2xl font-bold flex-shrink-0  md:left-4">
-          logo
-        </div>}
+        ) : (
+          <div className="text-2xl font-bold flex-shrink-0  md:left-4">
+            logo
+          </div>
+        )}
 
         {/* Desktop Menu */}
 
-        <div className=" hidden md:flex space-x-8 items-end">
+        <div className="text-sm text-semibold hidden md:flex space-x-4 items-end">
           {/* Menu Item 1 */}
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(1)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center space-x-2 hover:text-gray-400">
-              <span>Menu 1</span>
+            <button className="hover:text-primary-100 flex items-center space-x-2 ">
+              <span>Lounge Spa</span>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                ▼
+                <IoIosArrowDown />
               </motion.span>
             </button>
             <AnimatePresence>
               {dropdownOpen === 1 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-48 bg-gray-700 rounded shadow-lg"
+                  className="absolute left-0 mt-2 w-48 bg-primary text-white rounded shadow-lg overflow-hidden "
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -70,25 +72,25 @@ const Navbar = () => {
                 >
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu 1
+                    Journée
                   </motion.a>
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu 2
+                    Nuitée
                   </motion.a>
                 </motion.div>
               )}
@@ -101,20 +103,20 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(2)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center space-x-2 hover:text-gray-400">
-              <span>Menu 2</span>
+            <button className="flex items-center space-x-2 hover:text-primary-100">
+              <span>Lounge Receptions</span>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 2 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                ▼
+                <IoIosArrowDown />
               </motion.span>
             </button>
             <AnimatePresence>
               {dropdownOpen === 2 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-48 bg-gray-700 rounded shadow-lg"
+                  className="absolute left-0 mt-2 w-72 bg-primary rounded text-white shadow-lg overflow-hidden"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -122,25 +124,58 @@ const Navbar = () => {
                 >
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu A
+                    EVJF
                   </motion.a>
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu B
+                    Anniversaire
+                  </motion.a>
+                  <motion.a
+                    href="#"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    variants={dropdownCrossVariants}
+                    custom="left"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    Mariage, fiançailles…
+                  </motion.a>
+                  <motion.a
+                    href="#"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    variants={dropdownCrossVariants}
+                    custom="right"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    Week-end entre amis : all inclusive
+                  </motion.a>
+                  <motion.a
+                    href="#"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    variants={dropdownCrossVariants}
+                    custom="left"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    Réception sur mesure
                   </motion.a>
                 </motion.div>
               )}
@@ -152,20 +187,20 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(3)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center space-x-2 hover:text-gray-400">
-              <span>Menu 3</span>
+            <button className="flex items-center space-x-2 hover:text-primary-100">
+              <span>Lounge Business</span>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 3 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                ▼
+                <IoIosArrowDown />
               </motion.span>
             </button>
             <AnimatePresence>
               {dropdownOpen === 3 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-48 bg-gray-700 rounded shadow-lg"
+                  className="absolute left-0 mt-2 w-48 bg-primary rounded shadow-lg overflow-hidden text-white"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -173,25 +208,36 @@ const Navbar = () => {
                 >
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu A
+                    Soirée d’entreprise
                   </motion.a>
                   <motion.a
                     href="#"
-                    className="block px-4 py-2 hover:bg-gray-600 transition"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Submenu B
+                    séminaire / réunion
+                  </motion.a>
+                  <motion.a
+                    href="#"
+                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    variants={dropdownCrossVariants}
+                    custom="left"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                  >
+                    récéption sur mesure
                   </motion.a>
                 </motion.div>
               )}
@@ -228,29 +274,254 @@ const Navbar = () => {
             </motion.div>
           </button>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu====
+          =================== */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
-                className="absolute md:top-0 top-16 md:py-16 md:px-20 left-0 w-full !h-screen text-white bg-gray-800 -z-1 md:text-xl"
+                className="absolute md:top-0 top-16 md:py-20 md:px-20 left-0 w-full !h-screen text-white bg-third -z-1 md:text-4xl"
                 variants={mobileMenuVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
+                <div className="text-sm text-semibold lg:hidden block p-4">
+                  {/* Menu Item 1 */}
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setDropdownOpen(1)}
+                    onMouseLeave={() => setDropdownOpen(null)}
+                  >
+                   
+                      <motion.a
+                        href="#"
+                        className="flex items-center gap-2 hover:text-primary-100 transition"
+                        variants={dropdownCrossVariants}
+                        custom="left"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                      >
+                        Lounge Spa
+                        <motion.span
+                          className="transform"
+                          animate={
+                            dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }
+                          }
+                          transition={{ duration: 0.3 }}
+                        >
+                          <IoIosArrowDown />
+                        </motion.span>
+                      </motion.a>
+                    
+                    <AnimatePresence>
+                      {dropdownOpen === 1 && (
+                        <motion.div
+                          className="transition mt-2 overflow-hidden "
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          custom="left"
+                        >
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="left"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Journée
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Nuitée
+                          </motion.a>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Repeat for Menu 2 and Menu 3 */}
+                  <div
+                    className="relative my-5"
+                    onMouseEnter={() => setDropdownOpen(2)}
+                    onMouseLeave={() => setDropdownOpen(null)}
+                  >
+                     <motion.a
+                        href="#"
+                        className="flex items-center gap-2 hover:text-primary-100 transition"
+                        variants={dropdownCrossVariants}
+                        custom="right"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                      >
+                        Lounge Receptions
+                        <motion.span
+                          className="transform"
+                          animate={
+                            dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }
+                          }
+                          transition={{ duration: 0.3 }}
+                        >
+                          <IoIosArrowDown />
+                        </motion.span>
+                      </motion.a>
+                   
+                    <AnimatePresence>
+                      {dropdownOpen === 2 && (
+                        <motion.div
+                          className="m-2 overflow-hidden"
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          custom="left"
+                        >
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="left"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            EVJF
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Anniversaire
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Mariage, fiançailles…
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Week-end entre amis : all inclusive
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Réception sur mesure
+                          </motion.a>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  {/*  Menu 3 */}
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setDropdownOpen(3)}
+                    onMouseLeave={() => setDropdownOpen(null)}
+                  >
+                     <motion.a
+                        href="#"
+                        className="flex items-center gap-2 hover:text-primary-100 transition"
+                        variants={dropdownCrossVariants}
+                        custom="left"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                      >
+                       Lounge Business
+                        <motion.span
+                          className="transform"
+                          animate={
+                            dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }
+                          }
+                          transition={{ duration: 0.3 }}
+                        >
+                          <IoIosArrowDown />
+                        </motion.span>
+                      </motion.a>
+                  
+                    <AnimatePresence>
+                      {dropdownOpen === 3 && (
+                        <motion.div
+                          className=" mt-2 overflow-hidden"
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                          custom="left"
+                        >
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="left"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            Soirée d’entreprise
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            séminaire / réunion
+                          </motion.a>
+                          <motion.a
+                            href="#"
+                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            variants={dropdownCrossVariants}
+                            custom="right"
+                            initial="hidden"
+                            animate="visible"
+                            exit="exit"
+                          >
+                            récéption sur mesure
+                          </motion.a>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
                 <motion.a
                   href="#about"
-                  className="block px-4 py-2 hover:text-primary-100 transition"
-                  variants={dropdownCrossVariants}
-                  custom="left"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  About Us
-                </motion.a>
-                <motion.a
-                  href="#contact"
                   className="block px-4 py-2 hover:text-primary-100 transition"
                   variants={dropdownCrossVariants}
                   custom="right"
@@ -258,33 +529,33 @@ const Navbar = () => {
                   animate="visible"
                   exit="exit"
                 >
-                  Contact
+                  Notre univers
+                </motion.a>
+                <motion.a
+                  href="#contact"
+                  className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
+                  variants={dropdownCrossVariants}
+                  custom="left"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  Découvrez nos espaces
                 </motion.a>
                 <motion.div className="">
                   <motion.a
                     href="#menu1"
-                    className="block px-4 py-2 hover:text-primary-100 transition"
-                    variants={dropdownCrossVariants}
-                    custom="left"
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                  >
-                    Menu 1
-                  </motion.a>
-                  <motion.a
-                    href="#menu2"
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
-                    Menu 2
+                    Cartes cadeaux
                   </motion.a>
                   <motion.a
-                    href="#menu3"
+                    href="#menu2"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -292,7 +563,7 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    Menu 3
+                    Contact
                   </motion.a>
                 </motion.div>
               </motion.div>
