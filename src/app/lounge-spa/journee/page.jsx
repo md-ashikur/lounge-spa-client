@@ -18,7 +18,7 @@ const ProgressBar = ({ currentStep, totalSteps, icons }) => {
             <div key={stepNumber} className="flex items-center">
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center 
-                  ${isCompleted ? 'bg-green-500 text-white' : isActive ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600'}
+                  ${isCompleted ? 'bg-green-500 text-white' : isActive ? 'bg-primary text-white' : 'bg-gray-300 text-gray-600'}
                 `}
               >
                 {icons[index]} {/* Use icons array */}

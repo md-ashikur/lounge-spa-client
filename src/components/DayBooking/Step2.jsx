@@ -17,11 +17,12 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
   const [spaInfo, setSpaInfo] = useState(null);
 
   const spaOptions = [
-    { id: "None", name: "None", price: 0, icon: "🚫" },
-    { id: "1hr", name: "1 Additional Hour", price: 45, icon: "⏳" },
+    { id: "None", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "1hr", name: "1h supplémentaire", price: 45, icon: "⏳" },
     {
       id: "massage",
-      name: "Californian Massages",
+      name: "Modelages type californien aux huiles chaudes",
+      extra: "(+10€ soir et dimanche)",
       price: 50,
       icon: "💆",
       info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
@@ -31,6 +32,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       id: "vip",
       name: "Accueil VIP",
       price: 35,
+      extra: "/pers",
       icon: "🍾",
       info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
     },
@@ -147,22 +149,33 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
   };
 
   return (
-    <div className="p-4 space-y-6">
-      <h2 className="text-xl font-bold">Booking Details</h2>
-      <p>Date: {bookingDetails.date.toDateString()}</p>
-      <p>Time Slot: {bookingDetails.slot}</p>
-      {bookingDetails.greenDeal && <p>Green Deal Selected</p>}
+    <div className="lg:px-20 px-5 space-y-6 text-primary ">
+      <p>
+        <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
+      </p>
+      <p>
+        <b>Plage horaire: </b> {bookingDetails.slot}
+      </p>
+      {bookingDetails.greenDeal && <p>Green Deal Choisi</p>}
       {bookingDetails.lastMinute && (
-        <p>
-          Last Minute: Ends{" "}
-          {new Date(
-            bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
-          ).toDateString()}
-        </p>
+        <>
+          <span>
+            <b>Last Minute:</b> Ends{" "}
+          </span>
+          <span>
+            {" "}
+            {new Date(
+              bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
+            ).toDateString()}
+          </span>
+        </>
       )}
 
+      {/* Number of People------------ */}
       <div className="flex items-center space-x-4">
-        <label className="font-bold">Number of People:</label>
+        <label className="font-bold">
+          Sélectionnez le nombres de personnes (13ans et +) :
+        </label>
         <button
           className="px-2 py-1 bg-gray-200"
           onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
@@ -179,25 +192,24 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       </div>
 
       {/* =================Choose Spa section start============ */}
-      <h3 className="text-lg font-bold">Choose Spa Options</h3>
-      <div className="grid grid-cols-2 gap-4">
+      <h3 className="text-lg font-bold">Choisissez vos options Spa :</h3>
+      <div className="grid lg:grid-cols-5 gap-4 text-sm">
         {spaOptions.map((option) => (
           <div
             key={option.id}
-            className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
+            className={`flex justify-center items-center p-3 rounded-md shadow-md ${
               selectedOptions.includes(option.id)
                 ? "bg-green-500 text-white"
                 : "bg-gray-100"
             }`}
             onClick={() => handleOptionSelect(option.id)}
           >
-            <span>{option.icon}</span>
+            <div className="text-center flex flex-col items-center">
+            <span className="my-3">{option.icon}</span>
             <span className="font-bold">{option.name}</span>
-            <span className="text-sm">+{option.price}€</span>
-
-            {option.info && (
+           <p className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span> {option.info && (
               <button
-                className="ml-2 text-blue-500 underline"
+                className="ml-2 text-primary "
                 onClick={(e) => {
                   e.stopPropagation();
                   setSpaInfo(option.info);
@@ -205,19 +217,23 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
               >
                 ⓘ
               </button>
-            )}
+            )}</p> 
+            
+            </div>
+
+            
           </div>
         ))}
       </div>
 
       {spaInfo && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
         "
           onClick={() => setSpaInfo(null)}
         >
           <div
-            className="bg-white p-4 rounded-md w-1/2"
+            className="bg-primary text-white p-4 rounded-md lg:w-1/2 "
             onClick={(e) => e.stopPropagation()}
           >
             <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
@@ -225,10 +241,33 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
+ {/* 1 hour modal----------------- */}
+ {showModal && modalType === "1hr" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+          <div className="bg-white p-4 rounded-md lg:w-1/2">
+            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
+            <div className="mt-4 space-y-2">
+              {additionalHourOptions.map((option) => (
+                <button
+                  key={option}
+                  className="block w-full p-2 bg-gray-200 rounded-md"
+                  onClick={() => {
+                    setShowModal(false);
+                    setSelectedOptions((prev) => [...prev, "1hr"]);
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* massage modal---------------- */}
       {showModal && modalType === "massage" && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-md w-1/2">
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
+          <div className="bg-white p-4 rounded-sm lg:w-1/2">
             <h3 className="text-lg font-bold">Massages</h3>
             <div className="mt-4">
               <label>Number of People:</label>
@@ -288,48 +327,28 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
-      {/* 1 hour modal----------------- */}
-      {showModal && modalType === "1hr" && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-md w-1/2">
-            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
-            <div className="mt-4 space-y-2">
-              {additionalHourOptions.map((option) => (
-                <button
-                  key={option}
-                  className="block w-full p-2 bg-gray-200 rounded-md"
-                  onClick={() => {
-                    setShowModal(false);
-                    setSelectedOptions((prev) => [...prev, "1hr"]);
-                  }}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+     
 
       {/* =================Choose Catering Section start================= */}
-      <h3 className="text-lg font-bold">Choose Catering</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="py-10 ">
+    <h3 className="text-lg font-bold">Choisissez vos options restauration :</h3>
+      <div className="grid lg:grid-cols-5 gap-4">
         {cateringOptions.map((option) => (
           <div
             key={option.id}
-            className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
+            className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
               selectedCateringOptions.includes(option.id)
                 ? "bg-green-500 text-white"
                 : "bg-gray-100"
             }`}
             onClick={() => handleCateringSelect(option.id)}
           >
+            <div className="flex flex-col items-center justify-center">
             <span>{option.icon}</span>
             <span className="font-bold">{option.name}</span>
-            <span className="text-sm">+{option.price}€</span>
-            {option.info && (
+            <span className="text-sm">{option.price}€{option.info && (
               <button
-                className="ml-2 text-blue-500 underline"
+                className="ml-2 text-primary"
                 onClick={(e) => {
                   e.stopPropagation();
                   setCateringInfo(option.info);
@@ -337,25 +356,28 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
               >
                 ⓘ
               </button>
-            )}
+            )}</span>
+            
+            </div>
           </div>
         ))}
       </div>
 
       {cateringInfo && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
         "
           onClick={() => setCateringInfo(null)}
         >
           <div
-            className="bg-white p-4 rounded-md w-1/2"
+            className="bg-primary text-white p-4 rounded-md lg:w-1/2"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
           </div>
         </div>
       )}
+    </div>
 
       <div className="mt-6">
         <h3 className="text-lg font-bold">Total Cost</h3>
@@ -363,14 +385,14 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       </div>
 
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-gray-300 rounded-md" onClick={onBack}>
-          Back
+        <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
+        Précédent
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
           onClick={onNext}
         >
-          Next
+         Suivant
         </button>
       </div>
     </div>
