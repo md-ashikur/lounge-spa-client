@@ -176,13 +176,10 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
           <div>
             <input
-              type="text"
+              type="phone"
               {...register("phone", {
                 required: "Numéro de téléphone is required",
-                pattern: {
-                  value: /^[0-9]{10}$/,
-                  message: "Phone number must be 10 digits",
-                },
+                
               })}
               placeholder="Numéro de téléphone"
               className="block w-full p-2 border rounded outline-none"
