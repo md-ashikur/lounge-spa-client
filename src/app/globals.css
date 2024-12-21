@@ -23,5 +23,90 @@ body{
     clip-path: polygon(0 0%, 120% 84%, 100% 100%, 0% 100%);
   }
   
+
+  /* toggle button----------- */
+  .toggle-button {
+    width: 44px;
+    height: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    position: relative;
  
+    transition: background-color 0.3s;
+  }
   
+  .toggle-circle {
+    width: 16px;
+    height: 16px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+  }
+  
+  .toggle-button:hover {
+    background-color: #6E4F45; /* Optional: Highlight color on hover */
+  }
+  
+  /* calendar design=============== */
+
+  .react-calendar {
+    width: 100% !important;
+    border: none !important;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: "Montserrat", serif !important;
+
+}
+
+.react-calendar__navigation {
+  display: flex;
+  background: #D38B79 !important;
+  color: #fff;
+  height: 44px;
+  margin-bottom: 0 !important;
+}
+
+.react-calendar__navigation__next-button:hover,
+.react-calendar__navigation__next2-button:hover,
+.react-calendar__navigation__prev-button:hover,
+.react-calendar__navigation__prev2-button:hover,
+.react-calendar__navigation__label:hover{
+  background: #af7465 !important;
+}
+.react-calendar__navigation__next-button,
+.react-calendar__navigation__next2-button,
+.react-calendar__navigation__prev-button,
+.react-calendar__navigation__prev2-button{
+  background: #c2806f !important;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: #bf7e6e !important;
+}
+.react-calendar__navigation button {
+  background: greenyellow;
+} 
+
+.react-calendar__month-view__weekdays{
+  background: #D38B79 !important;
+  color: #fff;
+}
+
+
+.react-calendar__tile--now {
+  background: #f9d5d5 !important;
+
+ 
+}
+
+.react-calendar__tile--active {
+  background: #D38B79 !important;
+  color: #fff;
+}
+
+/* .react-calendar__month-view__days__day--weekend {
+  color: #000 !important;
+} */

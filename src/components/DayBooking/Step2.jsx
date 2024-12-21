@@ -8,25 +8,43 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
   const [modalType, setModalType] = useState("");
   const [additionalHourOptions, setAdditionalHourOptions] = useState([]);
   const [massageDetails, setMassageDetails] = useState({
-    numPeople: 0,
+    numPeople: 1,
     duration: 20,
   });
-  const [showMassageInfo, setShowMassageInfo] = useState(false);
-  const [showVipInfo, setShowVipInfo] = useState(false);
+
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
   const [cateringInfo, setCateringInfo] = useState(null);
+  const [spaInfo, setSpaInfo] = useState(null);
 
   const spaOptions = [
     { id: "None", name: "None", price: 0, icon: "🚫" },
     { id: "1hr", name: "1 Additional Hour", price: 45, icon: "⏳" },
-    { id: "massage", name: "Californian Massages", price: 50, icon: "💆" },
+    {
+      id: "massage",
+      name: "Californian Massages",
+      price: 50,
+      icon: "💆",
+      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
+    },
     { id: "robe", name: "Location de peignoir", price: 5, icon: "🧖" },
-    { id: "vip", name: "Accueil VIP", price: 35, icon: "🍾" },
+    {
+      id: "vip",
+      name: "Accueil VIP",
+      price: 35,
+      icon: "🍾",
+      info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
+    },
   ];
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "GourmetSnack", name: "En-cas gourmand", price: 20, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
+    {
+      id: "GourmetSnack",
+      name: "En-cas gourmand",
+      price: 20,
+      icon: "⏳",
+      info: "Encas désaltérant + pâtisseries",
+    },
     {
       id: "DinnerBoard",
       name: "Planche dînatoire",
@@ -164,7 +182,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       <h3 className="text-lg font-bold">Choose Spa Options</h3>
       <div className="grid grid-cols-2 gap-4">
         {spaOptions.map((option) => (
-          <button
+          <div
             key={option.id}
             className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
               selectedOptions.includes(option.id)
@@ -176,32 +194,38 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
             <span>{option.icon}</span>
             <span className="font-bold">{option.name}</span>
             <span className="text-sm">+{option.price}€</span>
-            {option.id === "massage" && (
+
+            {option.info && (
               <button
                 className="ml-2 text-blue-500 underline"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowMassageInfo(true);
+                  setSpaInfo(option.info);
                 }}
               >
                 ⓘ
               </button>
             )}
-            {option.id === "vip" && (
-              <button
-                className="ml-2 text-blue-500 underline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowVipInfo(true);
-                }}
-              >
-                ⓘ
-              </button>
-            )}
-          </button>
+          </div>
         ))}
       </div>
 
+      {spaInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+        "
+          onClick={() => setSpaInfo(null)}
+        >
+          <div
+            className="bg-white p-4 rounded-md w-1/2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
+          </div>
+        </div>
+      )}
+
+      {/* massage modal---------------- */}
       {showModal && modalType === "massage" && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-md w-1/2">
@@ -264,6 +288,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
+      {/* 1 hour modal----------------- */}
       {showModal && modalType === "1hr" && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-4 rounded-md w-1/2">
@@ -286,49 +311,11 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
-      {showMassageInfo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10        ">
-          <div className="bg-white p-4 rounded-md w-1/2">
-            <h3 className="text-lg font-bold">More Info - Massages</h3>
-            <p className="mt-4">
-              A relaxing Californian massage session to rejuvenate your body and
-              mind. Perfect for stress relief and muscle relaxation.
-            </p>
-            <div className="mt-4 text-right">
-              <button
-                className="px-4 py-2 bg-green-500 text-white rounded-md"
-                onClick={() => setShowMassageInfo(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showVipInfo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
-        "
-        onClick={() => setShowVipInfo(false)}
-        >
-          <div className="bg-white p-4 rounded-md w-1/2" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg font-bold">More Info - VIP</h3>
-            <p className="mt-4">
-              Enjoy a luxurious VIP welcome including a complimentary drink and
-              special attention to detail for an unforgettable experience.
-            </p>
-          
-          </div>
-        </div>
-      )}
-
       {/* =================Choose Catering Section start================= */}
       <h3 className="text-lg font-bold">Choose Catering</h3>
       <div className="grid grid-cols-2 gap-4">
         {cateringOptions.map((option) => (
-          <button
+          <div
             key={option.id}
             className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
               selectedCateringOptions.includes(option.id)
@@ -351,7 +338,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
                 ⓘ
               </button>
             )}
-          </button>
+          </div>
         ))}
       </div>
 
@@ -359,12 +346,13 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
         "
-        onClick={() => setCateringInfo(null)}
+          onClick={() => setCateringInfo(null)}
         >
-          <div className="bg-white p-4 rounded-md w-1/2"  onClick={(e) => e.stopPropagation()}>
-      
+          <div
+            className="bg-white p-4 rounded-md w-1/2"
+            onClick={(e) => e.stopPropagation()}
+          >
             <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
-          
           </div>
         </div>
       )}
@@ -375,10 +363,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       </div>
 
       <div className="flex justify-between mt-6">
-        <button
-          className="px-4 py-2 bg-gray-300 rounded-md"
-          onClick={onBack}
-        >
+        <button className="px-4 py-2 bg-gray-300 rounded-md" onClick={onBack}>
           Back
         </button>
         <button
@@ -393,4 +378,3 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
 };
 
 export default Step2;
-

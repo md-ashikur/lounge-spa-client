@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div>
       {/* Top Design */}
-      <div className="-mb-6">
+      <div className="-mb-6 bg-secondary">
         <div className="top-design2 "></div>
 
         <div className="top-design1 "></div>
