@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const Step2 = ({ bookingDetails, onNext, onBack }) => {
+const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   const [numPeople, setNumPeople] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -15,6 +15,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
   const [cateringInfo, setCateringInfo] = useState(null);
   const [spaInfo, setSpaInfo] = useState(null);
+
 
   const spaOptions = [
     { id: "None", name: "Aucune", price: 0, icon: "🚫" },
@@ -163,7 +164,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
             <b>Last Minute:</b> Ends{" "}
           </span>
           <span>
-            {" "}
+        
             {new Date(
               bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
             ).toDateString()}

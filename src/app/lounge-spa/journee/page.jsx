@@ -2,6 +2,9 @@
 
 import Step1 from '@/components/DayBooking/Step1';
 import Step2 from '@/components/DayBooking/Step2';
+import Step3 from '@/components/DayBooking/Step3';
+import Step4 from '@/components/DayBooking/Step4';
+
 import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaUser, FaCheckCircle } from 'react-icons/fa'; // Import icons
 
@@ -41,6 +44,8 @@ const ProgressBar = ({ currentStep, totalSteps, icons }) => {
 const Journee = () => {
   const [step, setStep] = useState(1);
   const [bookingDetails, setBookingDetails] = useState({});
+  const [spaSelections, setSpaSelections] = useState([]);
+  const [cateringSelections, setCateringSelections] = useState([]);
 
   // Define the icons array
   const icons = [
@@ -48,7 +53,6 @@ const Journee = () => {
     <FaClock key="clock" />,         // Icon for Step 2
     <FaUser key="user" />,           // Icon for Step 3
     <FaCheckCircle key="check" />,   // Icon for Step 4
-    
   ];
 
   const nextStep = () => setStep((prev) => prev + 1);
@@ -73,9 +77,27 @@ const Journee = () => {
           bookingDetails={bookingDetails}
           onNext={nextStep}
           onBack={prevStep}
+          setSpaSelections={(selections) => setSpaSelections(selections)}
+          setCateringSelections={(selections) => setCateringSelections(selections)}
         />
       )}
-      {/* Add more steps as needed */}
+      {step === 3 && (
+        <Step3
+          bookingDetails={bookingDetails}
+          spaSelections={spaSelections}
+          cateringSelections={cateringSelections}
+          onNext={nextStep}
+          onBack={prevStep}
+        />
+      )}
+      {step === 4 && (
+        <Step4
+          bookingDetails={bookingDetails}
+          spaSelections={spaSelections}
+          cateringSelections={cateringSelections}
+          onBack={prevStep}
+        />
+      )}
     </div>
   );
 };
