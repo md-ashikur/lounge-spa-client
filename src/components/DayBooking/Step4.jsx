@@ -1,8 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { loadStripe } from "@stripe/stripe-js";
+import Select from "react-select";
+import countries from "world-countries";
+
+// Prepare country options for react-select
+const countryOptions = countries.map((country) => ({
+    value: country.cca2, // Country code (e.g., US, IN)
+    label: country.name.common, // Country name (e.g., United States, India)
+  }));
+
 
 const stripePromise = loadStripe("your-stripe-public-key-here");
 
@@ -13,7 +22,10 @@ const Step4 = ({ onBack, onSubmit }) => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm();
+
+
 
   const onSubmitForm = async (data) => {
     setLoading(true);
@@ -51,17 +63,17 @@ const Step4 = ({ onBack, onSubmit }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="lg:px-20 px-5 my-10">
       <h2 className="text-xl font-semibold mb-4">Coordonnées</h2>
 
       <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
-        <div className="flex gap-5">
+        <div className="grid grid-cols-2 gap-5">
           <div>
             <input
               type="text"
               {...register("name", { required: "Nom is required" })}
               placeholder="Nom"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.name && (
               <p className="text-red-500">{errors.name.message}</p>
@@ -73,7 +85,7 @@ const Step4 = ({ onBack, onSubmit }) => {
               type="text"
               {...register("sureName", { required: "Prénom is required" })}
               placeholder="Prénom"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.sureName && (
               <p className="text-red-500">{errors.sureName.message}</p>
@@ -81,18 +93,26 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
         </div>
 
-        <div className="flex gap-5">
-          <div>
-            <input
-              type="text"
-              {...register("laneNumber", { required: "Pays is required" })}
-              placeholder="Pays"
-              className="block w-full p-2 border rounded"
-            />
-            {errors.laneNumber && (
-              <p className="text-red-500">{errors.laneNumber.message}</p>
+        <div className="grid grid-cols-2 gap-5">
+        <div>
+          <Controller
+            name="country"
+            control={control}
+            rules={{ required: "Pays is required" }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                options={countryOptions}
+                placeholder="Pays"
+                className="basic-single"
+                classNamePrefix="select"
+              />
             )}
-          </div>
+          />
+          {errors.country && (
+            <p className="text-red-500">{errors.country.message}</p>
+          )}
+        </div>
           <div>
             <input
               type="text"
@@ -100,7 +120,7 @@ const Step4 = ({ onBack, onSubmit }) => {
                 required: "Code postal is required",
               })}
               placeholder="Code postal"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.postalCode && (
               <p className="text-red-500">{errors.postalCode.message}</p>
@@ -108,7 +128,7 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
         </div>
 
-        <div className="flex gap-5">
+        <div className="grid grid-cols-2 gap-5">
           <div>
             <input
               type="text"
@@ -116,7 +136,7 @@ const Step4 = ({ onBack, onSubmit }) => {
                 required: "N° de voie is required",
               })}
               placeholder="N° de voie"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.laneNumber && (
               <p className="text-red-500">{errors.laneNumber.message}</p>
@@ -128,7 +148,7 @@ const Step4 = ({ onBack, onSubmit }) => {
               type="text"
               {...register("address", { required: "Adresse is required" })}
               placeholder="Adresse"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.address && (
               <p className="text-red-500">{errors.address.message}</p>
@@ -136,7 +156,7 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
         </div>
 
-        <div className="flex gap-5">
+        <div className="grid grid-cols-2 gap-5">
           <div>
             <input
               type="email"
@@ -148,7 +168,7 @@ const Step4 = ({ onBack, onSubmit }) => {
                 },
               })}
               placeholder="Adresse mail"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
@@ -165,7 +185,7 @@ const Step4 = ({ onBack, onSubmit }) => {
                 },
               })}
               placeholder="Numéro de téléphone"
-              className="block w-full p-2 border rounded"
+              className="block w-full p-2 border rounded outline-none"
             />
             {errors.phone && (
               <p className="text-red-500">{errors.phone.message}</p>
@@ -173,13 +193,15 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
         </div>
 
-        <button
+       <div className="flex justify-end">
+       <button
           type="submit"
-          className="bg-primary text-white py-2 px-4 rounded"
+          className="bg-primary text-white py-2 px-4 rounded outline-none"
           disabled={loading}
         >
           {loading ? "Processing..." : "Proceed to Payment"}
         </button>
+       </div>
       </form>
 
       <button onClick={onBack} className="mt-4 text-primary">
