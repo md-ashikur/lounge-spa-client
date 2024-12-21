@@ -46,7 +46,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
     if (lastMinute) {
       const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 2);
+      limitDate.setDate(limitDate.getDate() + 1);
       return date < today || date > limitDate;
     }
 
@@ -171,7 +171,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
             value={selectedDate}
             tileDisabled={tileDisabled}
             minDate={new Date()}
-            className="react-calendar"
+            className="react-calendar my-5"
           />
 
           <div className="flex items-center mt-4 space-x-4">
@@ -213,31 +213,34 @@ const Step1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          <div>
-            <h3 className=" font-bold mt-4">Sélectionnez un créneau horaire</h3>
-            <div className="flex gap-2 flex-wrap mt-2">
-              {timeSlots.map((slot) => (
-                <button
-                  key={slot}
-                  className={`py-2 px-3 rounded-full text-white text-center text-sm ${
-                    bookedSlots[
-                      selectedDate?.toISOString().split("T")[0]
-                    ]?.includes(slot)
-                      ? "bg-red-500 text-white cursor-not-allowed"
-                      : selectedSlot === slot
-                      ? "bg-green-500 text-white"
-                      : "bg-primary"
-                  }`}
-                  onClick={() => handleSlotClick(slot)}
-                  disabled={bookedSlots[
-                    selectedDate?.toISOString().split("T")[0]
-                  ]?.includes(slot)}
-                >
-                  {slot}
-                </button>
-              ))}
-            </div>
-          </div>
+         {selectedDate && (
+             <div>
+             <h3 className=" font-bold mt-4">Sélectionnez un créneau horaire</h3>
+             <div className="flex gap-2 flex-wrap mt-2">
+               {timeSlots.map((slot) => (
+                 <button
+                   key={slot}
+                   className={`py-2 px-3 rounded-full text-white text-center text-sm ${
+                     bookedSlots[
+                       selectedDate?.toISOString().split("T")[0]
+                     ]?.includes(slot)
+                       ? "bg-red-500 text-white cursor-not-allowed"
+                       : selectedSlot === slot
+                       ? "bg-green-500 text-white"
+                       : "bg-primary"
+                   }`}
+                   onClick={() => handleSlotClick(slot)}
+                   disabled={bookedSlots[
+                     selectedDate?.toISOString().split("T")[0]
+                   ]?.includes(slot)}
+                 >
+                   {slot}
+                 </button>
+               ))}
+             </div>
+           </div>
+         )} 
+        
         </div>
       </div>
 
