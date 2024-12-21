@@ -11,9 +11,10 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
     numPeople: 0,
     duration: 20,
   });
- const [showMassageInfo, setShowMassageInfo] = useState(false);
-    const [showVipInfo, setShowVipInfo] = useState(false);
-
+  const [showMassageInfo, setShowMassageInfo] = useState(false);
+  const [showVipInfo, setShowVipInfo] = useState(false);
+  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [cateringInfo, setCateringInfo] = useState(null);
 
   const spaOptions = [
     { id: "None", name: "None", price: 0, icon: "🚫" },
@@ -21,6 +22,25 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
     { id: "massage", name: "Californian Massages", price: 50, icon: "💆" },
     { id: "robe", name: "Location de peignoir", price: 5, icon: "🧖" },
     { id: "vip", name: "Accueil VIP", price: 35, icon: "🍾" },
+  ];
+
+  const cateringOptions = [
+    { id: "cateringNone", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "GourmetSnack", name: "En-cas gourmand", price: 20, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
+    {
+      id: "DinnerBoard",
+      name: "Planche dînatoire",
+      price: 30,
+      icon: "💆",
+      info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
+    },
+    {
+      id: "FlavorMenu",
+      name: "Menu saveur",
+      price: 30,
+      icon: "🧖",
+      info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
+    },
   ];
 
   const handleOptionSelect = (option) => {
@@ -33,20 +53,26 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       if (prev.includes("None")) {
         return [option];
       }
-      return prev.includes(option) ? prev.filter((opt) => opt !== option) : [...prev, option];
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
     });
 
     if (option === "1hr" && !selectedOptions.includes(option)) {
       const { slot } = bookingDetails;
       const [start, end] = slot.split(" – ");
-      const additionalStart = new Date(`2022-01-01T${start.replace("h", ":")}:00`);
+      const additionalStart = new Date(
+        `2022-01-01T${start.replace("h", ":")}:00`
+      );
       const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
 
       const options = [
         `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
           .toTimeString()
           .slice(0, 5)} – ${end}`,
-        `${start} – ${new Date(additionalEnd.setHours(additionalEnd.getHours() + 1))
+        `${start} – ${new Date(
+          additionalEnd.setHours(additionalEnd.getHours() + 1)
+        )
           .toTimeString()
           .slice(0, 5)}`,
       ];
@@ -60,6 +86,22 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       setModalType("massage");
       setShowModal(true);
     }
+  };
+
+  const handleCateringSelect = (option) => {
+    if (option === "cateringNone") {
+      setSelectedCateringOptions([option]);
+      return;
+    }
+
+    setSelectedCateringOptions((prev) => {
+      if (prev.includes("cateringNone")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
   };
 
   const handleMassageChange = (field, value) => {
@@ -79,6 +121,10 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         total += option.price;
       }
     });
+    selectedCateringOptions.forEach((optionId) => {
+      const option = cateringOptions.find((opt) => opt.id === optionId);
+      total += option.price;
+    });
     return total;
   };
 
@@ -90,7 +136,10 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
       {bookingDetails.greenDeal && <p>Green Deal Selected</p>}
       {bookingDetails.lastMinute && (
         <p>
-          Last Minute: Ends {new Date(bookingDetails.date.getTime() + 48 * 60 * 60 * 1000).toDateString()}
+          Last Minute: Ends{" "}
+          {new Date(
+            bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
+          ).toDateString()}
         </p>
       )}
 
@@ -111,6 +160,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </button>
       </div>
 
+      {/* =================Choose Spa section start============ */}
       <h3 className="text-lg font-bold">Choose Spa Options</h3>
       <div className="grid grid-cols-2 gap-4">
         {spaOptions.map((option) => (
@@ -127,27 +177,27 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
             <span className="font-bold">{option.name}</span>
             <span className="text-sm">+{option.price}€</span>
             {option.id === "massage" && (
-                <button
-                  className="ml-2 text-blue-500 underline"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowMassageInfo(true);
-                  }}
-                >
-                  ⓘ
-                </button>
-              )}
-              {option.id === "vip" && (
-                <button
-                  className="ml-2 text-blue-500 underline"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowVipInfo(true);
-                  }}
-                >
-                  ⓘ
-                </button>
-              )}
+              <button
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMassageInfo(true);
+                }}
+              >
+                ⓘ
+              </button>
+            )}
+            {option.id === "vip" && (
+              <button
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowVipInfo(true);
+                }}
+              >
+                ⓘ
+              </button>
+            )}
           </button>
         ))}
       </div>
@@ -236,46 +286,100 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
-
-          {showMassageInfo && (
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10"
-            onClick={() => setShowMassageInfo(false)}
-          >
-            <div
-              className="bg-white p-4 rounded-md w-3/4 max-w-lg"
-              onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicking inside it
-            >
-              <h3 className="text-lg font-bold">Accueil VIP Information</h3>
-              <p className="mt-2">
-              Le modelage californien est une technique de massage qui vise à détendre le corps et l&apos;esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C&apos;est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.
-              </p>
+      {showMassageInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10        ">
+          <div className="bg-white p-4 rounded-md w-1/2">
+            <h3 className="text-lg font-bold">More Info - Massages</h3>
+            <p className="mt-4">
+              A relaxing Californian massage session to rejuvenate your body and
+              mind. Perfect for stress relief and muscle relaxation.
+            </p>
+            <div className="mt-4 text-right">
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setShowMassageInfo(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-          {showVipInfo && (
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10"
-            onClick={() => setShowVipInfo(false)}
-          >
-            <div
-              className="bg-white p-4 rounded-md w-3/4 max-w-lg"
-              onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicking inside it
-            >
-              <h3 className="text-lg font-bold">Accueil VIP Information</h3>
-              <p className="mt-2">
-                Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm
-              </p>
-            </div>
+      {showVipInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+        "
+        onClick={() => setShowVipInfo(false)}
+        >
+          <div className="bg-white p-4 rounded-md w-1/2" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold">More Info - VIP</h3>
+            <p className="mt-4">
+              Enjoy a luxurious VIP welcome including a complimentary drink and
+              special attention to detail for an unforgettable experience.
+            </p>
+          
           </div>
-        )}
+        </div>
+      )}
 
+      {/* =================Choose Catering Section start================= */}
+      <h3 className="text-lg font-bold">Choose Catering</h3>
+      <div className="grid grid-cols-2 gap-4">
+        {cateringOptions.map((option) => (
+          <button
+            key={option.id}
+            className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
+              selectedCateringOptions.includes(option.id)
+                ? "bg-green-500 text-white"
+                : "bg-gray-100"
+            }`}
+            onClick={() => handleCateringSelect(option.id)}
+          >
+            <span>{option.icon}</span>
+            <span className="font-bold">{option.name}</span>
+            <span className="text-sm">+{option.price}€</span>
+            {option.info && (
+              <button
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCateringInfo(option.info);
+                }}
+              >
+                ⓘ
+              </button>
+            )}
+          </button>
+        ))}
+      </div>
 
+      {cateringInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+        "
+        onClick={() => setCateringInfo(null)}
+        >
+          <div className="bg-white p-4 rounded-md w-1/2"  onClick={(e) => e.stopPropagation()}>
+      
+            <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+          
+          </div>
+        </div>
+      )}
+
+      <div className="mt-6">
+        <h3 className="text-lg font-bold">Total Cost</h3>
+        <p className="text-xl font-semibold">{calculateTotal()}€</p>
+      </div>
 
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-gray-300 rounded-md" onClick={onBack}>
-          Previous
+        <button
+          className="px-4 py-2 bg-gray-300 rounded-md"
+          onClick={onBack}
+        >
+          Back
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
@@ -284,10 +388,9 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
           Next
         </button>
       </div>
-
-      <div className="mt-4 font-bold">Total Cost: {calculateTotal()}€</div>
     </div>
   );
 };
 
 export default Step2;
+

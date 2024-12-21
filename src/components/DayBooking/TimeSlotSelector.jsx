@@ -1,165 +1,20 @@
-// Step 1: Booking Calendar and Step 2: Confirmation and Options with Modern Spa Options
-import { useState, useEffect } from 'react';
-import Calendar from 'react-calendar'; // Using npm react-calendar
-import 'react-calendar/dist/Calendar.css'; // Default calendar styling
-
-const Step1 = ({ onNext, setBookingDetails }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [bookedSlots, setBookedSlots] = useState({}); // To track booked slots per date
-  const [selectedSlot, setSelectedSlot] = useState(null); // To track the selected time slot
-  const [greenDeal, setGreenDeal] = useState(false);
-  const [lastMinute, setLastMinute] = useState(false);
-
-  const defaultSlots = [
-    "10h30 – 13h30",
-    "14h – 17h",
-    "17h30 – 20h30",
-    "21h – 00h00",
-  ];
-
-  const greenDealSlots = [
-    "9h30 – 11h30",
-    "12h – 14h",
-    "14h30 – 16h30",
-    "17h – 19h",
-    "19h30 – 21h30",
-    "22h – 00h",
-  ];
-
-  useEffect(() => {
-    // Reset time slots when toggling options
-    const slots = greenDeal ? greenDealSlots : defaultSlots;
-    setTimeSlots(slots);
-    setSelectedSlot(null); // Reset selected slot when slots change
-  }, [greenDeal]);
-
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
-
-    if (greenDeal) {
-      const day = date.getDay();
-      return day !== 2 && day !== 3 && day !== 4; // Only Tuesday, Wednesday, Thursday
-    }
-
-    if (lastMinute) {
-      const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 2);
-      return date < today || date > limitDate;
-    }
-
-    const formattedDate = date.toISOString().split('T')[0];
-    return date < today || (bookedSlots[formattedDate]?.length === timeSlots.length);
-  };
-
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot);
-  };
-
-  const handleNext = () => {
-    if (selectedDate && selectedSlot) {
-      setBookingDetails({
-        date: selectedDate,
-        slot: selectedSlot,
-        greenDeal,
-        lastMinute,
-      });
-      onNext();
-    }
-  };
-
-  return (
-    <div className="p-4 space-y-6">
-      <h2 className="text-xl font-bold">Select a Booking Date</h2>
-      <Calendar
-        onChange={setSelectedDate}
-        value={selectedDate}
-        tileDisabled={tileDisabled}
-        minDate={new Date()}
-        className="react-calendar"
-      />
-
-      {selectedDate && (
-        <div>
-          <h3 className="text-lg font-bold mt-4">Select a Time Slot</h3>
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            {timeSlots.map((slot) => (
-              <button
-                key={slot}
-                className={`p-2 rounded-md text-center text-sm ${
-                  bookedSlots[selectedDate?.toISOString().split('T')[0]]?.includes(slot)
-                    ? "bg-red-500 text-white cursor-not-allowed"
-                    : selectedSlot === slot
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-200"
-                }`}
-                onClick={() => handleSlotClick(slot)}
-                disabled={bookedSlots[selectedDate?.toISOString().split('T')[0]]?.includes(slot)}
-              >
-                {slot}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-center mt-4 space-x-4">
-        <div className="flex items-center space-x-2">
-          <label className="font-bold">Green Deal</label>
-          <input
-            type="checkbox"
-            className="toggle-checkbox"
-            checked={greenDeal}
-            onChange={() => {
-              setGreenDeal(!greenDeal);
-              setLastMinute(false);
-            }}
-          />
-        </div>
-        <div className="flex items-center space-x-2">
-          <label className="font-bold">Last Minute</label>
-          <input
-            type="checkbox"
-            className="toggle-checkbox"
-            checked={lastMinute}
-            onChange={() => {
-              setLastMinute(!lastMinute);
-              setGreenDeal(false);
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-gray-300 rounded-md" disabled>
-          Previous
-        </button>
-        <button
-          className={`px-4 py-2 rounded-md ${
-            selectedDate && selectedSlot
-              ? "bg-green-500 text-white"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}
-          onClick={handleNext}
-          disabled={!selectedDate || !selectedSlot}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-};
+"use client";
+import React, { useState } from "react";
 
 const Step2 = ({ bookingDetails, onNext, onBack }) => {
   const [numPeople, setNumPeople] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [additionalHourOptions, setAdditionalHourOptions] = useState([]);
   const [massageDetails, setMassageDetails] = useState({
-    numPeople: 1,
+    numPeople: 0,
     duration: 20,
   });
+  const [showMassageInfo, setShowMassageInfo] = useState(false);
+  const [showVipInfo, setShowVipInfo] = useState(false);
+  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [cateringInfo, setCateringInfo] = useState(null);
 
   const spaOptions = [
     { id: "None", name: "None", price: 0, icon: "🚫" },
@@ -169,36 +24,84 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
     { id: "vip", name: "Accueil VIP", price: 35, icon: "🍾" },
   ];
 
+  const cateringOptions = [
+    { id: "cateringNone", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "GourmetSnack", name: "En-cas gourmand", price: 20, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
+    {
+      id: "DinnerBoard",
+      name: "Planche dînatoire",
+      price: 30,
+      icon: "💆",
+      info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
+    },
+    {
+      id: "FlavorMenu",
+      name: "Menu saveur",
+      price: 30,
+      icon: "🧖",
+      info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
+    },
+  ];
+
   const handleOptionSelect = (option) => {
     if (option === "None") {
       setSelectedOptions([option]);
-    } else {
-      setSelectedOptions((prev) => {
-        if (prev.includes("None")) {
-          return [option];
-        }
-        return prev.includes(option) ? prev.filter((opt) => opt !== option) : [...prev, option];
-      });
+      return;
     }
+
+    setSelectedOptions((prev) => {
+      if (prev.includes("None")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
 
     if (option === "1hr" && !selectedOptions.includes(option)) {
       const { slot } = bookingDetails;
       const [start, end] = slot.split(" – ");
-      const additionalStart = new Date(`2022-01-01T${start.replace("h", ":")}:00`);
+      const additionalStart = new Date(
+        `2022-01-01T${start.replace("h", ":")}:00`
+      );
       const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
 
       const options = [
         `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
           .toTimeString()
           .slice(0, 5)} – ${end}`,
-        `${start} – ${new Date(additionalEnd.setHours(additionalEnd.getHours() + 1))
+        `${start} – ${new Date(
+          additionalEnd.setHours(additionalEnd.getHours() + 1)
+        )
           .toTimeString()
           .slice(0, 5)}`,
       ];
 
       setAdditionalHourOptions(options);
+      setModalType("1hr");
       setShowModal(true);
     }
+
+    if (option === "massage" && !selectedOptions.includes(option)) {
+      setModalType("massage");
+      setShowModal(true);
+    }
+  };
+
+  const handleCateringSelect = (option) => {
+    if (option === "cateringNone") {
+      setSelectedCateringOptions([option]);
+      return;
+    }
+
+    setSelectedCateringOptions((prev) => {
+      if (prev.includes("cateringNone")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
   };
 
   const handleMassageChange = (field, value) => {
@@ -218,101 +121,164 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         total += option.price;
       }
     });
+    selectedCateringOptions.forEach((optionId) => {
+      const option = cateringOptions.find((opt) => opt.id === optionId);
+      total += option.price;
+    });
     return total;
   };
 
   return (
     <div className="p-4 space-y-6">
-      <h2 className="text-xl font-bold">Booking Summary</h2>
+      <h2 className="text-xl font-bold">Booking Details</h2>
       <p>Date: {bookingDetails.date.toDateString()}</p>
       <p>Time Slot: {bookingDetails.slot}</p>
-      {bookingDetails.greenDeal && <p>Option: Green Deal</p>}
-      {bookingDetails.lastMinute && <p>Option: Last Minute</p>}
+      {bookingDetails.greenDeal && <p>Green Deal Selected</p>}
+      {bookingDetails.lastMinute && (
+        <p>
+          Last Minute: Ends{" "}
+          {new Date(
+            bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
+          ).toDateString()}
+        </p>
+      )}
 
-      <div>
-        <h3 className="text-lg font-bold">Select the Number of People</h3>
-        <div className="flex items-center space-x-4 mt-2">
-          <button
-            className="px-3 py-1 bg-gray-300 rounded-md"
-            onClick={() => setNumPeople((prev) => Math.max(1, prev - 1))}
-          >
-            -
-          </button>
-          <span>{numPeople}</span>
-          <button
-            className="px-3 py-1 bg-gray-300 rounded-md"
-            onClick={() => setNumPeople((prev) => prev + 1)}
-          >
-            +
-          </button>
-        </div>
+      <div className="flex items-center space-x-4">
+        <label className="font-bold">Number of People:</label>
+        <button
+          className="px-2 py-1 bg-gray-200"
+          onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
+        >
+          -
+        </button>
+        <span className="px-4">{numPeople}</span>
+        <button
+          className="px-2 py-1 bg-gray-200"
+          onClick={() => setNumPeople(numPeople + 1)}
+        >
+          +
+        </button>
       </div>
 
-      <div>
-        <h3 className="text-lg font-bold">Choose Spa Options</h3>
-        <div className="grid grid-cols-2 gap-4 mt-2">
-          {spaOptions.map((option) => (
-            <button
-              key={option.id}
-              className={`p-4 flex items-center space-x-2 rounded-md text-left border ${
-                selectedOptions.includes(option.id) ? "border-green-500 bg-green-50" : "border-gray-300"
-              }`}
-              onClick={() => handleOptionSelect(option.id)}
-            >
-              <span>{option.icon}</span>
-              <span className="flex-1">
-                {option.name} {option.price > 0 && <span>({option.price}€)</span>}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {selectedOptions.includes("massage") && (
-        <div className="mt-4">
-          <h3 className="text-lg font-bold">Massages</h3>
-          <div className="mt-2">
-            <label>Number of People:</label>
-            <div className="flex items-center space-x-2 mt-2">
+      {/* =================Choose Spa section start============ */}
+      <h3 className="text-lg font-bold">Choose Spa Options</h3>
+      <div className="grid grid-cols-2 gap-4">
+        {spaOptions.map((option) => (
+          <button
+            key={option.id}
+            className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
+              selectedOptions.includes(option.id)
+                ? "bg-green-500 text-white"
+                : "bg-gray-100"
+            }`}
+            onClick={() => handleOptionSelect(option.id)}
+          >
+            <span>{option.icon}</span>
+            <span className="font-bold">{option.name}</span>
+            <span className="text-sm">+{option.price}€</span>
+            {option.id === "massage" && (
               <button
-                className="px-3 py-1 bg-gray-300 rounded-md"
-                onClick={() =>
-                  handleMassageChange(
-                    "numPeople",
-                    Math.max(1, massageDetails.numPeople - 1)
-                  )
-                }
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMassageInfo(true);
+                }}
               >
-                -
+                ⓘ
               </button>
-              <span>{massageDetails.numPeople}</span>
+            )}
+            {option.id === "vip" && (
               <button
-                className="px-3 py-1 bg-gray-300 rounded-md"
-                onClick={() =>
-                  handleMassageChange(
-                    "numPeople",
-                    Math.min(numPeople, massageDetails.numPeople + 1)
-                  )
-                }
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowVipInfo(true);
+                }}
               >
-                +
+                ⓘ
+              </button>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {showModal && modalType === "massage" && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-md w-1/2">
+            <h3 className="text-lg font-bold">Massages</h3>
+            <div className="mt-4">
+              <label>Number of People:</label>
+              <div className="flex items-center space-x-2 mt-2">
+                <button
+                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.max(1, massageDetails.numPeople - 1)
+                    )
+                  }
+                >
+                  -
+                </button>
+                <span>{massageDetails.numPeople}</span>
+                <button
+                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.min(numPeople, massageDetails.numPeople + 1)
+                    )
+                  }
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label>Duration (minutes):</label>
+              <div className="flex items-center space-x-2 mt-2">
+                {[20, 30, 60].map((duration) => (
+                  <button
+                    key={duration}
+                    className={`px-4 py-2 rounded-md ${
+                      massageDetails.duration === duration
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() => handleMassageChange("duration", duration)}
+                  >
+                    {duration} min
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 text-right">
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setShowModal(false)}
+              >
+                Confirm
               </button>
             </div>
           </div>
-          <div className="mt-4">
-            <label>Duration (minutes):</label>
-            <div className="flex items-center space-x-2 mt-2">
-              {[20, 30, 60].map((duration) => (
+        </div>
+      )}
+
+      {showModal && modalType === "1hr" && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-md w-1/2">
+            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
+            <div className="mt-4 space-y-2">
+              {additionalHourOptions.map((option) => (
                 <button
-                  key={duration}
-                  className={`px-4 py-2 rounded-md ${
-                    massageDetails.duration === duration
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                  onClick={() => handleMassageChange("duration", duration)}
+                  key={option}
+                  className="block w-full p-2 bg-gray-200 rounded-md"
+                  onClick={() => {
+                    setShowModal(false);
+                    setSelectedOptions((prev) => [...prev, "1hr"]);
+                  }}
                 >
-                  {duration} min
+                  {option}
                 </button>
               ))}
             </div>
@@ -320,9 +286,98 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
         </div>
       )}
 
+      {showMassageInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10        ">
+          <div className="bg-white p-4 rounded-md w-1/2">
+            <h3 className="text-lg font-bold">More Info - Massages</h3>
+            <p className="mt-4">
+              A relaxing Californian massage session to rejuvenate your body and
+              mind. Perfect for stress relief and muscle relaxation.
+            </p>
+            <div className="mt-4 text-right">
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setShowMassageInfo(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showVipInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+        "
+        onClick={() => setShowVipInfo(false)}
+        >
+          <div className="bg-white p-4 rounded-md w-1/2" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-bold">More Info - VIP</h3>
+            <p className="mt-4">
+              Enjoy a luxurious VIP welcome including a complimentary drink and
+              special attention to detail for an unforgettable experience.
+            </p>
+          
+          </div>
+        </div>
+      )}
+
+      {/* =================Choose Catering Section================= */}
+      <h3 className="text-lg font-bold">Choose Catering</h3>
+      <div className="grid grid-cols-2 gap-4">
+        {cateringOptions.map((option) => (
+          <button
+            key={option.id}
+            className={`flex items-center space-x-2 p-3 rounded-md shadow-md ${
+              selectedCateringOptions.includes(option.id)
+                ? "bg-green-500 text-white"
+                : "bg-gray-100"
+            }`}
+            onClick={() => handleCateringSelect(option.id)}
+          >
+            <span>{option.icon}</span>
+            <span className="font-bold">{option.name}</span>
+            <span className="text-sm">+{option.price}€</span>
+            {option.info && (
+              <button
+                className="ml-2 text-blue-500 underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCateringInfo(option.info);
+                }}
+              >
+                ⓘ
+              </button>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {cateringInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10
+        "
+        >
+          <div className="bg-white p-4 rounded-md w-1/2">
+            <h3 className="text-lg font-bold">More Info - Catering</h3>
+            <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+            <div className="mt-4 text-right">
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setCateringInfo(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mt-6">
-        <h3 className="text-lg font-bold">Total Price</h3>
-        <p>{calculateTotal()}€</p>
+        <h3 className="text-lg font-bold">Total Cost</h3>
+        <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 
       <div className="flex justify-between mt-6">
@@ -330,9 +385,7 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
           className="px-4 py-2 bg-gray-300 rounded-md"
           onClick={onBack}
         >
-          Previous
-        
-
+          Back
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
@@ -341,10 +394,9 @@ const Step2 = ({ bookingDetails, onNext, onBack }) => {
           Next
         </button>
       </div>
-
-      <div className="mt-4 font-bold">Total Cost: {calculateTotal()}€</div>
     </div>
   );
 };
 
-export { Step1, Step2 };
+export default Step2;
+
