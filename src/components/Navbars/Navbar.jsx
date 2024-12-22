@@ -61,7 +61,7 @@ const Navbar = () => {
             onMouseLeave={() => setDropdownOpen(null)}
           >
             <button className="hover:text-primary-100 flex items-center space-x-2 ">
-              <Link href="/lounge-spa">Lounge Spa</Link>
+              <Link href={'/lounge-spa'}>Lounge Spa</Link>
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }}
@@ -295,7 +295,7 @@ const Navbar = () => {
                 animate="visible"
                 exit="exit"
               >
-                <div className="text-sm text-semibold lg:hidden block p-4">
+                <div className="text-semibold lg:hidden block p-4">
                   {/* Menu Item 1 */}
                   <div
                     className="relative"
@@ -333,7 +333,7 @@ const Navbar = () => {
                           exit="exit"
                           custom="left"
                         >
-                          <motion.a
+                          <motion.span
                             href="#"
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
@@ -342,9 +342,10 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            Journée
-                          </motion.a>
-                          <motion.a
+                            <Link href={'/lounge-spa/journee'}>Journée</Link>
+                           
+                          </motion.span>
+                          <motion.span
                             href="#"
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
@@ -353,14 +354,15 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            Nuitée
-                          </motion.a>
+                              <Link href={'/lounge-spa/nuitee'}> Nuitée</Link>
+                           
+                          </motion.span>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
 
-                  {/* Repeat for Menu 2 and Menu 3 */}
+                  {/* Menu 2 and Menu 3 */}
                   <div
                     className="relative my-5"
                     onMouseEnter={() => setDropdownOpen(2)}
@@ -422,7 +424,7 @@ const Navbar = () => {
                             href="#"
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
-                            custom="right"
+                            custom="left"
                             initial="hidden"
                             animate="visible"
                             exit="exit"
@@ -444,7 +446,7 @@ const Navbar = () => {
                             href="#"
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
-                            custom="right"
+                            custom="left"
                             initial="hidden"
                             animate="visible"
                             exit="exit"
@@ -517,7 +519,7 @@ const Navbar = () => {
                             href="#"
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
-                            custom="right"
+                            custom="left"
                             initial="hidden"
                             animate="visible"
                             exit="exit"
