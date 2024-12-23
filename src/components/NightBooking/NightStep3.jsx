@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const Step3 = ({ bookingDetails, spaSelections, cateringSelections, onBack, onNext }) => {
+const NightStep3 = ({ bookingDetails, spaSelections, cateringSelections, onBack, onNext }) => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
@@ -117,4 +117,4 @@ const Step3 = ({ bookingDetails, spaSelections, cateringSelections, onBack, onNe
   );
 };
 
-export default Step3;
+export default NightStep3;

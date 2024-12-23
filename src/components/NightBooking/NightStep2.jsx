@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
+const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   const [numPeople, setNumPeople] = useState(1);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -17,20 +17,32 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   const [spaInfo, setSpaInfo] = useState(null);
 
 
-  const spaOptions = [
-    { id: "None", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "1hr", name: "1h supplémentaire", price: 45, icon: "⏳" },
+  const nightSpaOptions = [
+    { id: "NightSpa1", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "NightSpa2", name: "Arrivée anticipée (si disponible)", price: 80, icon: "17H" },
     {
-      id: "massage",
-      name: "Modelages type californien aux huiles chaudes",
-      extra: "(+10€ soir et dimanche)",
-      price: 50,
-      icon: "💆",
-      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
+      id: "NightSpa3",
+      name: "Départ tardif (si disponible)",
+      price: 80,
+      icon: "13H",
+      
     },
-    { id: "robe", name: "Location de peignoir", price: 5, icon: "🧖" },
+    { id: "NightSpa4", 
+      name: "Modelages type californien aux huiles chaudes", 
+      price: 50,
+      extra: " (+10€ soir et dimanche)", 
+      icon: "🧖",
+      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté."
+    },
     {
-      id: "vip",
+      id: "NightSpa5",
+      name: "Location de peignoir",
+      price: 5,
+      icon: "🍾",
+   
+    },
+    {
+      id: "NightSpa6",
       name: "Accueil VIP",
       price: 35,
       extra: "/pers",
@@ -40,38 +52,44 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   ];
 
   const cateringOptions = [
-    { id: "cateringNone", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "nightCatering1", 
+      name: "Aucune", 
+      price: 0, 
+      icon: "🚫" },
     {
-      id: "GourmetSnack",
+      id: "nightCatering2",
       name: "En-cas gourmand",
       price: 20,
       icon: "⏳",
+      extra: "/pers",
       info: "Encas désaltérant + pâtisseries",
     },
     {
-      id: "DinnerBoard",
+      id: "nightCatering3",
       name: "Planche dînatoire",
       price: 30,
       icon: "💆",
+      extra: "/pers",
       info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
     },
     {
-      id: "FlavorMenu",
+      id: "nightCatering4",
       name: "Menu saveur",
       price: 30,
       icon: "🧖",
+      extra: "/pers",
       info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
     },
   ];
 
   const handleOptionSelect = (option) => {
-    if (option === "None") {
+    if (option === "NightSpa1") {
       setSelectedOptions([option]);
       return;
     }
 
     setSelectedOptions((prev) => {
-      if (prev.includes("None")) {
+      if (prev.includes("NightSpa1")) {
         return [option];
       }
       return prev.includes(option)
@@ -79,44 +97,44 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         : [...prev, option];
     });
 
-    if (option === "1hr" && !selectedOptions.includes(option)) {
-      const { slot } = bookingDetails;
-      const [start, end] = slot.split(" – ");
-      const additionalStart = new Date(
-        `2022-01-01T${start.replace("h", ":")}:00`
-      );
-      const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
+    // if (option === "1hr" && !selectedOptions.includes(option)) {
+    //   const { slot } = bookingDetails;
+    //   const [start, end] = slot.split(" – ");
+    //   const additionalStart = new Date(
+    //     `2022-01-01T${start.replace("h", ":")}:00`
+    //   );
+    //   const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
 
-      const options = [
-        `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
-          .toTimeString()
-          .slice(0, 5)} – ${end}`,
-        `${start} – ${new Date(
-          additionalEnd.setHours(additionalEnd.getHours() + 1)
-        )
-          .toTimeString()
-          .slice(0, 5)}`,
-      ];
+    //   const options = [
+    //     `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
+    //       .toTimeString()
+    //       .slice(0, 5)} – ${end}`,
+    //     `${start} – ${new Date(
+    //       additionalEnd.setHours(additionalEnd.getHours() + 1)
+    //     )
+    //       .toTimeString()
+    //       .slice(0, 5)}`,
+    //   ];
 
-      setAdditionalHourOptions(options);
-      setModalType("1hr");
-      setShowModal(true);
-    }
+    //   setAdditionalHourOptions(options);
+    //   setModalType("1hr");
+    //   setShowModal(true);
+    // }
 
-    if (option === "massage" && !selectedOptions.includes(option)) {
-      setModalType("massage");
+    if (option === "NightSpa4" && !selectedOptions.includes(option)) {
+      setModalType("NightSpa4");
       setShowModal(true);
     }
   };
 
   const handleCateringSelect = (option) => {
-    if (option === "cateringNone") {
+    if (option === "nightCatering1") {
       setSelectedCateringOptions([option]);
       return;
     }
 
     setSelectedCateringOptions((prev) => {
-      if (prev.includes("cateringNone")) {
+      if (prev.includes("nightCatering1")) {
         return [option];
       }
       return prev.includes(option)
@@ -135,8 +153,8 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   const calculateTotal = () => {
     let total = numPeople * 50; // Base price per person
     selectedOptions.forEach((optionId) => {
-      const option = spaOptions.find((opt) => opt.id === optionId);
-      if (optionId === "massage") {
+      const option = nightSpaOptions.find((opt) => opt.id === optionId);
+      if (optionId === "NightSpa4") {
         total += option.price * massageDetails.numPeople;
       } else {
         total += option.price;
@@ -195,7 +213,7 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       {/* =================Choose Spa section start============ */}
       <h3 className="text-lg font-bold">Choisissez vos options Spa :</h3>
       <div className="grid lg:grid-cols-5 gap-4 text-sm">
-        {spaOptions.map((option) => (
+        {nightSpaOptions.map((option) => (
           <div
             key={option.id}
             className={`flex justify-center items-center p-3 rounded-md shadow-md ${
@@ -243,7 +261,7 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       )}
 
  {/* 1 hour modal----------------- */}
- {showModal && modalType === "1hr" && (
+ {/* {showModal && modalType === "1hr" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md lg:w-1/2">
             <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
@@ -263,10 +281,10 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* massage modal---------------- */}
-      {showModal && modalType === "massage" && (
+      {showModal && modalType === "NightSpa4" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
             <h3 className="text-lg font-bold">Massages</h3>
@@ -333,7 +351,7 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       {/* =================Choose Catering Section start================= */}
     <div className="py-10 ">
     <h3 className="text-lg font-bold">Choisissez vos options restauration :</h3>
-      <div className="grid lg:grid-cols-5 gap-4">
+      <div className="grid lg:grid-cols-5 gap-4 my-5">
         {cateringOptions.map((option) => (
           <div
             key={option.id}
@@ -347,7 +365,7 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             <div className="flex flex-col items-center justify-center">
             <span>{option.icon}</span>
             <span className="font-bold">{option.name}</span>
-            <span className="text-sm">{option.price}€{option.info && (
+            <span className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span>{option.info && (
               <button
                 className="ml-2 text-primary"
                 onClick={(e) => {
@@ -400,4 +418,4 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   );
 };
 
-export default Step2;
+export default NightStep2;

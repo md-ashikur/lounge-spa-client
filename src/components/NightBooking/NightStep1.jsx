@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { SiApplemusic } from "react-icons/si";
 
-const Step1 = ({ onNext, setBookingDetails }) => {
+const NightStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
   const [bookedSlots, setBookedSlots] = useState({}); // To track booked slots per date
@@ -78,8 +79,11 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         <h2 className="text-xl font-bold text-primary-800">
           Description de l’offre :
         </h2>
-        <p className="text-primary">
-          Tout un Spa rien que pour vous ! Accés privatif pendant <b>3h.</b>
+        <p className="text-primary ">
+          Découvrez un univers d&apos;exception : une nuit dans un spa privatisé
+          de plus de 300m². Ici, élégance, raffinement et prestige se mêlent
+          pour créer une atmosphère luxueuse et intimiste pour une nuit
+          inoubliable..
         </p>
       </div>
 
@@ -87,49 +91,89 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         {/* left side----////////////--------- */}
         <div>
           <h3 className="font-bold mb-4">Inclus</h3>
-          <div className="grid grid-cols-2 gap-5 font-light my-5">
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
+          <div className="font-light my-5">
+            {/* row- 1 */}
+            <div className="grid lg:grid-cols-2  ">
+              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
                   <p>Sauna infra rouge & pierres chaudes</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
+              <div className="grid grid-cols-4 gap-2 items-center text-primary">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>
+                    nécéssaire de toilettes (Serviettes, peignoir, gel
+                    douche...)
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* row- 2 */}
+            <div className="grid lg:grid-cols-2   my-4">
+              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
                   <p>Jaccuzzi professionnel</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
-                  <p>Boissons chaudes & soft </p>
+              <div className="grid grid-cols-4 gap-2 items-center text-primary">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
-                  <p>Serviettes de toilette & chaussons spa</p>
+            {/* row- 3 */}
+            <div className="grid lg:grid-cols-2   my-4">
+              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>Boissons chaudes & soft </p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
-                  <p>Sound system </p>
+              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>Terrasses, jardins & parking privatifs</p>
+                </div>
+              </div>
+            </div>
+
+            {/* row- 4 */}
+            <div className="grid lg:grid-cols-2   ">
+              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                <div className="flex justify-center items-center">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>Petit déjeuner autonome</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
-                <div className="col-span-3">
-                  <p>Terrasses, jardins & parking privatifs </p>
+              <div className="grid grid-cols-4 gap-2 items-center text-primary">
+                <div className="flex ">
+                  <SiApplemusic className="text-5xl" />
+                </div>
+                <div className="col-span-3 text-sm">
+                  <p>Nettoyage de fin de séjour & Vaisselle</p>
                 </div>
               </div>
             </div>
@@ -139,25 +183,13 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
           <div className="font-light grid grid-cols-2 gap-2">
             <div>
-              <p className="text-center font-normal my-2">
-                Semaine (LMMJ) :  </p>
-                <ul className="list-disc pl-6 space-y-2">
-                    <li>120€ pour 2 pers</li>
-                    <li>45€/pers à partir de 3 pers.</li>
-                </ul>
+              <p className="text-center font-normal my-2">Une nuit de 20h à 10h : </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>290€ pour 2 pers</li>
                 
-             
+              </ul>
             </div>
-            <div>
-              <p className="text-center font-normal my-2">
-                Weekend (VSD) :  </p>
-                <ul className="list-disc pl-6 space-y-2">
-                    <li>140€ pour 2 pers</li>
-                    <li>50€/pers à partir de 3 pers.</li>
-                </ul>
-                
-             
-            </div>
+           
           </div>
         </div>
 
@@ -191,7 +223,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                   }`}
                 />
               </div>
-              <label >Green Deal</label>
+              <label>Green Deal</label>
             </div>
             <div className="flex items-center space-x-2">
               <div
@@ -209,43 +241,43 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                   }`}
                 />
               </div>
-              <label >Last Minute</label>
+              <label>Last Minute</label>
             </div>
           </div>
 
-         {selectedDate && (
-             <div>
-             <h3 className=" font-bold mt-4">Sélectionnez un créneau horaire</h3>
-             <div className="flex gap-2 flex-wrap mt-2">
-               {timeSlots.map((slot) => (
-                 <button
-                   key={slot}
-                   className={`py-2 px-3 rounded-full text-white text-center text-sm ${
-                     bookedSlots[
-                       selectedDate?.toISOString().split("T")[0]
-                     ]?.includes(slot)
-                       ? "bg-red-500 text-white cursor-not-allowed"
-                       : selectedSlot === slot
-                       ? "bg-green-500 text-white"
-                       : "bg-primary"
-                   }`}
-                   onClick={() => handleSlotClick(slot)}
-                   disabled={bookedSlots[
-                     selectedDate?.toISOString().split("T")[0]
-                   ]?.includes(slot)}
-                 >
-                   {slot}
-                 </button>
-               ))}
-             </div>
-           </div>
-         )} 
-        
+          {selectedDate && (
+            <div>
+              <h3 className=" font-bold mt-4">
+                Sélectionnez un créneau horaire
+              </h3>
+              <div className="flex gap-2 flex-wrap mt-2">
+                {timeSlots.map((slot) => (
+                  <button
+                    key={slot}
+                    className={`py-2 px-3 rounded-full text-white text-center text-sm ${
+                      bookedSlots[
+                        selectedDate?.toISOString().split("T")[0]
+                      ]?.includes(slot)
+                        ? "bg-red-500 text-white cursor-not-allowed"
+                        : selectedSlot === slot
+                        ? "bg-green-500 text-white"
+                        : "bg-primary"
+                    }`}
+                    onClick={() => handleSlotClick(slot)}
+                    disabled={bookedSlots[
+                      selectedDate?.toISOString().split("T")[0]
+                    ]?.includes(slot)}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex justify-end mt-6">
-       
         <button
           className={`px-4 py-2 rounded-full ${
             selectedDate && selectedSlot
@@ -255,11 +287,11 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           onClick={handleNext}
           disabled={!selectedDate || !selectedSlot}
         >
-         Suivant
+          Suivant
         </button>
       </div>
     </div>
   );
 };
 
-export default Step1;
+export default NightStep1;

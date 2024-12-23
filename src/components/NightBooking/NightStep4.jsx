@@ -15,7 +15,7 @@ const countryOptions = countries.map((country) => ({
 
 const stripePromise = loadStripe("your-stripe-public-key-here");
 
-const Step4 = ({ onBack, onSubmit }) => {
+const NightStep4 = ({ onBack, onSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -208,4 +208,4 @@ const Step4 = ({ onBack, onSubmit }) => {
   );
 };
 
-export default Step4;
+export default NightStep4;
