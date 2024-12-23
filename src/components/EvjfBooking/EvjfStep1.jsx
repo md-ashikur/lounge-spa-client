@@ -141,15 +141,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
     "21h00 – 24h00",
   ];
 
-  const greenDealSlots = [
-    "9h30 – 11h30",
-    "12h – 14h",
-    "14h30 – 16h30",
-    "17h – 19h",
-    "19h30 – 21h30",
-    "22h – 00h",
-  ];
-
+  
 
 
   const tileDisabled = ({ date }) => {
@@ -172,8 +164,6 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
       setBookingDetails({
         date: selectedDate,
         slot: selectedSlot,
-        greenDeal,
-        lastMinute,
       });
       onNext();
     }
@@ -277,7 +267,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
                   <Image src={item.image} alt={item.label} className="w-10" />
                   <p>{item.label}</p>
                   <button
-                    className="ml-2 text-primary text-xl"
+                    className=" text-primary text-xl"
                     onClick={() => openModal(item.info)}
                   >
                     <IoMdInformationCircleOutline />
@@ -298,7 +288,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
             <div>
               <p className="font-normal my-2">
                 Voir notre grille tarifaire :{" "}
-                <a href="" className="text-blue-500">
+                <a href="https://www.loungespa.fr/wp-content/uploads/2022/11/Formule-EVJF.pdf" target="_blank" className="text-blue-500">
                   ici
                 </a>
               </p>
@@ -356,12 +346,12 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
       <div className="flex justify-end mt-6">
         <button
           className={`px-4 py-2 rounded-full ${
-            selectedDate && selectedSlot
+            selectedDate 
               ? "bg-green-500 text-white"
               : "bg-primary-500 text-white cursor-not-allowed"
           }`}
           onClick={handleNext}
-          disabled={!selectedDate || !selectedSlot}
+          disabled={!selectedDate}
         >
           Suivant
         </button>
