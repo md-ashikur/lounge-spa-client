@@ -132,8 +132,8 @@ const Navbar = () => {
                   exit="exit"
                   custom="left"
                 >
-                  <motion.a
-                    href="#"
+                  <motion.span
+                   
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -141,9 +141,10 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    EVJF
-                  </motion.a>
-                  <motion.a
+                  <Link href={'/lounge-receptions/evjf'}>EVJF</Link>
+                    
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -153,8 +154,8 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Anniversaire
-                  </motion.a>
-                  <motion.a
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -164,8 +165,8 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Mariage, fiançailles…
-                  </motion.a>
-                  <motion.a
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -175,8 +176,8 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Week-end entre amis : all inclusive
-                  </motion.a>
-                  <motion.a
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -186,7 +187,7 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Réception sur mesure
-                  </motion.a>
+                  </motion.span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -216,7 +217,7 @@ const Navbar = () => {
                   exit="exit"
                   custom="left"
                 >
-                  <motion.a
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -226,8 +227,8 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Soirée d’entreprise
-                  </motion.a>
-                  <motion.a
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -237,8 +238,8 @@ const Navbar = () => {
                     exit="exit"
                   >
                     séminaire / réunion
-                  </motion.a>
-                  <motion.a
+                  </motion.span>
+                  <motion.span
                     href="#"
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
@@ -248,7 +249,7 @@ const Navbar = () => {
                     exit="exit"
                   >
                     récéption sur mesure
-                  </motion.a>
+                  </motion.span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -303,7 +304,7 @@ const Navbar = () => {
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
                    
-                      <motion.a
+                      <motion.span
                         href="#"
                         className="flex items-center gap-2 hover:text-primary-100 transition"
                         variants={dropdownCrossVariants}
@@ -322,7 +323,7 @@ const Navbar = () => {
                         >
                           <IoIosArrowDown />
                         </motion.span>
-                      </motion.a>
+                      </motion.span>
                     
                     <AnimatePresence>
                       {dropdownOpen === 1 && (
@@ -334,7 +335,7 @@ const Navbar = () => {
                           custom="left"
                         >
                           <motion.span
-                            href="#"
+                          
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -346,7 +347,7 @@ const Navbar = () => {
                            
                           </motion.span>
                           <motion.span
-                            href="#"
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="right"
@@ -368,7 +369,7 @@ const Navbar = () => {
                     onMouseEnter={() => setDropdownOpen(2)}
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
-                     <motion.a
+                     <motion.span
                         href="#"
                         className="flex items-center gap-2 hover:text-primary-100 transition"
                         variants={dropdownCrossVariants}
@@ -387,7 +388,7 @@ const Navbar = () => {
                         >
                           <IoIosArrowDown />
                         </motion.span>
-                      </motion.a>
+                      </motion.span>
                    
                     <AnimatePresence>
                       {dropdownOpen === 2 && (
@@ -398,8 +399,8 @@ const Navbar = () => {
                           exit="exit"
                           custom="left"
                         >
-                          <motion.a
-                            href="#"
+                          <motion.span
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -407,10 +408,10 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            EVJF
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                             <Link href={'/lounge-receptions/evjf'}>EVJF</Link>
+                          </motion.span>
+                          <motion.span
+                         
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="right"
@@ -419,9 +420,9 @@ const Navbar = () => {
                             exit="exit"
                           >
                             Anniversaire
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                          </motion.span>
+                          <motion.span
+                           
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -430,9 +431,9 @@ const Navbar = () => {
                             exit="exit"
                           >
                             Mariage, fiançailles…
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                          </motion.span>
+                          <motion.span
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="right"
@@ -441,9 +442,9 @@ const Navbar = () => {
                             exit="exit"
                           >
                             Week-end entre amis : all inclusive
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                          </motion.span>
+                          <motion.span
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -452,7 +453,7 @@ const Navbar = () => {
                             exit="exit"
                           >
                             Réception sur mesure
-                          </motion.a>
+                          </motion.span>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -463,8 +464,8 @@ const Navbar = () => {
                     onMouseEnter={() => setDropdownOpen(3)}
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
-                     <motion.a
-                        href="#"
+                     <motion.span
+                       
                         className="flex items-center gap-2 hover:text-primary-100 transition"
                         variants={dropdownCrossVariants}
                         custom="left"
@@ -482,7 +483,7 @@ const Navbar = () => {
                         >
                           <IoIosArrowDown />
                         </motion.span>
-                      </motion.a>
+                      </motion.span>
                   
                     <AnimatePresence>
                       {dropdownOpen === 3 && (
@@ -493,8 +494,8 @@ const Navbar = () => {
                           exit="exit"
                           custom="left"
                         >
-                          <motion.a
-                            href="#"
+                          <motion.span
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -503,9 +504,9 @@ const Navbar = () => {
                             exit="exit"
                           >
                             Soirée d’entreprise
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                          </motion.span>
+                          <motion.span
+                           
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="right"
@@ -514,9 +515,9 @@ const Navbar = () => {
                             exit="exit"
                           >
                             séminaire / réunion
-                          </motion.a>
-                          <motion.a
-                            href="#"
+                          </motion.span>
+                          <motion.span
+                            
                             className="block px-4 py-2 hover:text-primary-100 transition"
                             variants={dropdownCrossVariants}
                             custom="left"
@@ -525,15 +526,15 @@ const Navbar = () => {
                             exit="exit"
                           >
                             récéption sur mesure
-                          </motion.a>
+                          </motion.span>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
                 </div>
 
-                <motion.a
-                  href="#about"
+                <motion.span
+                 
                   className="block px-4 py-2 hover:text-primary-100 transition"
                   variants={dropdownCrossVariants}
                   custom="right"
@@ -542,9 +543,9 @@ const Navbar = () => {
                   exit="exit"
                 >
                   Notre univers
-                </motion.a>
-                <motion.a
-                  href="#contact"
+                </motion.span>
+                <motion.span
+                 
                   className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
                   variants={dropdownCrossVariants}
                   custom="left"
@@ -553,10 +554,10 @@ const Navbar = () => {
                   exit="exit"
                 >
                   Découvrez nos espaces
-                </motion.a>
+                </motion.span>
                 <motion.div className="">
-                  <motion.a
-                    href="#menu1"
+                  <motion.span
+                    
                     className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
@@ -565,9 +566,9 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Cartes cadeaux
-                  </motion.a>
-                  <motion.a
-                    href="#menu2"
+                  </motion.span>
+                  <motion.span
+                    
                     className="block px-4 py-2 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -576,7 +577,7 @@ const Navbar = () => {
                     exit="exit"
                   >
                     Contact
-                  </motion.a>
+                  </motion.span>
                 </motion.div>
               </motion.div>
             )}
