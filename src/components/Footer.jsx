@@ -51,24 +51,16 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:underline">
-                  About Us
+                A propos de nous
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  NOTRE DOCUMENTATION
-                </a>
-              </li>
+              
               <li>
                 <a href="#" className="hover:underline">
                   Contact Us
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  RÉSERVATION EN LIGNE
-                </a>
-              </li>
+             
               <li>
                 <a href="#" className="hover:underline">
                   CGV
@@ -96,11 +88,7 @@ const Footer = () => {
                   FAQ
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  LOCATION DE SALLE (jusqu&apos;à 80 pers)
-                </a>
-              </li>
+
               <li>
                 <a href="#" className="hover:underline">
                   ENTREPRISES (jusqu&apos;à 80 pers)
