@@ -69,6 +69,32 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
+
+      {/* additional Options */}
+      <div>
+        <h3 className="font-bold">Options supplémentaires sélectionnées :</h3>
+        {bookingDetails?.selectedAdditionalOptions?.length > 0 ? (
+          <ul>
+            {bookingDetails.selectedAdditionalOptions.map((optionId) => {
+              const option = bookingDetails?.additionalOptions?.find(
+                (opt) => opt.id === optionId
+              );
+              return option ? (
+                <li key={option.id}>
+                  {option.name} - {option.price}€ / pers
+                </li>
+              ) : (
+                <li key={optionId} className="text-red-500">
+                  Option non trouvée (ID: {optionId})
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
+        )}
+      </div>
+
       {/* Apply Coupon */}
       <div className="space-y-4">
         <h3 className="font-bold">Appliquer un coupon :</h3>

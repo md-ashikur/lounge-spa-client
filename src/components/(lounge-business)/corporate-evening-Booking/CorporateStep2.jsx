@@ -4,6 +4,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [numAdults, setNumAdults] = useState(1);
   const [numChildren, setNumChildren] = useState(0);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState([]);
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0 },
@@ -12,6 +13,17 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     { id: "TraditionalFlavors", name: "Saveurs traditionnelles", price: 30 },
     { id: "TraditionalVIP", name: "Saveurs traditionnelles VIP", price: 30 },
     { id: "PrestigeVIP", name: "Saveurs Prestige VIP", price: 30 },
+  ];
+  
+  const additionalOptions = [
+    { id: "coAddiNone", name: "Aucune salle seule", price: 0 },
+    { id: "coAddi2", name: "Molkky", price: 3 },
+    { id: "coAddi3", name: "Dégustation de vin", price: 30 },
+    { id: "coAddi4", name: "Accés intégral au spa", price: 30 },
+    { id: "coAddi5", name: "Conférence", price: 10 },
+    { id: "coAddi6", name: "Expérience animal contact", price: 20 },
+    { id: "coAddi7", name: "nécéssaire de toilettes (Serviettes, peignoir, gel douche...)", price: 30 },
+    { id: "coAddi8", name: "Nettoyage de fin de séjour & Vaisselle", price: 10 },
   ];
 
   const handleCateringSelect = (option) => {
@@ -30,17 +42,44 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     });
   };
 
+  // additional option------------
+  const handleAdditionalSelect = (option) => {
+    if (option === "coAddiNone") {
+      setSelectedAdditionalOptions([option]);
+      return;
+    }
+
+    setSelectedAdditionalOptions((prev) => {
+      if (prev.includes("coAddiNone")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
+  };
+
   const calculateTotal = () => {
     const totalPeople = numAdults + numChildren;
     let total = 0;
-
+  
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
-      total += option.price * totalPeople;
+      if (option) {
+        total += option.price * totalPeople;
+      }
     });
-
+  
+    selectedAdditionalOptions.forEach((optionId) => {
+      const option = additionalOptions.find((opt) => opt.id === optionId); // Corrected to use additionalOptions
+      if (option) {
+        total += option.price * totalPeople;
+      }
+    });
+  
     return total;
   };
+  
 
   const handleNext = () => {
     const totalPeople = numAdults + numChildren;
@@ -50,7 +89,9 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
       numChildren,
       totalPeople,
       selectedCateringOptions,
+      selectedAdditionalOptions,
       cateringOptions, // Pass catering options to Step 3
+      additionalOptions, 
       totalPrice: calculateTotal(),
     };
     onNext(data);
@@ -97,8 +138,11 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      <div className="py-10">
-        <h3 className="text-lg font-bold">Choisissez vos options restauration :</h3>
+      {/* catering options------------------ */}
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">
+          Choisissez vos options restauration :
+        </h3>
         <div className="grid lg:grid-cols-3 gap-4">
           {cateringOptions.map((option) => (
             <div
@@ -117,13 +161,40 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
+      {/* additional options:---------- */}
+      <div >
+        <h3 className="text-lg font-bold my-5">
+        Choisissez vos options complémentaires :
+        </h3>
+        <div className="grid lg:grid-cols-3 gap-4">
+        {additionalOptions.map((option) => (
+  <div
+    key={option.id}
+    className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
+      selectedAdditionalOptions.includes(option.id) // Corrected to use selectedAdditionalOptions
+        ? "bg-green-500 text-white"
+        : "bg-gray-100"
+    }`}
+    onClick={() => handleAdditionalSelect(option.id)}
+  >
+    <span className="font-bold">{option.name}</span>
+    <span className="text-sm">{option.price}€ / pers</span>
+  </div>
+))}
+          
+        </div>
+      </div>
+
       <div className="mt-6">
         <h3 className="text-lg font-bold">Coût Total</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
           Précédent
         </button>
         <button
@@ -136,6 +207,5 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     </div>
   );
 };
-
 
 export default CorporateStep2;
