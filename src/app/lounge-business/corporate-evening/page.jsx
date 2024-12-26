@@ -45,7 +45,7 @@ const  Corporate = () => {
   const [bookingDetails, setBookingDetails] = useState({});
   const [spaSelections, setSpaSelections] = useState([]);
   const [cateringSelections, setCateringSelections] = useState([]);
-
+  const [step2Details, setStep2Details] = useState({});
   // Define the icons array
   const icons = [
     <FaCalendarAlt key="calendar" />, // Icon for Step 1
@@ -71,22 +71,28 @@ const  Corporate = () => {
           }
         />
       )}
-      {step === 2 && (
+       {step === 2 && (
         <CorporateStep2
           bookingDetails={bookingDetails}
-          onNext={nextStep}
+          onNext={(details) => {
+            setStep2Details(details);
+            nextStep();
+          }}
           onBack={prevStep}
-          setSpaSelections={(selections) => setSpaSelections(selections)}
-          setCateringSelections={(selections) => setCateringSelections(selections)}
         />
       )}
       {step === 3 && (
         <CorporateStep3
-          bookingDetails={bookingDetails}
+          bookingDetails={{
+            ...bookingDetails,
+            ...step2Details,
+            spaSelections,
+            cateringSelections, // Pass spa and catering selections
+          }}
           spaSelections={spaSelections}
           cateringSelections={cateringSelections}
-          onNext={nextStep}
           onBack={prevStep}
+          onNext={nextStep}
         />
       )}
       {step === 4 && (

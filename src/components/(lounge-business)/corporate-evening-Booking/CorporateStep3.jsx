@@ -1,27 +1,19 @@
 "use client";
 import React, { useState } from "react";
 
-const CorporateStep3 = ({ bookingDetails, spaSelections, cateringSelections, onBack, onNext }) => {
+const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
 
   const validCoupons = {
     WELCOME10: 10, // 10% discount
-    SAVE20: 20, // 20% discount
+    SAVE20: 20,    // 20% discount
   };
 
   const calculateTotal = () => {
-    let total = bookingDetails.numPeople * 50; // Base price per person
-    spaSelections.forEach((selection) => {
-      total += selection.price;
-    });
-    cateringSelections.forEach((selection) => {
-      total += selection.price;
-    });
-
-    // Apply discount
-    return total - (total * discount) / 100;
+    const baseTotal = bookingDetails?.totalPrice || 0; // Use the total price from bookingDetails
+    return baseTotal - (baseTotal * discount) / 100; // Apply discount
   };
 
   const applyCoupon = () => {
@@ -29,7 +21,7 @@ const CorporateStep3 = ({ bookingDetails, spaSelections, cateringSelections, onB
       setDiscount(validCoupons[couponCode]);
       setCouponError("");
     } else {
-      setCouponError("Invalid coupon code.");
+      setCouponError("Code promo invalide.");
       setDiscount(0);
     }
   };
@@ -38,44 +30,46 @@ const CorporateStep3 = ({ bookingDetails, spaSelections, cateringSelections, onB
     <div className="lg:px-20 my-10 space-y-6 text-primary">
       <h2 className="text-xl font-bold">Résumé de la réservation</h2>
 
+      {/* Booking Details */}
       <div>
         <h3 className="font-bold">Détails de réservation :</h3>
         <p>
-          <b>Date :</b> {bookingDetails.date.toDateString()}
+          <b>Date :</b> {bookingDetails?.date?.toDateString() || "Non disponible"}
         </p>
         <p>
-          <b>Plage horaire :</b> {bookingDetails.slot}
+          <b>Nombre d'adultes :</b> {bookingDetails?.numAdults || 0}
         </p>
-     
-        
-        {bookingDetails.greenDeal && <p>Green Deal appliqué</p>}
-        {bookingDetails.lastMinute && (
-          <p>Last Minute: Ends {new Date(bookingDetails.date.getTime() + 48 * 60 * 60 * 1000).toDateString()}</p>
+        <p>
+          <b>Nombre d'enfants :</b> {bookingDetails?.numChildren || 0}
+        </p>
+      </div>
+
+      {/* Catering Options */}
+      <div>
+        <h3 className="font-bold">Options de restauration sélectionnées :</h3>
+        {bookingDetails?.selectedCateringOptions?.length > 0 ? (
+          <ul>
+            {bookingDetails.selectedCateringOptions.map((optionId) => {
+              const option = bookingDetails?.cateringOptions?.find(
+                (opt) => opt.id === optionId
+              );
+              return option ? (
+                <li key={option.id}>
+                  {option.name} - {option.price}€ / pers
+                </li>
+              ) : (
+                <li key={optionId} className="text-red-500">
+                  Option non trouvée (ID: {optionId})
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
         )}
       </div>
 
-      <div>
-        <h3 className="font-bold">Options Spa :</h3>
-        <ul>
-          {spaSelections.map((selection) => (
-            <li key={selection.id}>
-              {selection.name} - {selection.price}€
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div>
-        <h3 className="font-bold">Options Restauration :</h3>
-        <ul>
-          {cateringSelections.map((selection) => (
-            <li key={selection.id}>
-              {selection.name} - {selection.price}€
-            </li>
-          ))}
-        </ul>
-      </div>
-
+      {/* Apply Coupon */}
       <div className="space-y-4">
         <h3 className="font-bold">Appliquer un coupon :</h3>
         <div className="flex items-center space-x-4">
@@ -97,11 +91,13 @@ const CorporateStep3 = ({ bookingDetails, spaSelections, cateringSelections, onB
         {discount > 0 && <p className="text-green-500">Coupon appliqué : {discount}% de réduction</p>}
       </div>
 
+      {/* Total Cost */}
       <div>
         <h3 className="font-bold">Coût total :</h3>
         <p className="text-xl font-semibold">{calculateTotal().toFixed(2)}€</p>
       </div>
 
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
           Précédent
@@ -110,7 +106,7 @@ const CorporateStep3 = ({ bookingDetails, spaSelections, cateringSelections, onB
           className="px-4 py-2 bg-green-500 text-white rounded-md"
           onClick={onNext}
         >
-         Suivant
+          Suivant
         </button>
       </div>
     </div>
