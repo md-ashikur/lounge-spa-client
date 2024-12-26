@@ -37,10 +37,10 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
           <b>Date :</b> {bookingDetails?.date?.toDateString() || "Non disponible"}
         </p>
         <p>
-          <b>Nombre d'adultes :</b> {bookingDetails?.numAdults || 0}
+          <b>Nombre d&apos;adultes :</b> {bookingDetails?.numAdults || 0}
         </p>
         <p>
-          <b>Nombre d'enfants :</b> {bookingDetails?.numChildren || 0}
+          <b>Nombre d&apos;enfants :</b> {bookingDetails?.numChildren || 0}
         </p>
       </div>
 
