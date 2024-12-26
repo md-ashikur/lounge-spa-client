@@ -69,8 +69,32 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
+      {/* House for sleep */}
+      <div>
+        <h3 className="font-bold">Maison pour dormir :</h3>
+        {bookingDetails?.selectedSleepOption ? (
+          <div>
+            <p>
+              <b>Option :</b> {bookingDetails.selectedSleepOption.name}
+            </p>
+            <p>
+              <b>Nombre de logements :</b> {bookingDetails?.numAccommodation || 0}
+            </p>
+            <p>
+              <b>Prix par logement :</b> {bookingDetails.selectedSleepOption.price}€
+            </p>
+            <p>
+              <b>Prix total pour la maison :</b>
+              {bookingDetails.selectedSleepOption.price *
+                (bookingDetails?.numAccommodation || 0)}€
+            </p>
+          </div>
+        ) : (
+          <p className="text-gray-500">Aucune maison sélectionnée.</p>
+        )}
+      </div>
 
-      {/* additional Options */}
+      {/* Additional Options */}
       <div>
         <h3 className="font-bold">Options supplémentaires sélectionnées :</h3>
         {bookingDetails?.selectedAdditionalOptions?.length > 0 ? (
@@ -91,7 +115,7 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
             })}
           </ul>
         ) : (
-          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
+          <p className="text-gray-500">Aucune option sélectionnée.</p>
         )}
       </div>
 
