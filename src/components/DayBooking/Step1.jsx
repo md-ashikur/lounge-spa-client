@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { SiApplemusic } from "react-icons/si";
+
 
 const Step1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -13,10 +15,9 @@ const Step1 = ({ onNext, setBookingDetails }) => {
   const [lastMinute, setLastMinute] = useState(false);
 
   const defaultSlots = [
-    "10h30 – 13h30",
-    "14h00 – 17h00",
-    "17h30 – 20h30",
-    "21h00 – 24h00",
+    "11h00 – 14h00",
+    "15h00 – 18h00",
+    "19h00 - 22h00",
   ];
 
   const greenDealSlots = [
@@ -90,21 +91,21 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           <div className="grid grid-cols-2 gap-5 font-light my-5">
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Sauna infra rouge & pierres chaudes</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Jaccuzzi professionnel</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Boissons chaudes & soft </p>
                 </div>
@@ -113,21 +114,21 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Serviettes de toilette & chaussons spa</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Sound system </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-4 gap-2 ">
-                <div></div>
+                <div><SiApplemusic className="text-5xl text-primary" /></div>
                 <div className="col-span-3">
                   <p>Terrasses, jardins & parking privatifs </p>
                 </div>
