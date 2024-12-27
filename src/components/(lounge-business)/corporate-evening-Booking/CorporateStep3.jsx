@@ -26,6 +26,15 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
+  const { 
+    selectedAccommodationOption, 
+    numAccommodations, 
+    accommodationOptions 
+  } = bookingDetails;
+
+  const selectedAccommodation = accommodationOptions.find(
+    (option) => option.id === selectedAccommodationOption
+  );
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
       <h2 className="text-xl font-bold">Résumé de la réservation</h2>
@@ -69,30 +78,19 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
-      {/* House for sleep */}
+      {/* Maison pour dormir */}
       <div>
-        <h3 className="font-bold">Maison pour dormir :</h3>
-        {bookingDetails?.selectedSleepOption ? (
-          <div>
-            <p>
-              <b>Option :</b> {bookingDetails.selectedSleepOption.name}
-            </p>
-            <p>
-              <b>Nombre de logements :</b> {bookingDetails?.numAccommodation || 0}
-            </p>
-            <p>
-              <b>Prix par logement :</b> {bookingDetails.selectedSleepOption.price}€
-            </p>
-            <p>
-              <b>Prix total pour la maison :</b>
-              {bookingDetails.selectedSleepOption.price *
-                (bookingDetails?.numAccommodation || 0)}€
-            </p>
-          </div>
-        ) : (
-          <p className="text-gray-500">Aucune maison sélectionnée.</p>
-        )}
+       
+        <h4 className="font-bold">Maison pour dormir :</h4>
+        
+          <p>
+            {selectedAccommodation?.name} (Quantité: {numAccommodations})
+          </p>
+        
+     
       </div>
+
+
 
       {/* Additional Options */}
       <div>

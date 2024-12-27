@@ -75,7 +75,7 @@ const  Corporate = () => {
         <CorporateStep2
           bookingDetails={bookingDetails}
           onNext={(details) => {
-            setStep2Details(details);
+            setStep2Details((prev) => ({ ...prev, ...details }));
             nextStep();
           }}
           onBack={prevStep}

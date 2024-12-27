@@ -55,6 +55,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
   const handleAdditionalSelect = (option) => {
     if (option === "coAddiNone") {
       setSelectedAdditionalOptions([option]);
+
       return;
     }
 
@@ -66,12 +67,15 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
         ? prev.filter((opt) => opt !== option)
         : [...prev, option];
     });
+    
   };
 
   const handleAccommodationSelect = (option) => {
     setSelectedAccommodationOption(option);
+    
     if (option === "accomNone") {
       setNumAccommodations(0);
+      
     }
   };
 
