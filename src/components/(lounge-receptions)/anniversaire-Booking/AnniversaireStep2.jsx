@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-const SeminarStep2 = ({ bookingDetails, onBack, onNext }) => {
+const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [numAdults, setNumAdults] = useState(1);
   const [numChildren, setNumChildren] = useState(0);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
@@ -130,7 +130,7 @@ const SeminarStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Séminaire</span></div>
+      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
       <p>
         <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
       </p>
@@ -282,4 +282,4 @@ const SeminarStep2 = ({ bookingDetails, onBack, onNext }) => {
   );
 };
 
-export default SeminarStep2;
+export default AnniversaireStep2;

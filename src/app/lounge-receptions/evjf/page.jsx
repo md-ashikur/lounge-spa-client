@@ -2,10 +2,10 @@
 
 
 
-import EvjfStep1 from '@/components/EvjfBooking/EvjfStep1';
-import EvjfStep2 from '@/components/EvjfBooking/EvjfStep2';
-import EvjfStep3 from '@/components/EvjfBooking/EvjfStep3';
-import EvjfStep4 from '@/components/EvjfBooking/EvjfStep4';
+import EvjfStep1 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep1';
+import EvjfStep2 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep2';
+import EvjfStep3 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep3';
+import EvjfStep4 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep4';
 import NightStep1 from '@/components/NightBooking/NightStep1';
 import NightStep2 from '@/components/NightBooking/NightStep2';
 import NightStep3 from '@/components/NightBooking/NightStep3';

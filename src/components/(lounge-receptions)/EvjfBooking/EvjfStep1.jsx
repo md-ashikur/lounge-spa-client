@@ -5,16 +5,16 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { SiApplemusic } from "react-icons/si";
-import emerald from "../../../public/images/emerald.png";
-import ruby from "../../../public/images/ruby.png";
-import sapphire from "../../../public/images/sapphire.png";
-import diamond from "../../../public/images/diamond.png";
+import emerald from "../../../../public/images/emerald.png";
+import ruby from "../../../../public/images/ruby.png";
+import sapphire from "../../../../public/images/sapphire.png";
+import diamond from "../../../../public/images/diamond.png";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const InfoModal = ({ content, onClose }) => {
   const renderContent = (content) => {
     return content.map((item, index) => {
-      if (typeof item === "string") {
+      if (typeof item === "string") { 
         return (
           <p key={index} className="mb-2">
             {item}

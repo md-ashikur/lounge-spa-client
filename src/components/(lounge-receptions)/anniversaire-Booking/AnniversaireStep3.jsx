@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const SeminarStep3 = ({ bookingDetails, onBack, onNext }) => {
+const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
@@ -37,7 +37,7 @@ const SeminarStep3 = ({ bookingDetails, onBack, onNext }) => {
   );
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Séminaire</span></div>
+       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
      
       {/* Booking Details */}
       <div>
@@ -161,4 +161,4 @@ const SeminarStep3 = ({ bookingDetails, onBack, onNext }) => {
   );
 };
 
-export default SeminarStep3;
+export default AnniversaireStep3;
