@@ -37,8 +37,8 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
   );
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-      <h2 className="text-xl font-bold">Résumé de la réservation</h2>
-
+       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Soirée d’entreprise</span></div>
+     
       {/* Booking Details */}
       <div>
         <h3 className="font-bold">Détails de réservation :</h3>
@@ -84,7 +84,7 @@ const CorporateStep3 = ({ bookingDetails, onBack, onNext }) => {
         <h4 className="font-bold">Maison pour dormir :</h4>
         
           <p>
-            {selectedAccommodation?.name} (Quantité: {numAccommodations})
+            {selectedAccommodation?.name} (Quantité: {numAccommodations}) - {selectedAccommodation?.price * numAccommodations}
           </p>
         
      

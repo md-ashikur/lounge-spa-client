@@ -29,8 +29,8 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
   return (
     <div className="lg:px-10 space-y-6 my-10">
       <div className="text-center">
-        <h1 className="text-2xl my-5">Soirée d’entreprise</h1>
-        <h2 className="text-xl font-bold text-primary-800">
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Soirée d’entreprise</span>
+        <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary">
@@ -45,13 +45,13 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
       <div className="grid lg:grid-cols-2 gap-5">
         {/* Left Side */}
         <div>
-          <h3 className="font-bold mb-4">Inclus</h3>
+          <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
           <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
             <div className="space-y-5">
-              <p>disposition au choix</p>
+              <p>Disposition au choix</p>
               <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>U (25 personnes)</p>
@@ -60,7 +60,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
               <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Conférence (35 personnes)</p>
@@ -69,7 +69,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
               <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Réunion (20 personnes)</p>
@@ -78,7 +78,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
               <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Accessibilité PMR</p>
@@ -93,7 +93,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               <div className="grid grid-cols-4 gap-2">
                 <div>
                   {" "}
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>
@@ -106,7 +106,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
               <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Terrasses, jardins & parking privatifs</p>
@@ -117,11 +117,11 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
           {/* Traiteur-------- */}
           <div className="text-sm font-light">
-            <h3 className="font-bold mt-8 mb-4">Traiteur</h3>
+            <h3 className="font-bold mt-8 mb-4 text-primary-800">Traiteur</h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Banquet (30 personnes)</p>
@@ -129,7 +129,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Cocktail ou buffet (50 personnes)</p>
@@ -137,7 +137,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Accueil café croissant et pause café</p>
@@ -145,7 +145,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Déjeuner et diner</p>
@@ -156,11 +156,11 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
           {/* logements-------------- */}
           <div className="text-sm font-light">
-            <h3 className="font-bold mt-8 mb-4">logements</h3>
+            <h3 className="font-bold mt-8 mb-4 text-primary-800">logements</h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Couchage en chalet (à 15min) en autonomie </p>
@@ -168,7 +168,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               <div className="flex items-center gap-2">
                 <div>
-                  <SiApplemusic className="text-5xl" />
+                  <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
                   <p>Couchage en chalet (à 15min) + navettes </p>
@@ -178,7 +178,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
           </div>
 
           {/* Tarifs */}
-          <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
+          <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
           <p className="text-sm font-light">à définir</p>
         </div>
 

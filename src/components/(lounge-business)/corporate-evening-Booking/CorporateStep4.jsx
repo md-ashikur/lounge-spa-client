@@ -201,8 +201,8 @@ const CorporateStep4 = ({ onBack, onSubmit }) => {
        </div>
       </form>
 
-      <button onClick={onBack} className="mt-4 text-primary">
-        Back
+      <button onClick={onBack} className="px-4 py-2 bg-primary text-white rounded-md">
+      Précédent
       </button>
     </div>
   );
