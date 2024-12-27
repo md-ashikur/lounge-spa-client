@@ -196,14 +196,14 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
           Sélectionnez le nombres de personnes (13ans et +) :
         </label>
         <button
-          className="px-2 py-1 bg-gray-200"
+        className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
           onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
         >
           -
         </button>
         <span className="px-4">{numPeople}</span>
         <button
-          className="px-2 py-1 bg-gray-200"
+          className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
           onClick={() => setNumPeople(numPeople + 1)}
         >
           +
@@ -219,16 +219,16 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             className={`flex justify-center items-center p-3 rounded-md shadow-md ${
               selectedOptions.includes(option.id)
                 ? "bg-green-500 text-white"
-                : "bg-gray-100"
+                : "bg-primary text-white"
             }`}
             onClick={() => handleOptionSelect(option.id)}
           >
             <div className="text-center flex flex-col items-center">
-            <span className="my-3">{option.icon}</span>
+            <span className="my-2 text-4xl">{option.icon}</span>
             <span className="font-bold">{option.name}</span>
            <p className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span> {option.info && (
               <button
-                className="ml-2 text-primary "
+                className="ml-2 text-white "
                 onClick={(e) => {
                   e.stopPropagation();
                   setSpaInfo(option.info);
@@ -358,16 +358,16 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
               selectedCateringOptions.includes(option.id)
                 ? "bg-green-500 text-white"
-                : "bg-gray-100"
+                : "bg-primary text-white"
             }`}
             onClick={() => handleCateringSelect(option.id)}
           >
             <div className="flex flex-col items-center justify-center">
-            <span>{option.icon}</span>
+            <span className="my-2 text-4xl">{option.icon}</span>
             <span className="font-bold">{option.name}</span>
             <span className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span>{option.info && (
               <button
-                className="ml-2 text-primary"
+                className="ml-2 text-white"
                 onClick={(e) => {
                   e.stopPropagation();
                   setCateringInfo(option.info);
