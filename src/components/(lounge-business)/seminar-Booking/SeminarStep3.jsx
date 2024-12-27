@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const TailorMadeStep3 = ({ bookingDetails, onBack, onNext }) => {
+const SeminarStep3 = ({ bookingDetails, onBack, onNext }) => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
@@ -161,4 +161,4 @@ const TailorMadeStep3 = ({ bookingDetails, onBack, onNext }) => {
   );
 };
 
-export default TailorMadeStep3;
+export default SeminarStep3;

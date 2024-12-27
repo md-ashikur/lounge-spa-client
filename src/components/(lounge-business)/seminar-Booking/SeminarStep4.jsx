@@ -15,7 +15,7 @@ const countryOptions = countries.map((country) => ({
 
 const stripePromise = loadStripe("your-stripe-public-key-here");
 
-const TailorMadeStep4 = ({ onBack, onSubmit }) => {
+const SeminarStep4 = ({ onBack, onSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -208,4 +208,4 @@ const TailorMadeStep4 = ({ onBack, onSubmit }) => {
   );
 };
 
-export default TailorMadeStep4;
+export default SeminarStep4;

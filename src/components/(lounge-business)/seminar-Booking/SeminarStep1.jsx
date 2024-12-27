@@ -5,7 +5,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { SiApplemusic } from "react-icons/si";
 
-const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
+const SeminarStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookedDates, setBookedDates] = useState(["2024-12-28", "2024-12-30"]); // Mock database for booked dates
 
@@ -29,12 +29,12 @@ const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
   return (
     <div className="lg:px-10 space-y-6 my-10">
       <div className="text-center">
-        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Réception sur mesure </span>
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Séminaire </span>
         <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary">
-        Découvrez un univers d&apos;exception pour un événement d&apos;entreprise inoubliable. 300m², digne d’un palais des 1001 nuits et des menus personnalisés inventif à base de produits frais et de saison proposé par notre cheffe sur place. offrez à vos collaborateurs une soirée mémorable.
+        Réalisez vos réunions et séminaires dans un univers d&apos;exception. 300m², digne d’un palais des 1001 nuits, des menus personnalisés inventif à base de produits frais proposé par notre cheffe sur et des activités atypiques qui sauront émerveiller vos collaborateurs le temps d’un instant ou sur plusieurs jours.
         </p>
       </div>
 
@@ -220,4 +220,4 @@ const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
   );
 };
 
-export default TailorMadeStep1;
+export default SeminarStep1;

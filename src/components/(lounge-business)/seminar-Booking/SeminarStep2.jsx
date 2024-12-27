@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-const TailorMadeStep2 = ({ bookingDetails, onBack, onNext }) => {
+const SeminarStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [numAdults, setNumAdults] = useState(1);
   const [numChildren, setNumChildren] = useState(0);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
@@ -282,4 +282,4 @@ const TailorMadeStep2 = ({ bookingDetails, onBack, onNext }) => {
   );
 };
 
-export default TailorMadeStep2;
+export default SeminarStep2;
