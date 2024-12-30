@@ -7,7 +7,7 @@ import { SiApplemusic } from "react-icons/si";
 
 const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [bookedDates, setBookedDates] = useState(["2024-12-28", "2024-12-30"]); // Mock database for booked dates
+  const [bookedDates, setBookedDates] = useState(["2024-12-28", "2025-01-03"]); // Mock database for booked dates
 
   const tileDisabled = ({ date }) => {
     const today = new Date();

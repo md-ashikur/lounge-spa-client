@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import { SiApplemusic } from "react-icons/si";
 import emerald from "../../../../public/images/emerald.png";
 import ruby from "../../../../public/images/ruby.png";
 import sapphire from "../../../../public/images/sapphire.png";
 import diamond from "../../../../public/images/diamond.png";
-import { IoMdInformationCircleOutline } from "react-icons/io";
 
 const InfoModal = ({ content, onClose }) => {
   const renderContent = (content) => {
@@ -48,12 +48,14 @@ const InfoModal = ({ content, onClose }) => {
   );
 };
 
+
+
 const EvjfStep1 = ({ onNext, setBookingDetails }) => {
+  const [selectedPeople, setSelectedPeople] = useState(0); // Default number of people
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
-  const [bookedSlots, setBookedSlots] = useState({}); // To track booked slots per date
-  const [selectedSlot, setSelectedSlot] = useState(null); // To track the selected time slot
-  
+  const [selectedSlot, setSelectedSlot] = useState(null);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
@@ -134,25 +136,23 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
     },
   ];
 
-  const defaultSlots = [
-    "10h30 – 13h30",
-    "14h00 – 17h00",
-    "17h30 – 20h30",
-    "21h00 – 24h00",
-  ];
 
-  
+  const updateTimeSlots = (peopleCount) => {
+    if (peopleCount <= 8) {
+      setTimeSlots(["11h00 – 14h00", "15h00 – 18h00", "19h00 – 22h00"]);
+    } else {
+      setTimeSlots(["10h – 14h", "14h30 – 18h30", "19h – 23h"]);
+    }
+  };
 
-
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
-
-
-    const formattedDate = date.toISOString().split("T")[0];
-    return (
-      date < today || bookedSlots[formattedDate]?.length === timeSlots.length
-    );
+  const handlePeopleChange = (change) => {
+    const newCount = selectedPeople + change;
+    if (newCount >= 1) {
+      setSelectedPeople(newCount);
+      setSelectedDate(null); // Reset date and slots when changing number of people
+      setSelectedSlot(null);
+      updateTimeSlots(newCount);
+    }
   };
 
   const handleSlotClick = (slot) => {
@@ -160,13 +160,20 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
   };
 
   const handleNext = () => {
-    if (selectedDate && selectedSlot) {
+    if (selectedPeople && selectedDate && selectedSlot) {
       setBookingDetails({
+        people: selectedPeople,
         date: selectedDate,
         slot: selectedSlot,
       });
       onNext();
     }
+  };
+
+  const tileDisabled = ({ date }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
+    return date < today;
   };
 
   return (
@@ -176,182 +183,199 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
         <h2 className="text-xl font-bold text-primary-800">
           Description de l’offre :
         </h2>
-        <div className="flex justify-center">
-          <p className="text-primary w-3/4">
-            Découvrez un univers d&apos;exception et une expérience exclusive et
-            mémorable dans notre spa privé, où détente et convivialité sont au
-            rendez-vous. `N’hésitez pas à nous contacter pour rendre ce jour
-            parfait !
-          </p>
-        </div>
+        <p className="text-primary w-3/4 mx-auto">
+          Découvrez un univers d&apos;exception et une expérience exclusive et
+          mémorable dans notre spa privé, où détente et convivialité sont au
+          rendez-vous. N’hésitez pas à nous contacter pour rendre ce jour
+          parfait !
+        </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* left side----////////////--------- */}
-        <div>
-          <h3 className="font-bold mb-4">Inclus</h3>
-          <div className="font-light my-5">
-            {/* row- 1 */}
-            <div className="grid lg:grid-cols-2  ">
-              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
+     <div className="grid lg:grid-cols-2 gap-8">
+            {/* left side----////////////--------- */}
+            <div>
+              <h3 className="font-bold mb-4">Inclus</h3>
+              <div className="font-light my-5">
+                {/* row- 1 */}
+                <div className="grid lg:grid-cols-2  ">
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>Sauna infra rouge & pierres chaudes</p>
+                    </div>
+                  </div>
+    
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>
+                        nécéssaire de toilettes (Serviettes, peignoir, gel
+                        douche...)
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div className="col-span-3 text-sm">
-                  <p>Sauna infra rouge & pierres chaudes</p>
+                {/* row- 2 */}
+                <div className="grid lg:grid-cols-2   my-4">
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>Jaccuzzi professionnel</p>
+                    </div>
+                  </div>
+    
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
+                    </div>
+                  </div>
+                </div>
+    
+                {/* row- 3 */}
+                <div className="grid lg:grid-cols-2   my-4">
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>Nettoyage de fin de séjour & Vaisselle </p>
+                    </div>
+                  </div>
+    
+                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
+                    <div className="flex justify-center items-center">
+                      <SiApplemusic className="text-5xl" />
+                    </div>
+                    <div className="col-span-3 text-sm">
+                      <p>Terrasses, jardins & parking privatifs</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="grid grid-cols-4 gap-2 items-center text-primary">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
+    
+              {/* Formules ------------ */}
+    
+              <div>
+                <h3 className="font-bold mt-8 mb-4">Formules</h3>
+                <div className="flex gap-5 lg:flex-nowrap flex-wrap text-sm">
+                  {moreInfo.map((item, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <Image src={item.image} alt={item.label} className="w-10" />
+                      <p>{item.label}</p>
+                      <button
+                        className=" text-primary text-xl"
+                        onClick={() => openModal(item.info)}
+                      >
+                        <IoMdInformationCircleOutline />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <div className="col-span-3 text-sm">
-                  <p>
-                    nécéssaire de toilettes (Serviettes, peignoir, gel
-                    douche...)
+    
+                {/* Modal */}
+                {isModalOpen && (
+                  <InfoModal content={modalContent} onClose={closeModal} />
+                )}
+              </div>
+    
+              {/* ---------Tarifs------ */}
+              <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
+              <div className="font-light">
+                <div>
+                  <p className="font-normal my-2">
+                    Voir notre grille tarifaire :{" "}
+                    <a href="https://www.loungespa.fr/wp-content/uploads/2022/11/Formule-EVJF.pdf" target="_blank" className="text-blue-500">
+                      ici
+                    </a>
                   </p>
                 </div>
               </div>
             </div>
-            {/* row- 2 */}
-            <div className="grid lg:grid-cols-2   my-4">
-              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
-                </div>
-                <div className="col-span-3 text-sm">
-                  <p>Jaccuzzi professionnel</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 items-center text-primary">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
-                </div>
-                <div className="col-span-3 text-sm">
-                  <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
-                </div>
-              </div>
-            </div>
-
-            {/* row- 3 */}
-            <div className="grid lg:grid-cols-2   my-4">
-              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
-                </div>
-                <div className="col-span-3 text-sm">
-                  <p>Nettoyage de fin de séjour & Vaisselle </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                <div className="flex justify-center items-center">
-                  <SiApplemusic className="text-5xl" />
-                </div>
-                <div className="col-span-3 text-sm">
-                  <p>Terrasses, jardins & parking privatifs</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Formules ------------ */}
-
-          <div>
-            <h3 className="font-bold mt-8 mb-4">Formules</h3>
-            <div className="flex gap-5 lg:flex-nowrap flex-wrap text-sm">
-              {moreInfo.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Image src={item.image} alt={item.label} className="w-10" />
-                  <p>{item.label}</p>
-                  <button
-                    className=" text-primary text-xl"
-                    onClick={() => openModal(item.info)}
-                  >
-                    <IoMdInformationCircleOutline />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            {/* Modal */}
-            {isModalOpen && (
-              <InfoModal content={modalContent} onClose={closeModal} />
-            )}
-          </div>
-
-          {/* ---------Tarifs------ */}
-          <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
-          <div className="font-light">
-            <div>
-              <p className="font-normal my-2">
-                Voir notre grille tarifaire :{" "}
-                <a href="https://www.loungespa.fr/wp-content/uploads/2022/11/Formule-EVJF.pdf" target="_blank" className="text-blue-500">
-                  ici
-                </a>
-              </p>
-            </div>
+    
+            {/* right side---////////////------------- */}
+     <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
+        {/* Select number of people */}
+        <div className="flex items-center gap-4">
+          <label className="block text-primary font-bold ">
+            Nombre de personnes :
+          </label>
+          <div className="flex items-center space-x-4">
+            <button
+              className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+              onClick={() => handlePeopleChange(-1)}
+              disabled={selectedPeople <= 1}
+            >
+              -
+            </button>
+            <span className="text-lg font-bold">{selectedPeople}</span>
+            <button
+              className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+              onClick={() => handlePeopleChange(1)}
+            >
+              +
+            </button>
           </div>
         </div>
 
-        {/* right side---////////////------------- */}
-        <div className="lg:border-l-2 border-primary lg:px-5">
-          <h3 className=" font-bold text-primary-800">
-            Choisissez votre creneau horaire :
-          </h3>
+        {/* Step 2: Select date */}
+        <div>
+          <h3 className="font-bold text-primary-800">Choisissez une date :</h3>
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
             tileDisabled={tileDisabled}
             minDate={new Date()}
-            className="react-calendar my-5"
+            className={`react-calendar my-5 ${
+              !selectedPeople ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           />
-
-        
-
-          {selectedDate && (
-            <div>
-              <h3 className=" font-bold mt-4">
-                Sélectionnez un créneau horaire
-              </h3>
-              <div className="flex gap-2 flex-wrap mt-2">
-                {timeSlots.map((slot) => (
-                  <button
-                    key={slot}
-                    className={`py-2 px-3 rounded-full text-white text-center text-sm ${
-                      bookedSlots[
-                        selectedDate?.toISOString().split("T")[0]
-                      ]?.includes(slot)
-                        ? "bg-red-500 text-white cursor-not-allowed"
-                        : selectedSlot === slot
-                        ? "bg-green-500 text-white"
-                        : "bg-primary"
-                    }`}
-                    onClick={() => handleSlotClick(slot)}
-                    disabled={bookedSlots[
-                      selectedDate?.toISOString().split("T")[0]
-                    ]?.includes(slot)}
-                  >
-                    {slot}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-      </div>
 
+        {/* Step 3: Select time slot */}
+        {selectedDate && timeSlots.length > 0 && (
+          <div>
+            <h3 className="font-bold text-primary-800">
+              Sélectionnez un créneau horaire :
+            </h3>
+            <div className="flex gap-2 flex-wrap mt-2">
+              {timeSlots.map((slot) => (
+                <button
+                  key={slot}
+                  className={`py-2 px-3 rounded-full text-white text-center text-sm ${
+                    selectedSlot === slot
+                      ? "bg-green-500 text-white"
+                      : "bg-primary"
+                  }`}
+                  onClick={() => handleSlotClick(slot)}
+                >
+                  {slot}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+     </div>
+
+      {/* Next Button */}
       <div className="flex justify-end mt-6">
         <button
           className={`px-4 py-2 rounded-full ${
-            selectedDate 
+            selectedPeople && selectedDate && selectedSlot
               ? "bg-green-500 text-white"
               : "bg-primary-500 text-white cursor-not-allowed"
           }`}
           onClick={handleNext}
-          disabled={!selectedDate}
+          disabled={!selectedPeople || !selectedDate || !selectedSlot}
         >
           Suivant
         </button>

@@ -72,9 +72,6 @@ const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-     
-
-        
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
 

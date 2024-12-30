@@ -1,15 +1,10 @@
 "use client";
 
 
-
 import EvjfStep1 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep1';
 import EvjfStep2 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep2';
 import EvjfStep3 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep3';
 import EvjfStep4 from '@/components/(lounge-receptions)/EvjfBooking/EvjfStep4';
-import NightStep1 from '@/components/NightBooking/NightStep1';
-import NightStep2 from '@/components/NightBooking/NightStep2';
-import NightStep3 from '@/components/NightBooking/NightStep3';
-import NightStep4 from '@/components/NightBooking/NightStep4';
 import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaUser, FaCheckCircle } from 'react-icons/fa'; // Import icons
 
@@ -46,12 +41,12 @@ const ProgressBar = ({ currentStep, totalSteps, icons }) => {
   );
 };
 
-const Evjf = () => {
+const  Evjf = () => {
   const [step, setStep] = useState(1);
   const [bookingDetails, setBookingDetails] = useState({});
   const [spaSelections, setSpaSelections] = useState([]);
   const [cateringSelections, setCateringSelections] = useState([]);
-
+  const [step2Details, setStep2Details] = useState({});
   // Define the icons array
   const icons = [
     <FaCalendarAlt key="calendar" />, // Icon for Step 1
@@ -77,22 +72,28 @@ const Evjf = () => {
           }
         />
       )}
-      {step === 2 && (
+       {step === 2 && (
         <EvjfStep2
           bookingDetails={bookingDetails}
-          onNext={nextStep}
+          onNext={(details) => {
+            setStep2Details((prev) => ({ ...prev, ...details }));
+            nextStep();
+          }}
           onBack={prevStep}
-          setSpaSelections={(selections) => setSpaSelections(selections)}
-          setCateringSelections={(selections) => setCateringSelections(selections)}
         />
       )}
       {step === 3 && (
         <EvjfStep3
-          bookingDetails={bookingDetails}
+          bookingDetails={{
+            ...bookingDetails,
+            ...step2Details,
+            spaSelections,
+            cateringSelections, // Pass spa and catering selections
+          }}
           spaSelections={spaSelections}
           cateringSelections={cateringSelections}
-          onNext={nextStep}
           onBack={prevStep}
+          onNext={nextStep}
         />
       )}
       {step === 4 && (
