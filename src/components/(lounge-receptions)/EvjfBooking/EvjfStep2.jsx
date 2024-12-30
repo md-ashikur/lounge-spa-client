@@ -17,17 +17,6 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
    
   ];
 
-  const additionalOptions = [
-    { id: "coAddiNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
-    { id: "coAddi2", name: "Molkky", price: 3, icon: "⏳", },
-    { id: "coAddi3", name: "Dégustation de vin", price: 30, icon: "⏳" },
-    { id: "coAddi4", name: "Accés intégral au spa", price: 30, icon: "⏳" },
-    { id: "coAddi5", name: "Conférence", price: 10, icon: "⏳", },
-    { id: "coAddi6", name: "Expérience animal contact", price: 20, icon: "⏳" },
-    { id: "coAddi7", name: "nécéssaire de toilettes (Serviettes, peignoir, gel douche...)", price: 30, icon: "⏳" },
-    { id: "coAddi8", name: "Nettoyage de fin de séjour & Vaisselle", price: 10, icon: "⏳" },
-  ];
-
   const accommodationOptions = [
     { id: "accomNone", name: "Aucune", price: 0, icon: "🚫" },
     { id: "Shootingphoto", name: "Shooting photo", price: 30, icon: "⏳" },
@@ -36,6 +25,16 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
     { id: "Winetasting", name: "Dégustation de vin", price: 30, icon: "⏳" },
     { id: "PoleDance", name: "Pole dance", price: 15, icon: "⏳" },
   ];
+
+  const additionalOptions = [
+    { id: "coAddiNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
+    { id: "SleepSpa", name: "Dormir au spa (3 places)*matelas accepté", price: 290, icon: "⏳", },
+    { id: "coAddi3", name: "Dormir au domaine des 2 étangs *À 5 min en voiture du spa", price: 60, icon: "⏳" },
+    { id: "coAddi4", name: "Dormir au domaine des 2 étangs + navette *À 5 min en voiture du spa", price: 110, icon: "⏳" },
+    
+  ];
+
+
 
   const handleCateringSelect = (option) => {
     if (option === "cateringNone") {
@@ -208,12 +207,12 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      {/* additional options:---------- */}
+      {/* Choisissez vos options logements :---------- */}
       <div>
         <h3 className="text-lg font-bold my-5">
-          Choisissez vos options complémentaires :
+        Choisissez vos options logements :
         </h3>
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-4 gap-4">
           {additionalOptions.map((option) => (
             <div
               key={option.id}

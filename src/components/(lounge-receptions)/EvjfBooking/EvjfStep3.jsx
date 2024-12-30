@@ -128,7 +128,7 @@ const EvjfStep3 = ({ bookingDetails, onBack, onNext }) => {
         <div className="flex items-center space-x-4">
           <input
             type="text"
-            className="border px-3 py-2 rounded-md w-1/2"
+            className="border px-3 py-2 rounded-md w-2/2 outline-0"
             placeholder="Entrez le code promo"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value)}
