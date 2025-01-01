@@ -29,46 +29,57 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
   const { 
     selectedAccommodationOption, 
     numAccommodations, 
-    accommodationOptions 
+    accommodationOptions, 
+    selectedCateringOptions, 
+    selectedActivityOptions,
+    date,
   } = bookingDetails;
 
-  const selectedAccommodation = accommodationOptions.find(
+  // Safeguard checks to ensure that arrays are defined
+  const selectedAccommodation = (accommodationOptions || []).find(
     (option) => option.id === selectedAccommodationOption
   );
+
+  const selectedCateringDetails = (selectedCateringOptions || []).map(optionId => {
+    return (bookingDetails?.cateringOptions || []).find(option => option.id === optionId);
+  });
+
+  const selectedActivityDetails = (selectedActivityOptions || []).map(optionId => {
+    return (bookingDetails?.additionalOptions || []).find(option => option.id === optionId);
+  });
+
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
        <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
-     
+
       {/* Booking Details */}
       <div>
         <h3 className="font-bold">Détails de réservation :</h3>
         <p>
-          <b>Date :</b> {bookingDetails?.date?.toDateString() || "Non disponible"}
+          <b>Date :</b> {date?.toDateString() || "Non disponible"}
         </p>
         <p>
-          <b>Nombre d&apos;adultes :</b> {bookingDetails?.numAdults || 0}
-        </p>
-        <p>
-          <b>Nombre d&apos;enfants :</b> {bookingDetails?.numChildren || 0}
-        </p>
+        <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
+      </p>
+      <p>
+        <b>Adults:</b> {bookingDetails.adults}  <b>children:</b> {bookingDetails.children}  
+      </p>
+      <p><b>Nombre total de personnes:</b> {bookingDetails.totalPeople}</p>
       </div>
 
       {/* Catering Options */}
       <div>
         <h3 className="font-bold">Options de restauration sélectionnées :</h3>
-        {bookingDetails?.selectedCateringOptions?.length > 0 ? (
+        {selectedCateringDetails.length > 0 ? (
           <ul>
-            {bookingDetails.selectedCateringOptions.map((optionId) => {
-              const option = bookingDetails?.cateringOptions?.find(
-                (opt) => opt.id === optionId
-              );
+            {selectedCateringDetails.map((option) => {
               return option ? (
                 <li key={option.id}>
                   {option.name} - {option.price}€ / pers
                 </li>
               ) : (
-                <li key={optionId} className="text-red-500">
-                  Option non trouvée (ID: {optionId})
+                <li className="text-red-500">
+                  Option non trouvée
                 </li>
               );
             })}
@@ -78,36 +89,31 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
-      {/* Maison pour dormir */}
+      {/* Accommodation Options */}
       <div>
-       
         <h4 className="font-bold">Maison pour dormir :</h4>
-        
+        {selectedAccommodation ? (
           <p>
-            {selectedAccommodation?.name} (Quantité: {numAccommodations}) - {selectedAccommodation?.price * numAccommodations}
+            {selectedAccommodation.name} (Quantité: {numAccommodations}) - {selectedAccommodation?.price * numAccommodations}€
           </p>
-        
-     
+        ) : (
+          <p className="text-red-500">Option de logement non trouvée.</p>
+        )}
       </div>
-
-
 
       {/* Additional Options */}
       <div>
         <h3 className="font-bold">Options supplémentaires sélectionnées :</h3>
-        {bookingDetails?.selectedAdditionalOptions?.length > 0 ? (
+        {selectedActivityDetails.length > 0 ? (
           <ul>
-            {bookingDetails.selectedAdditionalOptions.map((optionId) => {
-              const option = bookingDetails?.additionalOptions?.find(
-                (opt) => opt.id === optionId
-              );
+            {selectedActivityDetails.map((option) => {
               return option ? (
                 <li key={option.id}>
                   {option.name} - {option.price}€ / pers
                 </li>
               ) : (
-                <li key={optionId} className="text-red-500">
-                  Option non trouvée (ID: {optionId})
+                <li className="text-red-500">
+                  Option non trouvée
                 </li>
               );
             })}

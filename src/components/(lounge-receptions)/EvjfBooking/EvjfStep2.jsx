@@ -130,7 +130,7 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
+      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">EVJF</span></div>
       <p>
         <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
       </p>

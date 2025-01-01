@@ -16,7 +16,6 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   const [cateringInfo, setCateringInfo] = useState(null);
   const [spaInfo, setSpaInfo] = useState(null);
 
-
   const spaOptions = [
     { id: "None", name: "Aucune", price: 0, icon: "🚫" },
     { id: "1hr", name: "1h supplémentaire", price: 45, icon: "⏳" },
@@ -164,7 +163,6 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             <b>Last Minute:</b> Ends{" "}
           </span>
           <span>
-        
             {new Date(
               bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
             ).toDateString()}
@@ -178,7 +176,7 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
           Sélectionnez le nombres de personnes (13ans et +) :
         </label>
         <button
-           className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+          className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
           onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
         >
           -
@@ -206,23 +204,23 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             onClick={() => handleOptionSelect(option.id)}
           >
             <div className="text-center flex flex-col items-center">
-            <span className="my-3 text-4xl">{option.icon}</span>
-            <span className=" text-sm">{option.name}</span>
-           <p className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span> {option.info && (
-              <button
-                className="ml-2 p-1 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSpaInfo(option.info);
-                }}
-              >
-                ⓘ
-              </button>
-            )}</p> 
-            
+              <span className="my-3 text-4xl">{option.icon}</span>
+              <span className=" text-sm">{option.name}</span>
+              <p className="text-sm">
+                {option.price}€<span className="text-sm">{option.extra}</span>{" "}
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSpaInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </p>
             </div>
-
-            
           </div>
         ))}
       </div>
@@ -242,8 +240,8 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         </div>
       )}
 
- {/* 1 hour modal----------------- */}
- {showModal && modalType === "1hr" && (
+      {/* 1 hour modal----------------- */}
+      {showModal && modalType === "1hr" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md lg:w-1/2">
             <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
@@ -328,57 +326,59 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         </div>
       )}
 
-     
-
       {/* =================Choose Catering Section start================= */}
-    <div className="py-10 ">
-    <h3 className="text-lg font-bold">Choisissez vos options restauration :</h3>
-      <div className="grid lg:grid-cols-5 gap-4">
-        {cateringOptions.map((option) => (
+      <div className="py-10 ">
+        <h3 className="text-lg font-bold">
+          Choisissez vos options restauration :
+        </h3>
+        <div className="grid lg:grid-cols-5 gap-4">
+          {cateringOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
+                selectedCateringOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleCateringSelect(option.id)}
+            >
+              <div className="flex flex-col items-center justify-center">
+                <span className="my-2 text-4xl">{option.icon}</span>
+                <span className="text-sm">{option.name}</span>
+                <span className="text-sm">
+                  {option.price}€
+                  {option.info && (
+                    <button
+                      className="ml-2 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCateringInfo(option.info);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+                  )}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cateringInfo && (
           <div
-            key={option.id}
-            className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
-              selectedCateringOptions.includes(option.id)
-                ? "bg-green-500 text-white"
-                : "bg-primary text-white"
-            }`}
-            onClick={() => handleCateringSelect(option.id)}
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+        "
+            onClick={() => setCateringInfo(null)}
           >
-            <div className="flex flex-col items-center justify-center">
-            <span className="my-2 text-4xl">{option.icon}</span>
-            <span className="text-sm">{option.name}</span>
-            <span className="text-sm">{option.price}€{option.info && (
-              <button
-                className="ml-2 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCateringInfo(option.info);
-                }}
-              >
-                ⓘ
-              </button>
-            )}</span>
-            
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
             </div>
           </div>
-        ))}
+        )}
       </div>
-
-      {cateringInfo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
-        "
-          onClick={() => setCateringInfo(null)}
-        >
-          <div
-            className="bg-primary text-white p-4 rounded-md lg:w-1/2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
-          </div>
-        </div>
-      )}
-    </div>
 
       <div className="mt-6">
         <h3 className="text-lg font-bold">Total Cost</h3>
@@ -386,14 +386,17 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       </div>
 
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
-        Précédent
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
+          Précédent
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
           onClick={onNext}
         >
-         Suivant
+          Suivant
         </button>
       </div>
     </div>
