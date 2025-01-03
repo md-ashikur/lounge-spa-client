@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-
+import snack from "../../../../public/images/snack.png"
+import remove from "../../../../public/images/remove.png"
+import Image from "next/image";
 const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
   const [numActivities, setNumActivities] = useState({});
@@ -12,15 +14,15 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
    const [cateringInfo, setCateringInfo] = useState(null);
 
   const cateringOptions = [
-    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: "🚫", },
-    { id: "annicat1", name: "En-cas gourmand", price: 20, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat2", name: "Planche dînatoire", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat3", name: "Menu saveur", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat4", name: "Saveurs du monde Indiennnes", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat5", name: "Saveurs du monde Marocaines", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat6", name: "Saveurs traditionnelles", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat7", name: "Saveurs traditionnelles VIP", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat8", name: "Saveurs Prestige VIP", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
+    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove, },
+    { id: "annicat1", name: "En-cas gourmand", price: 20, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat2", name: "Planche dînatoire", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat3", name: "Menu saveur", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat4", name: "Saveurs du monde Indiennnes", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat5", name: "Saveurs du monde Marocaines", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat6", name: "Saveurs traditionnelles", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat7", name: "Saveurs traditionnelles VIP", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
+    { id: "annicat8", name: "Saveurs Prestige VIP", price: 30, icon: snack, info: "Encas désaltérant + pâtisseries" },
   ];
   const activityOptions = [
     { id: "anniActivity0", name: "Aucune", price: 0, icon: "🚫" },
@@ -141,15 +143,15 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   };
 
   const handleNext = () => {
-    const totalPeople = bookingDetails.totalPeople;
+    const totalPeople = bookingDetails.adults + bookingDetails.children;
     const data = {
       ...bookingDetails,
       totalPeople,
       selectedCateringOptions,
-      selectedActivityOptions,
-      numActivities,
       selectedAccommodationOption,
       numAccommodations,
+      cateringOptions,
+      accommodationOptions,
       totalPrice: calculateTotal(),
     };
     onNext(data);
@@ -192,7 +194,13 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               }`}
               onClick={() => handleCateringSelect(option.id)}
             >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
+              <Image
+            src={option.icon} 
+            alt="" 
+            width={60} 
+            height={60} 
+            className="rounded-md mb-3"
+          />
               <span className="font-bold text-sm text-center">{option.name}</span>
               <span className="text-lg">{option.price}€ / pers {option.info && (
                   <button
@@ -293,7 +301,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
        {/* House for sleep------------------- */}
        <div className="py-5">
-        <h3 className="text-lg font-bold my-5">Maison pour dormir :</h3>
+        <h3 className="text-lg font-bold my-5">Choisissez vos options logements :</h3>
         <div className="grid lg:grid-cols-4 gap-4">
           {accommodationOptions.map((option) => (
             <div

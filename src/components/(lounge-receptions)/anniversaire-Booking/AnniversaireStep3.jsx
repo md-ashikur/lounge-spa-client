@@ -29,24 +29,12 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
   const { 
     selectedAccommodationOption, 
     numAccommodations, 
-    accommodationOptions, 
-    selectedCateringOptions, 
-    selectedActivityOptions,
-    date,
+    accommodationOptions 
   } = bookingDetails;
 
-  // Safeguard checks to ensure that arrays are defined
-  const selectedAccommodation = (accommodationOptions || []).find(
+  const selectedAccommodation = accommodationOptions.find(
     (option) => option.id === selectedAccommodationOption
   );
-
-  const selectedCateringDetails = (selectedCateringOptions || []).map(optionId => {
-    return (bookingDetails?.cateringOptions || []).find(option => option.id === optionId);
-  });
-
-  const selectedActivityDetails = (selectedActivityOptions || []).map(optionId => {
-    return (bookingDetails?.additionalOptions || []).find(option => option.id === optionId);
-  });
 
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
@@ -56,7 +44,7 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
       <div>
         <h3 className="font-bold">Détails de réservation :</h3>
         <p>
-          <b>Date :</b> {date?.toDateString() || "Non disponible"}
+          <b>Date :</b> {bookingDetails.date?.toDateString() || "Non disponible"}
         </p>
         <p>
         <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
@@ -67,19 +55,44 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
       <p><b>Nombre total de personnes:</b> {bookingDetails.totalPeople}</p>
       </div>
 
+      
+      {/* Selected Activity Options */}
+{/* <div>
+  <h3 className="font-bold">Options d&apos;activité sélectionnées :</h3>
+  {selectedActivityDetails.length > 0 ? (
+    <ul>
+      {selectedActivityDetails.map((option) => {
+        return option ? (
+          <li key={option.id}>
+            {option.name} - {option.price}€ / pers
+          </li>
+        ) : (
+          <li className="text-red-500">Option non trouvée</li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p className="text-gray-500">Aucune option d&apos;activité sélectionnée.</p>
+  )}
+</div> */}
+
+
       {/* Catering Options */}
       <div>
         <h3 className="font-bold">Options de restauration sélectionnées :</h3>
-        {selectedCateringDetails.length > 0 ? (
+        {bookingDetails?.selectedCateringOptions?.length > 0 ? (
           <ul>
-            {selectedCateringDetails.map((option) => {
+            {bookingDetails.selectedCateringOptions.map((optionId) => {
+              const option = bookingDetails?.cateringOptions?.find(
+                (opt) => opt.id === optionId
+              );
               return option ? (
                 <li key={option.id}>
                   {option.name} - {option.price}€ / pers
                 </li>
               ) : (
-                <li className="text-red-500">
-                  Option non trouvée
+                <li key={optionId} className="text-red-500">
+                  Option non trouvée (ID: {optionId})
                 </li>
               );
             })}
@@ -91,7 +104,7 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
 
       {/* Accommodation Options */}
       <div>
-        <h4 className="font-bold">Maison pour dormir :</h4>
+        <h4 className="font-bold">Choisissez vos options logements :</h4>
         {selectedAccommodation ? (
           <p>
             {selectedAccommodation.name} (Quantité: {numAccommodations}) - {selectedAccommodation?.price * numAccommodations}€
@@ -101,27 +114,7 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
-      {/* Additional Options */}
-      <div>
-        <h3 className="font-bold">Options supplémentaires sélectionnées :</h3>
-        {selectedActivityDetails.length > 0 ? (
-          <ul>
-            {selectedActivityDetails.map((option) => {
-              return option ? (
-                <li key={option.id}>
-                  {option.name} - {option.price}€ / pers
-                </li>
-              ) : (
-                <li className="text-red-500">
-                  Option non trouvée
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-gray-500">Aucune option sélectionnée.</p>
-        )}
-      </div>
+     
 
       {/* Apply Coupon */}
       <div className="space-y-4">
