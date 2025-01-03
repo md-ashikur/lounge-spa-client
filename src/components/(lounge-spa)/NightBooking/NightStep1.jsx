@@ -14,10 +14,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
   const [lastMinute, setLastMinute] = useState(false);
 
   const defaultSlots = [
-    "10h30 – 13h30",
-    "14h00 – 17h00",
-    "17h30 – 20h30",
-    "21h00 – 24h00",
+    "19h00 – 10h00",
   ];
 
   const greenDealSlots = [
@@ -207,7 +204,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
           />
 
           <div className="flex items-center mt-4 space-x-4">
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <div
                 className={`toggle-button ${
                   greenDeal ? "bg-green-500" : "bg-gray-300"
@@ -224,7 +221,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
                 />
               </div>
               <label>Green Deal</label>
-            </div>
+            </div> */}
             <div className="flex items-center space-x-2">
               <div
                 className={`toggle-button ${

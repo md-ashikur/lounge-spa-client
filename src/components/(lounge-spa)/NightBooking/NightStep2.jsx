@@ -216,7 +216,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         {nightSpaOptions.map((option) => (
           <div
             key={option.id}
-            className={`flex justify-center items-center p-3 rounded-md shadow-md ${
+            className={`flex justify-center items-center p-3 rounded-3xl shadow-md ${
               selectedOptions.includes(option.id)
                 ? "bg-green-500 text-white"
                 : "bg-primary text-white"
@@ -355,7 +355,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         {cateringOptions.map((option) => (
           <div
             key={option.id}
-            className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
+            className={`flex items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
               selectedCateringOptions.includes(option.id)
                 ? "bg-green-500 text-white"
                 : "bg-primary text-white"
