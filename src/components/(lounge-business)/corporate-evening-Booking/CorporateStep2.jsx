@@ -175,7 +175,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
         <h3 className="text-lg font-bold my-5">
           Choisissez vos options restauration :
         </h3>
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-5 gap-4">
           {cateringOptions.map((option) => (
             <div
               key={option.id}
@@ -197,7 +197,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* House for sleep------------------- */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">Maison pour dormir :</h3>
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-4 gap-4">
           {accommodationOptions.map((option) => (
             <div
               key={option.id}
@@ -240,7 +240,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
         <h3 className="text-lg font-bold my-5">
           Choisissez vos options complémentaires :
         </h3>
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-5 gap-4">
           {additionalOptions.map((option) => (
             <div
               key={option.id}
