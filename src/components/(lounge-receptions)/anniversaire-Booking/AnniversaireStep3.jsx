@@ -28,10 +28,16 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
 
   const { 
     selectedAccommodationOption, 
-    numAccommodations, 
+    selectedActivityOptions,
+    numActivities,
+    numAccommodations,
+    activityOptions, 
     accommodationOptions 
   } = bookingDetails;
 
+  const selectedActivity = activityOptions.find(
+    (option) => option.id === selectedActivityOptions
+  );
   const selectedAccommodation = accommodationOptions.find(
     (option) => option.id === selectedAccommodationOption
   );
@@ -77,6 +83,31 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
 </div> */}
 
 
+    
+      {/* Activity Options */}
+      <div>
+        <h3 className="font-bold">Options de restauration sélectionnées :</h3>
+        {bookingDetails?.selectedActivityOptions?.length > 0 ? (
+          <ul>
+            {bookingDetails.selectedActivityOptions.map((optionId) => {
+              const option = bookingDetails?.activityOptions?.find(
+                (opt) => opt.id === optionId
+              );
+              return option ? (
+                <li key={option.id}>
+                  {option.name} - {option.price}€ / pers
+                </li>
+              ) : (
+                <li key={optionId} className="text-red-500">
+                  Option non trouvée (ID: {optionId})
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
+        )}
+      </div>
       {/* Catering Options */}
       <div>
         <h3 className="font-bold">Options de restauration sélectionnées :</h3>
@@ -114,6 +145,7 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
+     
      
 
       {/* Apply Coupon */}

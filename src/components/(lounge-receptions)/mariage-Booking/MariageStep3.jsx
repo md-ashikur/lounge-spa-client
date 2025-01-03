@@ -12,8 +12,8 @@ const MariageStep3 = ({ bookingDetails, onBack, onNext }) => {
   };
 
   const calculateTotal = () => {
-    const baseTotal = bookingDetails?.totalPrice || 0; // Use the total price from bookingDetails
-    return baseTotal - (baseTotal * discount) / 100; // Apply discount
+    const baseTotal = bookingDetails?.totalPrice || 0; 
+    return baseTotal - (baseTotal * discount) / 100; 
   };
 
   const applyCoupon = () => {
@@ -26,31 +26,26 @@ const MariageStep3 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
-  const { 
-    selectedAccommodationOption, 
-    numAccommodations, 
-    accommodationOptions 
-  } = bookingDetails;
 
-  const selectedAccommodation = accommodationOptions.find(
-    (option) => option.id === selectedAccommodationOption
-  );
+
+
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary"> Mariage et fiançailles</span></div>
-     
+       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
+
       {/* Booking Details */}
       <div>
         <h3 className="font-bold">Détails de réservation :</h3>
         <p>
-          <b>Date :</b> {bookingDetails?.date?.toDateString() || "Non disponible"}
+          <b>Date :</b> {bookingDetails.date?.toDateString() || "Non disponible"}
         </p>
         <p>
-          <b>Nombre d&apos;adultes :</b> {bookingDetails?.numAdults || 0}
-        </p>
-        <p>
-          <b>Nombre d&apos;enfants :</b> {bookingDetails?.numChildren || 0}
-        </p>
+        <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
+      </p>
+      <p>
+        <b>Adults:</b> {bookingDetails.adults}  <b>children:</b> {bookingDetails.children}  
+      </p>
+      <p><b>Nombre total de personnes:</b> {bookingDetails.totalPeople}</p>
       </div>
 
       {/* Catering Options */}
@@ -78,44 +73,10 @@ const MariageStep3 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
-      {/* Maison pour dormir */}
-      <div>
-       
-        <h4 className="font-bold">Maison pour dormir :</h4>
-        
-          <p>
-            {selectedAccommodation?.name} (Quantité: {numAccommodations}) - {selectedAccommodation?.price * numAccommodations}
-          </p>
-        
      
-      </div>
 
-
-
-      {/* Additional Options */}
-      <div>
-        <h3 className="font-bold">Options supplémentaires sélectionnées :</h3>
-        {bookingDetails?.selectedAdditionalOptions?.length > 0 ? (
-          <ul>
-            {bookingDetails.selectedAdditionalOptions.map((optionId) => {
-              const option = bookingDetails?.additionalOptions?.find(
-                (opt) => opt.id === optionId
-              );
-              return option ? (
-                <li key={option.id}>
-                  {option.name} - {option.price}€ / pers
-                </li>
-              ) : (
-                <li key={optionId} className="text-red-500">
-                  Option non trouvée (ID: {optionId})
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-gray-500">Aucune option sélectionnée.</p>
-        )}
-      </div>
+     
+     
 
       {/* Apply Coupon */}
       <div className="space-y-4">

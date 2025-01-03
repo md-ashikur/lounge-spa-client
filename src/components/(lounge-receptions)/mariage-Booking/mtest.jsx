@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
+const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [numAdults, setNumAdults] = useState(1);
   const [numChildren, setNumChildren] = useState(0);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
@@ -11,11 +11,14 @@ const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
-    { id: "DinnerBoard", name: "Planche dînatoire", price: 30, icon: "⏳" },
-    { id: "FlavorMenu", name: "Menu saveur", price: 30, icon: "⏳" },
-    { id: "TraditionalFlavors", name: "Saveurs traditionnelles", price: 30, icon: "⏳" },
-    { id: "TraditionalVIP", name: "Saveurs traditionnelles VIP", price: 30, icon: "⏳" },
-    { id: "PrestigeVIP", name: "Saveurs Prestige VIP", price: 30, icon: "⏳" },
+    { id: "DinnerBoard", name: "Vin d’honneur", price: 12, icon: "⏳" },
+    { id: "FlavorMenu", name: "Vin d’honneur + plancha", price: 17, icon: "⏳" },
+    { id: "TraditionalFlavors", name: "Brunch du lendemain ", price: 17, icon: "⏳" },
+    { id: "m5", name: "Saveurs du monde Indiennnes", price: 30, icon: "⏳" },
+    { id: "m6", name: "Saveurs du monde Marocaines", price: 30, icon: "⏳" },
+    { id: "m7", name: "Saveurs traditionnelles", price: 30, icon: "⏳" },
+    { id: "m8", name: "Saveurs traditionnelles VIP", price: 30, icon: "⏳" },
+    { id: "m9", name: "Saveurs Prestige VIP", price: 30, icon: "⏳" },
   ];
 
   const additionalOptions = [
@@ -130,7 +133,7 @@ const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary"> Week-end entre amis : all inclusive</span></div>
+      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary"> Mariage et fiançailles</span></div>
       <p>
         <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
       </p>
@@ -173,7 +176,7 @@ const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* catering options------------------ */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-          Choisissez vos options restauration :
+        Choisissez vos options :
         </h3>
         <div className="grid lg:grid-cols-5 gap-4">
           {cateringOptions.map((option) => (
@@ -194,70 +197,7 @@ const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      {/* House for sleep------------------- */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">Maison pour dormir :</h3>
-        <div className="grid lg:grid-cols-4 gap-4">
-          {accommodationOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
-                selectedAccommodationOption === option.id
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleAccommodationSelect(option.id)}
-            >
-               <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-sm text-center">{option.name}</span>
-              <span className="text-lg">{option.price}€</span>
-              {option.id !== "accomNone" && selectedAccommodationOption === option.id && (
-                <div className="flex items-center space-x-2 mt-2">
-                  <button
-                    className="px-2 py-1 bg-primary rounded-2xl w-8"
-                    onClick={() =>
-                      setNumAccommodations(Math.max(0, numAccommodations - 1))
-                    }
-                  >
-                    -
-                  </button>
-                  <span>{numAccommodations}</span>
-                  <button
-                    className="px-2 py-1 bg-primary rounded-2xl w-8"
-                    onClick={() => setNumAccommodations(numAccommodations + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* additional options:---------- */}
-      <div>
-        <h3 className="text-lg font-bold my-5">
-          Choisissez vos options complémentaires :
-        </h3>
-        <div className="grid lg:grid-cols-5 gap-4">
-          {additionalOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
-                selectedAdditionalOptions.includes(option.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleAdditionalSelect(option.id)}
-            >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-center text-sm">{option.name}</span>
-              <span className="text-lg">{option.price}€ / pers</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      
 
       <div className="mt-6">
         <h3 className="text-lg font-bold">Coût Total</h3>
@@ -282,4 +222,4 @@ const WeekendStep2 = ({ bookingDetails, onBack, onNext }) => {
   );
 };
 
-export default WeekendStep2;
+export default MariageStep2;

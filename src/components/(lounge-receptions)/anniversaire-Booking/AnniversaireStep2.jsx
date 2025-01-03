@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import snack from "../../../../public/images/snack.png"
 import remove from "../../../../public/images/remove.png"
@@ -148,10 +150,13 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       ...bookingDetails,
       totalPeople,
       selectedCateringOptions,
+      selectedActivityOptions,
       selectedAccommodationOption,
       numAccommodations,
+      numActivities,
       cateringOptions,
       accommodationOptions,
+      activityOptions,
       totalPrice: calculateTotal(),
     };
     onNext(data);
