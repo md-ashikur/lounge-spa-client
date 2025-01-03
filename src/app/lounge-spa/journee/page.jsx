@@ -1,10 +1,10 @@
 "use client";
 
-import Step1 from '@/components/DayBooking/Step1';
-import Step2 from '@/components/DayBooking/Step2';
-import Step3 from '@/components/DayBooking/Step3';
-import Step4 from '@/components/DayBooking/Step4';
 
+import Step1 from '@/components/(lounge-spa)/DayBooking/Step1';
+import Step2 from '@/components/(lounge-spa)/DayBooking/Step2';
+import Step3 from '@/components/(lounge-spa)/DayBooking/Step3';
+import Step4 from '@/components/(lounge-spa)/DayBooking/Step4';
 import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaUser, FaCheckCircle } from 'react-icons/fa'; // Import icons
 
@@ -41,12 +41,12 @@ const ProgressBar = ({ currentStep, totalSteps, icons }) => {
   );
 };
 
-const Journee = () => {
+const  Journee = () => {
   const [step, setStep] = useState(1);
   const [bookingDetails, setBookingDetails] = useState({});
   const [spaSelections, setSpaSelections] = useState([]);
   const [cateringSelections, setCateringSelections] = useState([]);
-
+  const [step2Details, setStep2Details] = useState({});
   // Define the icons array
   const icons = [
     <FaCalendarAlt key="calendar" />, // Icon for Step 1
@@ -72,22 +72,28 @@ const Journee = () => {
           }
         />
       )}
-      {step === 2 && (
+       {step === 2 && (
         <Step2
           bookingDetails={bookingDetails}
-          onNext={nextStep}
+          onNext={(details) => {
+            setStep2Details((prev) => ({ ...prev, ...details }));
+            nextStep();
+          }}
           onBack={prevStep}
-          setSpaSelections={(selections) => setSpaSelections(selections)}
-          setCateringSelections={(selections) => setCateringSelections(selections)}
         />
       )}
       {step === 3 && (
         <Step3
-          bookingDetails={bookingDetails}
+          bookingDetails={{
+            ...bookingDetails,
+            ...step2Details,
+            spaSelections,
+            cateringSelections, // Pass spa and catering selections
+          }}
           spaSelections={spaSelections}
           cateringSelections={cateringSelections}
-          onNext={nextStep}
           onBack={prevStep}
+          onNext={nextStep}
         />
       )}
       {step === 4 && (

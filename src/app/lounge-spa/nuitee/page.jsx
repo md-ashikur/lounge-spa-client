@@ -2,10 +2,10 @@
 
 
 
-import NightStep1 from '@/components/NightBooking/NightStep1';
-import NightStep2 from '@/components/NightBooking/NightStep2';
-import NightStep3 from '@/components/NightBooking/NightStep3';
-import NightStep4 from '@/components/NightBooking/NightStep4';
+import NightStep1 from '@/components/(lounge-spa)/NightBooking/NightStep1';
+import NightStep2 from '@/components/(lounge-spa)/NightBooking/NightStep2';
+import NightStep3 from '@/components/(lounge-spa)/NightBooking/NightStep3';
+import NightStep4 from '@/components/(lounge-spa)/NightBooking/NightStep4';
 import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaUser, FaCheckCircle } from 'react-icons/fa'; // Import icons
 

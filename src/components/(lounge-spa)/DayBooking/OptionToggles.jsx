@@ -132,7 +132,8 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   };
 
   const calculateTotal = () => {
-    let total = numPeople * 50; // Base price per person
+    let total= 0; // Base price per person
+    let totalpeople = numPeople; // Base price per person
     selectedOptions.forEach((optionId) => {
       const option = spaOptions.find((opt) => opt.id === optionId);
       if (optionId === "massage") {
@@ -145,8 +146,9 @@ const Step2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
       total += option.price;
     });
-    return total;
+    return total*totalpeople;
   };
+  
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
