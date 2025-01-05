@@ -239,8 +239,6 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
             )}</p> 
             
             </div>
-
-            
           </div>
         ))}
       </div>
@@ -260,28 +258,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
         </div>
       )}
 
- {/* 1 hour modal----------------- */}
- {/* {showModal && modalType === "1hr" && (
-        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
-          <div className="bg-white p-4 rounded-md lg:w-1/2">
-            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
-            <div className="mt-4 space-y-2">
-              {additionalHourOptions.map((option) => (
-                <button
-                  key={option}
-                  className="block w-full p-2 bg-gray-200 rounded-md"
-                  onClick={() => {
-                    setShowModal(false);
-                    setSelectedOptions((prev) => [...prev, "1hr"]);
-                  }}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )} */}
+
 
       {/* massage modal---------------- */}
       {showModal && modalType === "NightSpa4" && (
