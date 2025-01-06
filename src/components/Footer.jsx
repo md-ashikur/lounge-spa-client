@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logo from "../../public/images/2.png";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -62,9 +63,9 @@ const Footer = () => {
               </li>
              
               <li>
-                <a href="#" className="hover:underline">
+                <Link href="/cgv" className="hover:underline">
                   CGV
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
