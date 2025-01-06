@@ -632,8 +632,8 @@ const Navbar = () => {
                   animate="visible"
                   exit="exit"
                 >
-                   <Link href={'/discover'} className={`${
-                        pathName === "/discover" && "text-primary-100"
+                   <Link href={'/gallery'} className={`${
+                        pathName === "/gallery" && "text-primary-100"
                       }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Découvrez nos espaces</Link>
                 
                 </motion.span>
