@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function page() {
+export default function CGV() {
   return (
     <div className="my-20 lg:px-20 px-5 font-light text-justify">
       <h3 className="font-bold">
