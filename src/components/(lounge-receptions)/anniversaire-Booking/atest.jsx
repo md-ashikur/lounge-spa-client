@@ -1,308 +1,199 @@
-import React, { useState } from "react";
+<div className="lg:px-20 my-10 space-y-6 text-primary">
+<div className="text-center">
+  <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+    Anniversaires
+  </span>
+</div>
 
+{/* Booking Details */}
+<div>
+  <h3 className="font-bold">Détails de réservation :</h3>
+  <p>
+    <b>Date :</b> {bookingDetails.date?.toDateString() || "Non disponible"}
+  </p>
+  <p>
+    <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
+  </p>
+  <p>
+    <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
+  </p>
+</div>
 
-const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
-  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
-
-  const [selectedAccommodationOption, setSelectedAccommodationOption] = useState("accomNone");
-  const [selectedActivityOptions, setSelectedActivityOptions] = useState("anniActivity0");
-  const [numActivity, setNumActivity] = useState(0);
-  const [numAccommodations, setNumAccommodations] = useState(0);
-  const [cateringInfo, setCateringInfo] = useState(null);
-
-  const cateringOptions = [
-    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: "🚫", },
-    { id: "annicat1", name: "En-cas gourmand", price: 20, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat1", name: "Planche dînatoire", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat3", name: "Menu saveur", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat4", name: "Saveurs du monde Indiennnes", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat5", name: "Saveurs du monde Marocaines", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat6", name: "Saveurs traditionnelles", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat7", name: "Saveurs traditionnelles VIP", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "annicat8", name: "Saveurs Prestige VIP", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-  ];
-
-
-   // activity options
-   const activityOptions = [
-    { id: "anniActivity0", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "anniActivity1", name: "Shooting photo", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "anniActivity2", name: "Séance maquillage", price: 40, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "anniActivity3", name: "Molkky", price: 3, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "anniActivity4", name: "Dégustation de vin", price: 30, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-    { id: "anniActivity5", name: "Pole dance", price: 15, icon: "⏳", info: "Encas désaltérant + pâtisseries" },
-  ];
-
-
-  const accommodationOptions = [
-    { id: "accomNone", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "accomChaletSelf", name: "Couchage en chalet (à 15min) en autonomie (1 chalet 5 pers)", price: 60, icon: "⏳" },
-    { id: "accomChaletShuttle", name: "Couchage en chalet (à 15min) + navettes (1 chalet 5 pers)", price: 110, icon: "⏳" },
-    { id: "accomspa", name: "Sleep at the spa (3 people) + mattress", price: 290, icon: "⏳" },
-  ];
-
-
- 
-  const handleCateringSelect = (option) => {
-    if (option === "cateringNone") {
-      setSelectedCateringOptions([option]);
-      return;
-    }
-
-    setSelectedCateringOptions((prev) => {
-      if (prev.includes("cateringNone")) {
-        return [option];
-      }
-      return prev.includes(option)
-        ? prev.filter((opt) => opt !== option)
-        : [...prev, option];
-    });
-  };
-
-  // activity options 
-  const handleActivitySelect = (option) => {
-    setSelectedActivityOptions(option);
-    
-    if (option === "anniActivity0") {
-      setNumActivity(0);
-      
-    }
-  };
-
-
-  const handleAccommodationSelect = (option) => {
-    setSelectedAccommodationOption(option);
-    
-    if (option === "accomNone") {
-      setNumAccommodations(0);
-      
-    }
-  };
-
-
-  const calculateTotal = () => {
-    const totalPeople = bookingDetails.totalPeople;
-    let total = bookingDetails.price; 
-
-    selectedCateringOptions.forEach((optionId) => {
-      const option = cateringOptions.find((opt) => opt.id === optionId);
-      if (option) {
-        total += option.price * totalPeople;
-      }
-    });
-
-    // option activity 
-    if (selectedActivityOptions) {
-      const activity = activityOptions.find(
-        (opt) => opt.id === selectedActivityOptions
-      );
-      if (activity) {
-        total += activity.price * numActivity;
-      }
-    }
-
-    if (selectedAccommodationOption) {
-      const accommodation = accommodationOptions.find(
-        (opt) => opt.id === selectedAccommodationOption
-      );
-      if (accommodation) {
-        total += accommodation.price * numAccommodations;
-      }
-    }
-
-    return total;
-  };
-
-  const handleNext = () => {
-    const totalPeople = bookingDetails.totalPeople;
-    const data = {
-      ...bookingDetails,
-      totalPeople,
-      selectedCateringOptions,
-      selectedAdditionalOptions,
-      selectedAccommodationOption,
-      numAccommodations,
-      cateringOptions,
-      activityOptions,
-      additionalOptions,
-      accommodationOptions,
-      totalPrice: calculateTotal(),
-    };
-    onNext(data);
-  };
-
-  return (
-    <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
-      <p>
-        <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
-      </p>
-      <p>
-        <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
-      </p>
-      <p>
-        <b>Adults:</b> {bookingDetails.adults}  <b>children:</b> {bookingDetails.children}  
-      </p>
-      <p><b>Nombre total de personnes:</b> {bookingDetails.totalPeople}</p>
-
-   
-
-      {/* catering options------------------ */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">
-        Choisissez vos options :
-        </h3>
-        <div className="grid lg:grid-cols-6 gap-4">
-          {cateringOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
-                selectedCateringOptions.includes(option.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleCateringSelect(option.id)}
-            >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-sm text-center">{option.name}</span>
-              <span className="text-lg">{option.price}€ / pers {option.info && (
-                  <button
-                    className="ml-2 p-1 text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCateringInfo(option.info);
-                    }}
-                  >
-                    ⓘ
-                  </button>
-                )}</span>
-            </div>
-          ))}
-        </div>
-
-        {cateringInfo && (
-          <div
-            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
-        "
-            onClick={() => setCateringInfo(null)}
-          >
-            <div
-              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Choose your activity options (specify the number of participants):------------------ */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">Choisissez vos options activités (préciser le nombre de participants) :</h3>
-        <div className="grid lg:grid-cols-4 gap-4">
-          {activityOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
-                selectedActivityOptions === option.id
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleActivitySelect(option.id)}
-            >
-               <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-sm text-center">{option.name}</span>
-              <span className="text-lg">{option.price}€</span>
-              {!["anniActivity0", "anniActivity4", "anniActivity5"].includes(option.id) &&
-  selectedActivityOptions === option.id && (
-    <div className="flex items-center space-x-2 mt-2">
-      <button
-        className="px-2 py-1 bg-primary rounded-2xl w-8"
-        onClick={() => setNumActivity(Math.max(0, numActivity - 1))}
-      >
-        -
-      </button>
-      <span>{numActivity}</span>
-      <button
-        className="px-2 py-1 bg-primary rounded-2xl w-8"
-        onClick={() => setNumActivity(numActivity + 1)}
-      >
-        +
-      </button>
-    </div>
+{/* Catering Options */}
+<div>
+  <h3 className="font-bold">Options de restauration sélectionnées :</h3>
+  {bookingDetails?.selectedCateringOptions?.length > 0 ? (
+    <ul className="list-decimal list-inside">
+      {bookingDetails.selectedCateringOptions.map((optionId) => {
+        const option = bookingDetails?.cateringOptions?.find(
+          (opt) => opt.id === optionId
+        );
+        return option ? (
+          <li key={option.id}>
+            {option.name} - {option.price}€ / pers
+          </li>
+        ) : (
+          <li key={optionId} className="text-red-500">
+            Option non trouvée (ID: {optionId})
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p className="text-gray-500">Aucune</p>
   )}
-
-            </div>
-          ))}
-        </div>
-      </div>
+</div>
 
 
+     {/* Entertainment and souvenirs package selected */}
+<div>
+  <h3 className="font-bold">Forfait animations et souvenirs 
+  choisi :</h3>
+  {bookingDetails?.selectedMemories?.length > 0 ? (
+    <ul className="list-decimal list-inside">
+      {bookingDetails.selectedMemories.map((optionId) => {
+        const option = bookingDetails?.memories?.find(
+          (opt) => opt.id === optionId
+        );
+        return option ? (
+          <li key={option.id}>
+            {option.name} - {option.price}€ / pers
+          </li>
+        ) : (
+          <li key={optionId} className="text-red-500">
+            Option non trouvée (ID: {optionId})
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p className="text-gray-500">Aucune</p>
+  )}
+</div>
 
-      {/* House for sleep------------------- */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">Maison pour dormir :</h3>
-        <div className="grid lg:grid-cols-3 gap-4">
-          {accommodationOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
-                selectedAccommodationOption === option.id
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleAccommodationSelect(option.id)}
-            >
-               <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-sm text-center">{option.name}</span>
-              <span className="text-lg">{option.price}€</span>
-              {option.id !== "accomNone" && selectedAccommodationOption === option.id && (
-                <div className="flex items-center space-x-2 mt-2">
-                  <button
-                    className="px-2 py-1 bg-primary rounded-2xl w-8"
-                    onClick={() =>
-                      setNumAccommodations(Math.max(0, numAccommodations - 1))
-                    }
-                  >
-                    -
-                  </button>
-                  <span>{numAccommodations}</span>
-                  <button
-                    className="px-2 py-1 bg-primary rounded-2xl w-8"
-                    onClick={() => setNumAccommodations(numAccommodations + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
 
-   
 
-      <div className="mt-6">
-        <h3 className="text-lg font-bold">Coût Total</h3>
-        <p className="text-xl font-semibold">{calculateTotal()}€</p>
-      </div>
+{/* Activity Options */}
+<div>
+  <h3 className="font-bold">Options d&apos;activité sélectionnées :</h3>
+  {bookingDetails?.selectedActivityOptions?.length > 0 ? (
+    <ul className="list-decimal list-inside">
+      {bookingDetails.selectedActivityOptions.map((optionId) => {
+        const option = bookingDetails?.activityOptions?.find(
+          (opt) => opt.id === optionId
+        );
+        return option ? (
+          <li key={option.id}>
+            {option.name} - {option.price}€ / pers (Quantité: {bookingDetails.numActivities})
+          </li>
+        ) : (
+          <li key={optionId} className="text-red-500">
+            Option non trouvée (ID: {optionId})
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p className="text-gray-500">Aucune</p>
+  )}
+</div>
 
-      <div className="flex justify-between mt-6">
+{/* Accommodation Options */}
+<div>
+  <h4 className="font-bold">Choisissez vos options logements :</h4>
+  {bookingDetails.selectedAccommodationOption ? (
+    <p>
+      {bookingDetails.accommodationOptions.find(
+        (opt) => opt.id === bookingDetails.selectedAccommodationOption
+      )?.name}
+      (Quantité: {bookingDetails.numAccommodations}) -
+      {bookingDetails.accommodationOptions.find(
+        (opt) => opt.id === bookingDetails.selectedAccommodationOption
+      )?.price * bookingDetails.numAccommodations}
+      €
+    </p>
+  ) : (
+    <p className="text-red-500">Option de logement non trouvée.</p>
+  )}
+</div>
+
+{/* Apply Coupon */}
+<div className="space-y-4">
+  <h3 className="font-bold">Appliquer un coupon :</h3>
+  <div className="flex items-center space-x-4">
+    <input
+      type="text"
+      className="border px-3 py-2 rounded-md outline-0"
+      placeholder="Entrez le code promo"
+      value={couponCode}
+      onChange={(e) => setCouponCode(e.target.value)}
+    />
+    <button
+      className="px-4 py-2 bg-green-500 text-white rounded-md"
+      onClick={applyCoupon}
+    >
+      Appliquer
+    </button>
+  </div>
+  {couponError && <p className="text-red-500">{couponError}</p>}
+  {discount > 0 && (
+    <p className="text-green-500">Coupon appliqué : {discount}% de réduction</p>
+  )}
+</div>
+
+{/* Total Cost */}
+<div>
+  <h3 className="font-bold">Coût total :</h3>
+  <p className="text-xl font-semibold">{calculateTotal().toFixed(2)}€</p>
+</div>
+
+
+{/* Preview and Navigation Buttons */}
+<div className="flex justify-between mt-6">
+  <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
+    Précédent
+  </button>
+  <button
+    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+    onClick={previewPDF}
+  >
+    Prévisualiser la facture
+  </button>
+  <button
+    className="px-4 py-2 bg-green-500 text-white rounded-md"
+    onClick={onNext}
+  >
+    Suivant
+  </button>
+</div>
+
+{/* PDF Preview Modal */}
+{showPreview && (
+  <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-md w-3/4 h-[90vh] overflow-auto">
+      <h2 className="text-lg font-bold mb-4">Aperçu de la facture</h2>
+      {pdfPreview && (
+        <iframe
+          src={pdfPreview}
+          className="w-full h-full"
+          title="PDF Preview"
+        ></iframe>
+      )}
+      <div className="flex justify-end mt-4 space-x-4">
         <button
-          className="px-4 py-2 bg-primary text-white rounded-md"
-          onClick={onBack}
+          className="px-4 py-2 bg-red-500 text-white rounded-md"
+          onClick={() => setShowPreview(false)}
         >
-          Précédent
+          Fermer
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
-          onClick={handleNext}
+          onClick={downloadPDF}
         >
-          Suivant
+          Télécharger
         </button>
       </div>
     </div>
-  );
-};
-
-export default AnniversaireStep2;
+  </div>
+)}
+</div>
