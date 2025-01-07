@@ -3,14 +3,13 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import palace from "../../../../public/images/royal-palace.png"
-import spa from "../../../../public/images/massage-therapist.png"
-import cleaning from "../../../../public/images/cleaning.png"
-import cake from "../../../../public/images/cake.png"
-import sound from "../../../../public/images/sound-system.png"
-import terraces from "../../../../public/images/terrace.png"
+import palace from "../../../../public/images/royal-palace.png";
+import spa from "../../../../public/images/massage-therapist.png";
+import cleaning from "../../../../public/images/cleaning.png";
+import cake from "../../../../public/images/cake.png";
+import sound from "../../../../public/images/sound-system.png";
+import terraces from "../../../../public/images/terrace.png";
 import Image from "next/image";
-
 
 const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
   const [numAdults, setNumAdults] = useState(0);
@@ -77,154 +76,151 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
+        {/* left side----////////////--------- */}
+        <div>
+          <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
+          <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={palace} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
+                </div>
+              </div>
 
-          {/* left side----////////////--------- */}
-                    <div>
-                            <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
-                            <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
-                              <div className="space-y-5">
-                                <div className="grid grid-cols-4 gap-2">
-                                  <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={palace} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
-                                  </div>
-                                </div>
-                  
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={spa} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>Accés spa (régelementé)</p>
-                                  </div>
-                                </div>
-                  
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={cleaning} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>Nettoyage de fin de séjour & Vaisselle</p>
-                                  </div>
-                                </div>
-                              </div>
-                  
-                              <div className="space-y-5">
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={cake} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>Gâteaux maison</p>
-                                  </div>
-                                </div>
-                  
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={sound} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>
-                                      Sound system, rétro projecteur, wifi et cuisine équipée...
-                                    </p>
-                                  </div>
-                                </div>
-                  
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={terraces} alt="" />
-                                  </div>
-                                  <div className="col-span-3">
-                                    <p>Terrasses, jardins & parking privatifs</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                  
-                           
-                  
-                          
-                            {/* Tarifs */}
-                            <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span></h3>
-                            
-                            <div className="grid grid-cols-2 gap-5">
-                              <div className="font-light">
-                                <h3 className="text-center my-2">Samedi</h3>
-                                <div className="grid grid-cols-2">
-                                    <p>11h-19h</p>
-                                    <p>590€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>20h-1h</p>
-                                    <p>690€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>15h-1h</p>
-                                    <p>990€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>Heure en +</p>
-                                    <p>80€</p>
-                                </div>
-                  
-                              </div>
-                  
-                              <div className="font-light">
-                              <h3 className="text-center my-2">Dimanche</h3>
-                                <div className="grid grid-cols-2">
-                                    <p>11h-20h</p>
-                                    <p>490€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>14h-20h</p>
-                                    <p>350€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>19h-1h</p>
-                                    <p>590€</p>
-                                </div>
-                  
-                                <div className="grid grid-cols-2">
-                                    <p>Heure en +</p>
-                                    <p>70€</p>
-                                </div>
-                  
-                              </div>
-                  
-                          
-                            </div>
-                  
-                            <p className="my-3">Personnalisez votre évènement à la prochaine page.</p>
-                          </div>
-        
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={spa} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Accés spa (régelementé)</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={cleaning} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Nettoyage de fin de séjour & Vaisselle</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={cake} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Gâteaux maison</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={sound} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>
+                    Sound system, rétro projecteur, wifi et cuisine équipée...
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={terraces} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Terrasses, jardins & parking privatifs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tarifs */}
+          <h3 className="font-bold mt-8 mb-4 text-primary-800">
+            Tarifs{" "}
+            <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span>
+          </h3>
+
+          <div className="grid grid-cols-2 gap-5">
+            <div className="font-light">
+              <h3 className="text-center my-2">Samedi</h3>
+              <div className="grid grid-cols-2">
+                <p>11h-19h</p>
+                <p>590€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>20h-1h</p>
+                <p>690€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>15h-1h</p>
+                <p>990€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>Heure en +</p>
+                <p>80€</p>
+              </div>
+            </div>
+
+            <div className="font-light">
+              <h3 className="text-center my-2">Dimanche</h3>
+              <div className="grid grid-cols-2">
+                <p>11h-20h</p>
+                <p>490€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>14h-20h</p>
+                <p>350€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>19h-1h</p>
+                <p>590€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>Heure en +</p>
+                <p>70€</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="my-3">
+            Personnalisez votre évènement à la prochaine page.
+          </p>
+        </div>
+
         {/* Right Side */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
-          <div className="flex gap-4">
-            <div className="flex items-center space-x-4">
+          <div className="flex gap-4 ">
+            <div className="flex items-center space-x-4 text-primary-800">
               <label className="font-bold">Adultes (13 ans et +) :</label>
               <input
                 type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center"
+                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
                 value={numAdults}
                 min={0}
                 onChange={(e) => handlePeopleChange("adult", +e.target.value)}
               />
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 text-primary-800">
               <label className="font-bold">Enfants (-13 ans) :</label>
               <input
                 type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center"
+                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
                 value={numChildren}
                 min={0}
                 onChange={(e) => handlePeopleChange("child", +e.target.value)}

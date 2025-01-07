@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { SiApplemusic } from "react-icons/si";
+import sound from "../../../../public/images/sound-system.png";
+import terraces from "../../../../public/images/terrace.png";
 
 const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -47,10 +49,10 @@ const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
           <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2">
-                <div>
-                  <SiApplemusic className="text-5xl text-primary" />
-                </div>
-                <div className="col-span-3">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                 <Image src={sound} alt="" />
+                               </div>
+                <div className="col-span-3 flex items-center">
                   <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
                 </div>
               </div>
@@ -60,10 +62,10 @@ const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
 
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2">
-                <div>
-                  <SiApplemusic className="text-5xl text-primary" />
-                </div>
-                <div className="col-span-3">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                 <Image src={terraces} alt="" />
+                               </div>
+                <div className="col-span-3 flex items-center">
                   <p>Terrasses, jardins 
                   & parking privatifs</p>
                 </div>
