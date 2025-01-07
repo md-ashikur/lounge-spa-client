@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { SiApplemusic } from "react-icons/si";
+import palace from "../../../../public/images/royal-palace.png"
+import spa from "../../../../public/images/massage-therapist.png"
+import cleaning from "../../../../public/images/cleaning.png"
+import cake from "../../../../public/images/cake.png"
+import sound from "../../../../public/images/sound-system.png"
+import terraces from "../../../../public/images/terrace.png"
+import Image from "next/image";
+
 
 const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
   const [numAdults, setNumAdults] = useState(0);
@@ -77,8 +84,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                             <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
                               <div className="space-y-5">
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                  <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={palace} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
@@ -86,8 +93,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                                 </div>
                   
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={spa} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>Accés spa (régelementé)</p>
@@ -95,8 +102,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                                 </div>
                   
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={cleaning} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>Nettoyage de fin de séjour & Vaisselle</p>
@@ -106,8 +113,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                   
                               <div className="space-y-5">
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={cake} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>Gâteaux maison</p>
@@ -115,8 +122,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                                 </div>
                   
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={sound} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>
@@ -126,8 +133,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                                 </div>
                   
                                 <div className="grid grid-cols-4 gap-2">
-                                  <div>
-                                    <SiApplemusic className="text-5xl text-primary" />
+                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={terraces} alt="" />
                                   </div>
                                   <div className="col-span-3">
                                     <p>Terrasses, jardins & parking privatifs</p>

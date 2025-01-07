@@ -1,9 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { SiApplemusic } from "react-icons/si";
+import palace from "../../../../public/images/royal-palace.png"
+import chair from "../../../../public/images/chair.png"
+import sound from "../../../../public/images/sound-system.png"
+import terraces from "../../../../public/images/terrace.png"
+
 
 const MariageStep1 = ({ onNext, setBookingDetails }) => {
   const [numAdults, setNumAdults] = useState(0);
@@ -11,9 +16,7 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
 
-  const timeSlots = [
-    { time: "14h30 – 1am", price: 990 },
-  ];
+  const timeSlots = [{ time: "14h30 – 1am", price: 990 }];
 
   const handlePeopleChange = (type, value) => {
     const sanitizedValue = Math.max(0, value); // Prevent negative values
@@ -53,132 +56,128 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
 
   return (
     <div className="lg:px-16 space-y-6 my-10">
-       <div className="text-center">
+      <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-        Mariage et fiançailles
+          Mariage et fiançailles
         </span>
         <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary">
-        Célébrez votre union dans un cadre digne des 1001 nuits. Au sein de nos espaces somptueux, nous créerons avec vous l’évènement de vos rêves pour une journée inoubliable. Savourez une expérience culinaire de prestige avec notre service traiteur, proposant des menus personnalisables à base de produits frais et de saison.   
+          Célébrez votre union dans un cadre digne des 1001 nuits. Au sein de
+          nos espaces somptueux, nous créerons avec vous l’évènement de vos
+          rêves pour une journée inoubliable. Savourez une expérience culinaire
+          de prestige avec notre service traiteur, proposant des menus
+          personnalisables à base de produits frais et de saison.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
+        {/* left side----////////////--------- */}
+        <div>
+          <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
+          <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={palace} alt="" />
+                </div>
+                <div className="col-span-3">
+                  <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
+                </div>
+              </div>
 
-          {/* left side----////////////--------- */}
-           <div>
-                    <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
-                    <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
-                      <div className="space-y-5">
-                        <div className="grid grid-cols-4 gap-2">
-                          <div>
-                            <SiApplemusic className="text-5xl text-primary" />
-                          </div>
-                          <div className="col-span-3">
-                            <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
-                          </div>
-                        </div>
-          
-                        <div className="grid grid-cols-4 gap-2">
-                          <div>
-                            <SiApplemusic className="text-5xl text-primary" />
-                          </div>
-                          <div className="col-span-3">
-                            <p>Mobilier nécessaires (chaises, tables, nappes...)</p>
-                          </div>
-                        </div>
-          
-                       
-                      </div>
-          
-                      <div className="space-y-5">
-                        <div className="grid grid-cols-4 gap-2">
-                          <div>
-                            <SiApplemusic className="text-5xl text-primary" />
-                          </div>
-                          <div className="col-span-3">
-                            <p>Sound system, rétro projecteur, wifi et cuisine équipée...</p>
-                          </div>
-                        </div>
-          
-                        <div className="grid grid-cols-4 gap-2">
-                          <div>
-                            <SiApplemusic className="text-5xl text-primary" />
-                          </div>
-                          <div className="col-span-3">
-                            <p>
-                            Terrasses, jardins 
-                            & parking privatifs
-                            </p>
-                          </div>
-                        </div>
-          
-                        
-                      </div>
-                    </div>
-          
-                   
-          
-                  
-                    {/* Tarifs */}
-                    <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span></h3>
-                    
-                    <div className="grid grid-cols-2 gap-5">
-                      <div className="font-light">
-                        <h3 className="text-center my-2">Samedi</h3>
-                        <div className="grid grid-cols-2">
-                            <p>11h-19h</p>
-                            <p>590€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>20h-1h</p>
-                            <p>690€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>15h-1h</p>
-                            <p>990€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>Heure en +</p>
-                            <p>80€</p>
-                        </div>
-          
-                      </div>
-          
-                      <div className="font-light">
-                      <h3 className="text-center my-2">Dimanche</h3>
-                        <div className="grid grid-cols-2">
-                            <p>11h-20h</p>
-                            <p>490€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>14h-20h</p>
-                            <p>350€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>19h-1h</p>
-                            <p>590€</p>
-                        </div>
-          
-                        <div className="grid grid-cols-2">
-                            <p>Heure en +</p>
-                            <p>70€</p>
-                        </div>
-          
-                      </div>
-          
-                  
-                    </div>
-          
-                    <p className="my-3">Personnalisez votre évènement à la prochaine page.</p>
-                  </div>
+              <div className="grid grid-cols-4 gap-2">
+              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={chair} alt="" />
+                </div>
+                <div className="col-span-3">
+                  <p>Mobilier nécessaires (chaises, tables, nappes...)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={sound} alt="" />
+                                  </div>
+                <div className="col-span-3">
+                  <p>
+                    Sound system, rétro projecteur, wifi et cuisine équipée...
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                                    <Image src={terraces} alt="" />
+                                  </div>
+                <div className="col-span-3">
+                  <p>Terrasses, jardins & parking privatifs</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tarifs */}
+          <h3 className="font-bold mt-8 mb-4 text-primary-800">
+            Tarifs{" "}
+            <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span>
+          </h3>
+
+          <div className="grid grid-cols-2 gap-5">
+            <div className="font-light">
+              <h3 className="text-center my-2">Samedi</h3>
+              <div className="grid grid-cols-2">
+                <p>11h-19h</p>
+                <p>590€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>20h-1h</p>
+                <p>690€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>15h-1h</p>
+                <p>990€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>Heure en +</p>
+                <p>80€</p>
+              </div>
+            </div>
+
+            <div className="font-light">
+              <h3 className="text-center my-2">Dimanche</h3>
+              <div className="grid grid-cols-2">
+                <p>11h-20h</p>
+                <p>490€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>14h-20h</p>
+                <p>350€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>19h-1h</p>
+                <p>590€</p>
+              </div>
+
+              <div className="grid grid-cols-2">
+                <p>Heure en +</p>
+                <p>70€</p>
+              </div>
+            </div>
+          </div>
+
+          <p className="my-3">
+            Personnalisez votre évènement à la prochaine page.
+          </p>
+        </div>
         {/* Right Side */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
           <h3 className="font-bold text-primary-800">
