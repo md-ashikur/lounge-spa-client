@@ -1,8 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import snack from "../../../../public/images/snack.png";
+import snack from "../../../../public/images/icons/beverage.png";
+import dinner from "../../../../public/images/icons/dinner-table.png";
+import serving from "../../../../public/images/icons/serving-dish.png";
+import indian from "../../../../public/images/icons/claypot-rice.png";
+import marocaines from "../../../../public/images/icons/harira.png";
+import traditional from "../../../../public/images/icons/chicken.png";
+import traditionalVIP from "../../../../public/images/icons/dinner (1).png";
+import prestige from "../../../../public/images/icons/flavoring.png";
 import remove from "../../../../public/images/remove.png";
+
+
+import dj from "../../../../public/images/icons/dj-music.png";
+import Photographe from "../../../../public/images/icons/photographer.png";
+
+import shooting from "../../../../public/images/icons/photo.png";
+import makeup from "../../../../public/images/icons/makeover.png";
+import Molkky from "../../../../public/images/icons/wooden-object.png";
+import wineTest from "../../../../public/images/icons/wine-tasting.png";
+import pole from "../../../../public/images/icons/pole-dance.png";
+import cake from "../../../../public/images/icons/birthday-cake.png";
+
+
+
+
 import Image from "next/image";
 const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
@@ -32,99 +54,102 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       id: "annicat2",
       name: "Planche dînatoire",
       price: 30,
-      icon: snack,
+      icon: dinner,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat3",
       name: "Menu saveur",
       price: 30,
-      icon: snack,
+      icon: serving,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat4",
       name: "Saveurs du monde Indiennnes",
       price: 30,
-      icon: snack,
+      icon: indian,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat5",
       name: "Saveurs du monde Marocaines",
       price: 30,
-      icon: snack,
+      icon: marocaines,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat6",
       name: "Saveurs traditionnelles",
       price: 30,
-      icon: snack,
+      icon: traditional,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat7",
       name: "Saveurs traditionnelles VIP",
       price: 30,
-      icon: snack,
+      icon: traditionalVIP,
       info: "Encas désaltérant + pâtisseries",
     },
     {
       id: "annicat8",
       name: "Saveurs Prestige VIP",
       price: 30,
-      icon: snack,
+      icon: prestige,
       info: "Encas désaltérant + pâtisseries",
     },
   ];
 
   const memories = [
     { id: "mNone", name: "Aucune salle seule", price: 0, icon: remove },
-    { id: "memo1", name: "Dj", price: 700, icon: snack, info: "ghghjs" },
+    { id: "memo1", name: "Dj", price: 700, icon: dj, info: "ghghjs" },
     {
       id: "memo2",
       name: "Photographe",
       price: 1200,
-      icon: snack,
+      icon: Photographe,
       info: "test ",
     },
   ];
+
+
+  
   const activityOptions = [
-    { id: "anniActivity0", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "anniActivity0", name: "Aucune", price: 0, icon: remove },
     {
       id: "anniActivity1",
       name: "Shooting photo",
       price: 30,
-      icon: "📸",
+      icon: shooting,
       info: "test ",
     },
     {
       id: "anniActivity2",
       name: "Séance maquillage",
       price: 40,
-      icon: "💄",
+      icon: makeup,
       info: "test ",
     },
     {
       id: "anniActivity3",
       name: "Molkky",
       price: 3,
-      icon: "🎯",
+      icon: Molkky,
       info: "test ",
     },
     {
       id: "anniActivity4",
       name: "Dégustation de vin",
       price: 30,
-      icon: "🍷",
+      icon: wineTest,
       info: "test ",
     },
     {
       id: "anniActivity5",
       name: "Pole dance",
       price: 15,
-      icon: "💃",
+      icon: pole,
       info: "test ",
     },
     {
@@ -132,7 +157,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       name: "Gateaux d'anniversaires ",
       price: 15,
       extra: 6,
-      icon: "💃",
+      icon: cake,
       info: "test ",
     },
   ];
@@ -448,7 +473,13 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               }`}
               onClick={() => handleActivitySelect(option.id)}
             >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
+             <Image
+                src={option.icon}
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-md mb-3"
+              />
               <span className="font-bold text-sm text-center">
                 {option.name}
               </span>
