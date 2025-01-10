@@ -16,6 +16,10 @@ const Navbar = () => {
   const pathName = usePathname();
   // const router = useRouter();
 
+
+
+
+
   // Variants for the cross animation
   const dropdownCrossVariants = {
     hidden: (direction) => ({
@@ -36,6 +40,42 @@ const Navbar = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.4 } },
   };
 
+
+
+  if(pathName.includes('/admin')){
+    return (
+      <div className='grid grid-cols-5'>
+      {/* Sidebar */}
+      <div className=" h-screen fixed bg-gray-800 text-white p-4 z-50">
+        <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
+        <nav>
+          <ul>
+            <li>
+              <Link href="/dashboard">
+                <p className="block py-2 px-4 hover:bg-gray-700 rounded">Dashboard</p>
+              </Link>
+            </li>
+            <li>
+              <Link href="/users">
+                <p className="block py-2 px-4 hover:bg-gray-700 rounded">Users</p>
+              </Link>
+            </li>
+            <li>
+              <Link href="/settings">
+                <p className="block py-2 px-4 hover:bg-gray-700 rounded">Settings</p>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+  
+      <div className='col-span-3 h-screen z-50'>
+        sdf sdfffffffffffff
+      </div>
+    </div>
+    )
+  }
+  
   return (
     <nav className="bg-secondary text-primary py-2 px-5 z-50 sticky top-0">
       <div className="max-w-[1400px] flex justify-between  md:grid md:grid-cols-12 md:justify-items-center content-center items-center lg:px-28">
