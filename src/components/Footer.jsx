@@ -1,8 +1,19 @@
+"use client"
+
 import Image from "next/image";
 import logo from "../../public/images/2.png";
 import Link from "next/link";
 import home from "../../public/images/2.jpg"
+import { usePathname } from "next/navigation";
 const Footer = () => {
+
+  const pathName = usePathname();
+
+  if(pathName.includes('/admin')){
+    return (
+      <></>
+    )
+  }
   return (
     <div>
       {/* Top Design */}

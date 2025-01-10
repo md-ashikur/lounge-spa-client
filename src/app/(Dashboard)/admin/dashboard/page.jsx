@@ -1,10 +1,15 @@
+import BookingTable from '@/components/(Admin)/(Dashboard-page)/BookingTable'
+import Cards from '@/components/(Admin)/(Dashboard-page)/Cards'
+import FlowChart from '@/components/(Admin)/(Dashboard-page)/FlowChart'
 import Link from 'next/link'
 import React from 'react'
 
 export default function page() {
   return (
-    <div className='grid grid-cols-5'>
-      
+    <div className="p-6 space-y-6">
+      <Cards />
+      <FlowChart />
+      <BookingTable />
     </div>
   )
 }
