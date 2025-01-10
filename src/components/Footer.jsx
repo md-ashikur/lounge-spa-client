@@ -1,7 +1,7 @@
 import Image from "next/image";
 import logo from "../../public/images/2.png";
 import Link from "next/link";
-
+import home from "../../public/images/2.jpg"
 const Footer = () => {
   return (
     <div>
@@ -108,32 +108,32 @@ const Footer = () => {
             <h3 className="font-semibold mb-4  text-xl">Instagram</h3>
             <div className="grid grid-cols-3 gap-2">
               <Image
-                src=""
+                src={home}
                 alt="Instagram 1"
                 className="w-full h-full object-cover"
               />
               <Image
-                src=""
+                src={home}
                 alt="Instagram 2"
                 className="w-full h-full object-cover"
               />
               <Image
-                src=""
+                src={home}
                 alt="Instagram 3"
                 className="w-full h-full object-cover"
               />
               <Image
-                src=""
+                src={home}
                 alt="Instagram 4"
                 className="w-full h-full object-cover"
               />
               <Image
-                src=""
+                src={home}
                 alt="Instagram 5"
                 className="w-full h-full object-cover"
               />
               <Image
-                src=""
+                src={home}
                 alt="Instagram 6"
                 className="w-full h-full object-cover"
               />

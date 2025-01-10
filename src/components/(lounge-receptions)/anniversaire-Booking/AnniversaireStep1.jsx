@@ -202,6 +202,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
 
         {/* Right Side */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
+
+          {/* number of person------- */}
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>

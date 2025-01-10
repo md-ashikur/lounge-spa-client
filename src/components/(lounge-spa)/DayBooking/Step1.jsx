@@ -178,7 +178,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           <div className="flex items-center mt-4 space-x-4">
             <div className="flex items-center space-x-2">
               <div
-                className={`toggle-button ${
+                className={`toggle-button hover:!bg-gray-300 ${
                   greenDeal ? "bg-green-500" : "bg-gray-300"
                 }`}
                 onClick={() => {
@@ -196,14 +196,14 @@ const Step1 = ({ onNext, setBookingDetails }) => {
             </div>
             <div className="flex items-center space-x-2">
               <div
-                className={`toggle-button ${
+                className={`toggle-button hover:!bg-gray-300 ${
                   lastMinute ? "bg-green-500" : "bg-gray-300"
                 }`}
                 onClick={() => {
                   setLastMinute(!lastMinute);
                   setGreenDeal(false);
                 }}
-              >
+              > 
                 <div
                   className={`toggle-circle ${
                     lastMinute ? "translate-x-6" : "translate-x-0"
