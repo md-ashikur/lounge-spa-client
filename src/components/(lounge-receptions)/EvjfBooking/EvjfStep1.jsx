@@ -5,7 +5,13 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { SiApplemusic } from "react-icons/si";
+import stone from "../../../../public/images/lithotherapie.png";
+import jacuzzi from "../../../../public/images/jacuzzi.png";
+import cleaning from "../../../../public/images/cleaning.png";
+import toiletries from "../../../../public/images/bathroom.png";
+import sound from "../../../../public/images/sound-system.png";
+import terraces from "../../../../public/images/terrace.png";
+
 import emerald from "../../../../public/images/emerald.png";
 import ruby from "../../../../public/images/ruby.png";
 import sapphire from "../../../../public/images/sapphire.png";
@@ -194,73 +200,69 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
      <div className="grid lg:grid-cols-2 gap-8">
             {/* left side----////////////--------- */}
             <div>
-              <h3 className="font-bold mb-4">Inclus</h3>
-              <div className="font-light my-5">
-                {/* row- 1 */}
-                <div className="grid lg:grid-cols-2  ">
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>Sauna infra rouge & pierres chaudes</p>
-                    </div>
-                  </div>
-    
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>
-                        nécéssaire de toilettes (Serviettes, peignoir, gel
-                        douche...)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* row- 2 */}
-                <div className="grid lg:grid-cols-2   my-4">
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>Jaccuzzi professionnel</p>
-                    </div>
-                  </div>
-    
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
-                    </div>
-                  </div>
-                </div>
-    
-                {/* row- 3 */}
-                <div className="grid lg:grid-cols-2   my-4">
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>Nettoyage de fin de séjour & Vaisselle </p>
-                    </div>
-                  </div>
-    
-                  <div className="grid grid-cols-4 gap-2 items-center text-primary mb-5">
-                    <div className="flex justify-center items-center">
-                      <SiApplemusic className="text-5xl" />
-                    </div>
-                    <div className="col-span-3 text-sm">
-                      <p>Terrasses, jardins & parking privatifs</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
+                       <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
+                         <div className="space-y-5">
+                           <div className="grid grid-cols-4 gap-2">
+                             <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={stone} alt="" />
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>Sauna infra rouge & pierres chaudes</p>
+                             </div>
+                           </div>
+             
+                           <div className="grid grid-cols-4 gap-2">
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={jacuzzi} alt="" />
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>Jaccuzzi professionnel</p>
+                             </div>
+                           </div>
+             
+                           <div className="grid grid-cols-4 gap-2">
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={cleaning} alt="" />
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>Nettoyage de fin de séjour & Vaisselle</p>
+                             </div>
+                           </div>
+                         </div>
+             
+                         <div className="space-y-5">
+                           <div className="grid grid-cols-4 gap-2">
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={toiletries} alt="" />
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>
+                                 nécéssaire de toilettes (Serviettes, peignoir, gel
+                                 douche...)
+                               </p>
+                             </div>
+                           </div>
+             
+                           <div className="grid grid-cols-4 gap-2">
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={sound} alt="" />
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
+                             </div>
+                           </div>
+             
+                           <div className="grid grid-cols-4 gap-2">
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={terraces} alt="" /> 
+                             </div>
+                             <div className="col-span-3 flex items-center">
+                               <p>Terrasses, jardins & parking privatifs</p>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
     
               {/* Formules ------------ */}
     
