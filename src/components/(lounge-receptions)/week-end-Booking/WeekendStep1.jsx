@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { SiApplemusic } from "react-icons/si";
 import stone from "../../../../public/images/lithotherapie.png";
 import jacuzzi from "../../../../public/images/jacuzzi.png";
 import cleaning from "../../../../public/images/cleaning.png";
