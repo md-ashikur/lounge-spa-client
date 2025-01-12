@@ -58,7 +58,7 @@ const Navbar = () => {
           {isMenuOpen ? (
             <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50 ">
               <Link href="/">
-                {" "}
+             
                 <Image src={lightLogo} alt="" className="h-14 w-14" />
               </Link>
             </div>
@@ -103,14 +103,14 @@ const Navbar = () => {
             <AnimatePresence>
               {dropdownOpen === 1 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-48 bg-primary text-white rounded shadow-lg overflow-hidden "
+                  className="absolute left-0 mt-2 py-1 bg-primary text-white rounded shadow-lg overflow-hidden "
                   initial="hidden"
                   animate="visible"
                   exit="exit"
                   custom="left"
                 >
                   <motion.span
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start w-48 items-center hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -120,14 +120,14 @@ const Navbar = () => {
                     <Link
                       href={"/lounge-spa/journee"}
                       className={`${
-                        pathName === "/lounge-spa/journee" && "text-primary-100"
+                        pathName === "/lounge-spa/journee" && "bg-secondary w-48 rounded  text-primary px-1 py-2"
                       }`}
                     >
                       Journée
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-48 hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -137,7 +137,7 @@ const Navbar = () => {
                     <Link
                       href={"/lounge-spa/nuitee"}
                       className={`${
-                        pathName === "/lounge-spa/nuitee" && "text-primary-100"
+                        pathName === "/lounge-spa/nuitee" && "bg-secondary w-48 rounded  text-primary px-1 py-2"
                       }`}
                     >
                       Nuitée
@@ -175,14 +175,14 @@ const Navbar = () => {
             <AnimatePresence>
               {dropdownOpen === 2 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-72 bg-primary rounded text-white shadow-lg overflow-hidden"
+                  className="absolute py-1 left-0 mt-2 w-72 bg-primary rounded text-white shadow-lg overflow-hidden"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
                   custom="left"
                 >
                   <motion.span
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -190,12 +190,12 @@ const Navbar = () => {
                     exit="exit"
                   >
                     <Link href={"/lounge-receptions/evjf"}  className={`${
-                        pathName === "/lounge-receptions/evjf" && "text-primary-100"
+                        pathName === "/lounge-receptions/evjf" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>EVJF</Link>
                   </motion.span>
                   <motion.span
                    
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -203,12 +203,12 @@ const Navbar = () => {
                     exit="exit"
                   >
                    <Link href={'/lounge-receptions/anniversaire'} className={`${
-                        pathName === "/lounge-receptions/anniversaire" && "text-primary-100"
+                        pathName === "/lounge-receptions/anniversaire" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>Anniversaire</Link> 
                   </motion.span>
                   <motion.span
                    
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -216,12 +216,12 @@ const Navbar = () => {
                     exit="exit"
                   >
                     <Link href={'/lounge-receptions/mariage'} className={`${
-                        pathName === "/lounge-receptions/mariage" && "text-primary-100"
+                        pathName === "/lounge-receptions/mariage" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>Mariage, fiançailles…</Link>
                   </motion.span>
                   <motion.span
                    
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -229,13 +229,13 @@ const Navbar = () => {
                     exit="exit"
                   >
                     <Link href={'/lounge-receptions/week-end'} className={`${
-                        pathName === "/lounge-receptions/week-end" && "text-primary-100"
+                        pathName === "/lounge-receptions/week-end" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>Week-end entre amis : all inclusive</Link>
                 
                   </motion.span>
                   <motion.span
                  
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -243,7 +243,7 @@ const Navbar = () => {
                     exit="exit"
                   >
                        <Link href={'/lounge-receptions/reception'} className={`${
-                        pathName === "/lounge-receptions/reception" && "text-primary-100"
+                        pathName === "/lounge-receptions/reception" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>Réception sur mesure</Link>
                  
                   </motion.span>
@@ -278,7 +278,7 @@ const Navbar = () => {
             <AnimatePresence>
               {dropdownOpen === 3 && (
                 <motion.div
-                  className="absolute left-0 mt-2 w-48 bg-primary rounded shadow-lg overflow-hidden text-white"
+                  className="absolute left-0 py-1 mt-2 w-48 bg-primary rounded shadow-lg overflow-hidden text-white"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -286,7 +286,7 @@ const Navbar = () => {
                 >
                   <motion.span
                    
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -294,13 +294,13 @@ const Navbar = () => {
                     exit="exit"
                   >
                      <Link href={'/lounge-business/corporate-evening'} className={`${
-                        pathName === "/lounge-business/corporate-evening" && "text-primary-100"
+                        pathName === "/lounge-business/corporate-evening" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}>Soirée d’entreprise</Link>
                   
                   </motion.span>
                   <motion.span
                   
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -308,13 +308,13 @@ const Navbar = () => {
                     exit="exit"
                   >
                      <Link href={'/lounge-business/seminar'} className={`${
-                        pathName === "/lounge-business/seminar" && "text-primary-100"
+                        pathName === "/lounge-business/seminar" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}> Séminaire / Réunion</Link>
                    
                   </motion.span>
                   <motion.span
                   
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -322,7 +322,7 @@ const Navbar = () => {
                     exit="exit"
                   >
                      <Link href={'/lounge-business/tailor-made'} className={`${
-                        pathName === "/lounge-business/tailor-made" && "text-primary-100"
+                        pathName === "/lounge-business/tailor-made" && "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}> Récéption sur mesure</Link>
                    
                   </motion.span>
