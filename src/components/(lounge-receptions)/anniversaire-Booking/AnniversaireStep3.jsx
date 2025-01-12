@@ -32,22 +32,42 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
 
   const generatePDFContent = () => {
     const doc = new jsPDF();
+  
+    // Set PDF background color
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    doc.setFillColor("#FFF6EA");
+    doc.rect(0, 0, pageWidth, pageHeight, "F"); // Draw background
+  
+    // Set text color
+    doc.setTextColor("#6E4F45");
+  
     const generatedDateTime = new Date();
-    const formattedDateTime = generatedDateTime.toLocaleString();
-
+    const formattedDate = generatedDateTime.toLocaleDateString();
+  
+    // Title with generated date
     doc.setFontSize(16);
-    doc.text("Facture de réservation - Anniversaires", 20, 20);
-
+    doc.setFont("helvetica", "bold");
+    doc.text(`DEVIS DU ${formattedDate}`, pageWidth / 2, 20, { align: "center" });
+  
+    // Subtitle
     doc.setFontSize(12);
-    doc.text(`Date de génération : ${formattedDateTime}`, 20, 30);
-    doc.text(`Date : ${bookingDetails.date?.toDateString() || "Non disponible"}`, 20, 40);
-    doc.text(`Plage horaire : ${bookingDetails.slot} : ${bookingDetails.price}€`, 20, 50);
-    doc.text(`Nombre total de personnes : ${bookingDetails.totalPeople}`, 20, 60);
-    doc.text(`Nombre d'adultes : ${bookingDetails.adults}`, 20, 70);
-    doc.text(`Nombre d'enfants (-13 ans) : ${bookingDetails.children}`, 70, 70);
-
+    doc.setFont("helvetica", "normal");
+    doc.text("(Valable 21 jours à compter de cette date)", pageWidth / 2, 30, { align: "center" });
+  
+    // Offer information
+    doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
+    doc.text("Offre: Lounge Reception - Anniversaires", 20, 45);
+  
+    // Booked date and time slot
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text(`Date choisie: ${bookingDetails.date?.toDateString() || "Non disponible"}`, 20, 55);
+    doc.text(`Plage horaire: ${bookingDetails.slot}`, pageWidth - 20, 55, { align: "right" });
+  
     // Catering Options
-    doc.text("Options de restauration sélectionnées :", 20, 80);
+    doc.text("Options de restauration sélectionnées :", 20, 70);
     if (bookingDetails?.selectedCateringOptions?.length > 0) {
       const cateringRows = bookingDetails.selectedCateringOptions.map((optionId) => {
         const option = bookingDetails?.cateringOptions?.find((opt) => opt.id === optionId);
@@ -56,19 +76,24 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
           : ["Option non trouvée", "-", "-"];
       });
       doc.autoTable({
-        startY: 85,
-        head: [["Option", "Quantité", "Prix",  "Prix total"]],
+        startY: 75,
+        head: [["Option", "Quantité", "Prix", "Prix total"]],
         body: cateringRows,
+        theme: "grid",
+        headStyles: {
+          fillColor: "#6E4F45",
+          textColor: "#FFFFFF",
+        },
       });
     } else {
-      doc.text("Aucune", 20, 90);
+      doc.text("Aucune", 20, 80);
     }
-
+  
     // Memories Options
     const memoriesY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 115;
     doc.text("Forfait animations et souvenirs choisi :", 20, memoriesY);
     if (bookingDetails?.selectedMemories?.length > 0) {
-      const cateringRows = bookingDetails.selectedMemories.map((optionId) => {
+      const memoriesRows = bookingDetails.selectedMemories.map((optionId) => {
         const option = bookingDetails?.memories?.find((opt) => opt.id === optionId);
         return option
           ? [option.name, `${option.price}€`]
@@ -77,16 +102,21 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
       doc.autoTable({
         startY: memoriesY + 5,
         head: [["Option", "Prix"]],
-        body: cateringRows,
+        body: memoriesRows,
+        theme: "grid",
+        headStyles: {
+          fillColor: "#6E4F45",
+          textColor: "#FFFFFF",
+        },
       });
     } else {
       doc.text("Aucune", 20, memoriesY + 5);
     }
-
+  
     // Activity Options
     const activityY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 115;
     doc.text("Options d'activité sélectionnées :", 20, activityY);
-
+  
     if (bookingDetails?.selectedActivityOptions?.length > 0) {
       const activityRows = bookingDetails.selectedActivityOptions.map((optionId) => {
         const option = bookingDetails?.activityOptions?.find((opt) => opt.id === optionId);
@@ -95,25 +125,30 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
           ? [option.name, `${quantity} participant(s)`, `${option.price}€ / pers`, `${option.price * quantity}€`]
           : ["Option non trouvée", "-", "-"];
       });
-
+  
       doc.autoTable({
         startY: activityY + 5,
         head: [["Option", "Quantité", "Prix", "Prix total"]],
         body: activityRows,
+        theme: "grid",
+        headStyles: {
+          fillColor: "#6E4F45",
+          textColor: "#FFFFFF",
+        },
       });
     } else {
       doc.text("Aucune", 20, activityY + 5);
     }
-
+  
     // Accommodation Options
     const accommodationY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 15 : 130;
     doc.text("Options de logement sélectionnées :", 20, accommodationY);
-
+  
     if (bookingDetails.selectedAccommodationOption) {
       const selectedAccommodation = bookingDetails.accommodationOptions.find(
         (opt) => opt.id === bookingDetails.selectedAccommodationOption
       );
-
+  
       const accommodationRows = [
         [
           selectedAccommodation?.name || "Option non trouvée",
@@ -122,22 +157,30 @@ const AnniversaireStep3 = ({ bookingDetails, onBack, onNext }) => {
           `${selectedAccommodation?.price * bookingDetails.numAccommodations}€`,
         ],
       ];
-
+  
       doc.autoTable({
         startY: accommodationY + 5,
         head: [["Option", "Quantité", "Prix", "Prix total"]],
         body: accommodationRows,
+        theme: "grid",
+        headStyles: {
+          fillColor: "#6E4F45",
+          textColor: "#FFFFFF",
+        },
       });
     } else {
       doc.text("Aucune", 20, accommodationY + 10);
     }
-
+  
     // Total Cost
-    doc.text(`Coût total : ${calculateTotal().toFixed(2)}€`, 20, accommodationY + 30);
-
+    const totalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 20 : 150;
+    doc.text(`TOTAL : ${calculateTotal().toFixed(2)}€`, 20, totalY);
+  
     return doc;
   };
-
+  
+  
+  
   const previewPDF = () => {
     const doc = generatePDFContent();
     const pdfData = doc.output("datauristring");

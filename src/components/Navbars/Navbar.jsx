@@ -175,14 +175,14 @@ const Navbar = () => {
             <AnimatePresence>
               {dropdownOpen === 2 && (
                 <motion.div
-                  className="absolute py-1 left-0 mt-2 w-72 bg-primary rounded text-white shadow-lg overflow-hidden"
+                  className="absolute px-2 py-1 left-0 mt-2 w-72 bg-primary rounded text-white shadow-lg overflow-hidden"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
                   custom="left"
                 >
                   <motion.span
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -195,7 +195,7 @@ const Navbar = () => {
                   </motion.span>
                   <motion.span
                    
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -208,7 +208,7 @@ const Navbar = () => {
                   </motion.span>
                   <motion.span
                    
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -221,7 +221,7 @@ const Navbar = () => {
                   </motion.span>
                   <motion.span
                    
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -235,7 +235,7 @@ const Navbar = () => {
                   </motion.span>
                   <motion.span
                  
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
