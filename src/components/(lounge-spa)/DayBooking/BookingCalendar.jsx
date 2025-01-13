@@ -87,7 +87,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-5">
-        {/* left side----////////////--------- */}
+        {/* left side----////////////------ */}
         <div>
           <h3 className="font-bold mb-4">Inclus</h3>
           <div className="grid lg:grid-cols-2 gap-5 font-light my-5">
