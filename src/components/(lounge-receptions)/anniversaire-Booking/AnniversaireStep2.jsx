@@ -401,7 +401,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
             onClick={() => setMoreInfo(null)}
           >
             <div
-              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              className="bg-primary text-white  p-4 rounded-md lg:w-1/2"
               onClick={(e) => e.stopPropagation()}
             >
               <p className="mt-4 whitespace-pre-line">{moreInfo}</p>

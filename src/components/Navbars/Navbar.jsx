@@ -17,10 +17,6 @@ const Navbar = () => {
   const pathName = usePathname();
   // const router = useRouter();
 
-
-
-
-
   // Variants for the cross animation
   const dropdownCrossVariants = {
     hidden: (direction) => ({
@@ -41,15 +37,13 @@ const Navbar = () => {
     exit: { opacity: 0, height: 0, transition: { duration: 0.4 } },
   };
 
-
-
-  if(pathName.includes('/admin')){
+  if (pathName.includes("/admin")) {
     return (
       // <AdminLayout/>
       <></>
-    )
+    );
   }
-  
+
   return (
     <nav className="bg-secondary text-primary py-2 px-5 z-50 sticky top-0">
       <div className="max-w-[1400px] flex justify-between  md:grid md:grid-cols-12 md:justify-items-center content-center items-center lg:px-28">
@@ -58,7 +52,6 @@ const Navbar = () => {
           {isMenuOpen ? (
             <div className="text-2xl font-bold flex-shrink-0  md:left-4 z-50 ">
               <Link href="/">
-             
                 <Image src={lightLogo} alt="" className="h-14 w-14" />
               </Link>
             </div>
@@ -80,20 +73,20 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(1)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="hover:text-primary-100 flex items-center space-x-2 ">
+            <button className="hover:text-primary-100 flex items-center justify-center space-x-2 ">
               <Link
                 href={"/lounge-spa"}
                 className={`${
                   pathName === "/lounge-spa/journee" ||
                   pathName === "/lounge-spa/nuitee"
-                    ? "text-primary-100"
-                    : ""
+                    ? "border-b-2 border-primary pb-2"
+                    : "pb-0"
                 }`}
               >
                 Lounge Spa
               </Link>
               <motion.span
-                className="transform"
+                className="transform "
                 animate={dropdownOpen === 1 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
@@ -120,7 +113,8 @@ const Navbar = () => {
                     <Link
                       href={"/lounge-spa/journee"}
                       className={`${
-                        pathName === "/lounge-spa/journee" && "bg-secondary w-48 rounded  text-primary px-1 py-2"
+                        pathName === "/lounge-spa/journee" &&
+                        "bg-secondary w-48 rounded  text-primary px-1 py-2"
                       }`}
                     >
                       Journée
@@ -137,7 +131,8 @@ const Navbar = () => {
                     <Link
                       href={"/lounge-spa/nuitee"}
                       className={`${
-                        pathName === "/lounge-spa/nuitee" && "bg-secondary w-48 rounded  text-primary px-1 py-2"
+                        pathName === "/lounge-spa/nuitee" &&
+                        "bg-secondary w-48 rounded  text-primary px-1 py-2"
                       }`}
                     >
                       Nuitée
@@ -148,24 +143,29 @@ const Navbar = () => {
             </AnimatePresence>
           </div>
 
-          {/* Repeat for Menu 2 and Menu 3 */}
+          {/* Lounge Receptions menu*/}
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(2)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center space-x-2 hover:text-primary-100">
-              <Link href={"/reception"}  className={`${
+            <button className="hover:text-primary-100 flex items-center justify-center space-x-2">
+              <Link
+                href={"/reception"}
+                className={`${
                   pathName === "/lounge-receptions/evjf" ||
                   pathName === "/lounge-receptions/anniversaire" ||
                   pathName === "/lounge-receptions/mariage" ||
                   pathName === "/lounge-receptions/week-end" ||
                   pathName === "/lounge-receptions/reception"
-                    ? "text-primary-100"
-                    : ""
-                }`}>Lounge Receptions</Link>
+                    ? "border-b-2 border-primary pb-2"
+                    : "pb-0"
+                }`}
+              >
+                Lounge Receptions
+              </Link>
               <motion.span
-                className="transform"
+                className="transform flex items-center justify-center"
                 animate={dropdownOpen === 2 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
@@ -189,12 +189,17 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    <Link href={"/lounge-receptions/evjf"}  className={`${
-                        pathName === "/lounge-receptions/evjf" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>EVJF</Link>
+                    <Link
+                      href={"/lounge-receptions/evjf"}
+                      className={`${
+                        pathName === "/lounge-receptions/evjf" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      EVJF
+                    </Link>
                   </motion.span>
                   <motion.span
-                   
                     className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
@@ -202,12 +207,17 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                   <Link href={'/lounge-receptions/anniversaire'} className={`${
-                        pathName === "/lounge-receptions/anniversaire" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>Anniversaire</Link> 
+                    <Link
+                      href={"/lounge-receptions/anniversaire"}
+                      className={`${
+                        pathName === "/lounge-receptions/anniversaire" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      Anniversaire
+                    </Link>
                   </motion.span>
                   <motion.span
-                   
                     className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -215,12 +225,17 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    <Link href={'/lounge-receptions/mariage'} className={`${
-                        pathName === "/lounge-receptions/mariage" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>Mariage, fiançailles…</Link>
+                    <Link
+                      href={"/lounge-receptions/mariage"}
+                      className={`${
+                        pathName === "/lounge-receptions/mariage" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      Mariage, fiançailles…
+                    </Link>
                   </motion.span>
                   <motion.span
-                   
                     className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
@@ -228,13 +243,17 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    <Link href={'/lounge-receptions/week-end'} className={`${
-                        pathName === "/lounge-receptions/week-end" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>Week-end entre amis : all inclusive</Link>
-                
+                    <Link
+                      href={"/lounge-receptions/week-end"}
+                      className={`${
+                        pathName === "/lounge-receptions/week-end" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      Week-end entre amis : all inclusive
+                    </Link>
                   </motion.span>
                   <motion.span
-                 
                     className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -242,37 +261,46 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                       <Link href={'/lounge-receptions/reception'} className={`${
-                        pathName === "/lounge-receptions/reception" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>Réception sur mesure</Link>
-                 
+                    <Link
+                      href={"/lounge-receptions/reception"}
+                      className={`${
+                        pathName === "/lounge-receptions/reception" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      Réception sur mesure
+                    </Link>
                   </motion.span>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          {/*  Menu 3 */}
+          {/*  Lounge Business */}
           <div
             className="relative"
             onMouseEnter={() => setDropdownOpen(3)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center space-x-2 hover:text-primary-100">
-            <Link href={"/reception"}  className={`${
+            <button className="flex items-center justify-center space-x-2 hover:text-primary-100">
+              <Link
+                href={"/reception"}
+                className={`${
                   pathName === "/lounge-business/corporate-evening" ||
                   pathName === "/lounge-business/seminar" ||
                   pathName === "/lounge-business/tailor-made"
-                    ? "text-primary-100"
-                    : ""
-                }`}>Lounge Business</Link>
-             
-           
+                    ? "border-b-2 border-primary pb-2"
+                    : "pb-0"
+                }`}
+              >
+                Lounge Business
+              </Link>
+
               <motion.span
                 className="transform"
                 animate={dropdownOpen === 3 ? { rotate: 180 } : { rotate: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <IoIosArrowDown />
+                <IoIosArrowDown  />
               </motion.span>
             </button>
             <AnimatePresence>
@@ -285,7 +313,6 @@ const Navbar = () => {
                   custom="left"
                 >
                   <motion.span
-                   
                     className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -293,13 +320,17 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                     <Link href={'/lounge-business/corporate-evening'} className={`${
-                        pathName === "/lounge-business/corporate-evening" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}>Soirée d’entreprise</Link>
-                  
+                    <Link
+                      href={"/lounge-business/corporate-evening"}
+                      className={`${
+                        pathName === "/lounge-business/corporate-evening" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      Soirée d’entreprise
+                    </Link>
                   </motion.span>
                   <motion.span
-                  
                     className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
@@ -307,13 +338,18 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                     <Link href={'/lounge-business/seminar'} className={`${
-                        pathName === "/lounge-business/seminar" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}> Séminaire / Réunion</Link>
-                   
+                    <Link
+                      href={"/lounge-business/seminar"}
+                      className={`${
+                        pathName === "/lounge-business/seminar" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      {" "}
+                      Séminaire / Réunion
+                    </Link>
                   </motion.span>
                   <motion.span
-                  
                     className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
                     variants={dropdownCrossVariants}
                     custom="left"
@@ -321,10 +357,16 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                     <Link href={'/lounge-business/tailor-made'} className={`${
-                        pathName === "/lounge-business/tailor-made" && "bg-secondary w-full rounded  text-primary px-1 py-2"
-                      }`}> Récéption sur mesure</Link>
-                   
+                    <Link
+                      href={"/lounge-business/tailor-made"}
+                      className={`${
+                        pathName === "/lounge-business/tailor-made" &&
+                        "bg-secondary w-full rounded  text-primary px-1 py-2"
+                      }`}
+                    >
+                      {" "}
+                      Récéption sur mesure
+                    </Link>
                   </motion.span>
                 </motion.div>
               )}
@@ -418,13 +460,15 @@ const Navbar = () => {
                             exit="exit"
                           >
                             <Link
-                      href={"/lounge-spa/journee"}
-                      className={`${
-                        pathName === "/lounge-spa/journee" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                      Journée
-                    </Link>
+                              href={"/lounge-spa/journee"}
+                              className={`${
+                                pathName === "/lounge-spa/journee" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Journée
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -434,14 +478,16 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                              <Link
-                      href={"/lounge-spa/nuitee"}
-                      className={`${
-                        pathName === "/lounge-spa/nuitee" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                      Nuitée
-                    </Link>
+                            <Link
+                              href={"/lounge-spa/nuitee"}
+                              className={`${
+                                pathName === "/lounge-spa/nuitee" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Nuitée
+                            </Link>
                           </motion.span>
                         </motion.div>
                       )}
@@ -455,7 +501,6 @@ const Navbar = () => {
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
                     <motion.span
-                      
                       className="flex items-center gap-2 hover:text-primary-100 transition"
                       variants={dropdownCrossVariants}
                       custom="right"
@@ -492,9 +537,16 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                             <Link href={"/lounge-receptions/evjf"}  className={`${
-                        pathName === "/lounge-receptions/evjf" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>EVJF</Link>
+                            <Link
+                              href={"/lounge-receptions/evjf"}
+                              className={`${
+                                pathName === "/lounge-receptions/evjf" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              EVJF
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -504,9 +556,17 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                             <Link href={'/lounge-receptions/anniversaire'} className={`${
-                        pathName === "/lounge-receptions/anniversaire" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Anniversaire</Link> 
+                            <Link
+                              href={"/lounge-receptions/anniversaire"}
+                              className={`${
+                                pathName ===
+                                  "/lounge-receptions/anniversaire" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Anniversaire
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -516,9 +576,16 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                             <Link href={'/lounge-receptions/mariage'} className={`${
-                        pathName === "/lounge-receptions/mariage" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Mariage, fiançailles…</Link>
+                            <Link
+                              href={"/lounge-receptions/mariage"}
+                              className={`${
+                                pathName === "/lounge-receptions/mariage" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Mariage, fiançailles…
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -528,9 +595,16 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                             <Link href={'/lounge-receptions/week-end'} className={`${
-                        pathName === "/lounge-receptions/week-end" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Week-end entre amis : all inclusive</Link>
+                            <Link
+                              href={"/lounge-receptions/week-end"}
+                              className={`${
+                                pathName === "/lounge-receptions/week-end" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Week-end entre amis : all inclusive
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -540,9 +614,16 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            <Link href={'/lounge-receptions/reception'} className={`${
-                        pathName === "/lounge-receptions/reception" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Réception sur mesure</Link>
+                            <Link
+                              href={"/lounge-receptions/reception"}
+                              className={`${
+                                pathName === "/lounge-receptions/reception" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Réception sur mesure
+                            </Link>
                           </motion.span>
                         </motion.div>
                       )}
@@ -591,9 +672,17 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            <Link href={'/lounge-business/corporate-evening'} className={`${
-                        pathName === "/lounge-business/corporate-evening" && "text-primary-100"
-                      }`} onClick={() => setIsMenuOpen(!isMenuOpen)}>Soirée d’entreprise</Link>
+                            <Link
+                              href={"/lounge-business/corporate-evening"}
+                              className={`${
+                                pathName ===
+                                  "/lounge-business/corporate-evening" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              Soirée d’entreprise
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -603,9 +692,17 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            <Link href={'/lounge-business/seminar'} className={`${
-                        pathName === "/lounge-business/seminar" && "text-primary-100"
-                      }`} onClick={() => setIsMenuOpen(!isMenuOpen)}> Séminaire / Réunion</Link>
+                            <Link
+                              href={"/lounge-business/seminar"}
+                              className={`${
+                                pathName === "/lounge-business/seminar" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              {" "}
+                              Séminaire / Réunion
+                            </Link>
                           </motion.span>
                           <motion.span
                             className="block px-4 py-2 hover:text-primary-100 transition"
@@ -615,9 +712,17 @@ const Navbar = () => {
                             animate="visible"
                             exit="exit"
                           >
-                            <Link href={'/lounge-business/tailor-made'} className={`${
-                        pathName === "/lounge-business/tailor-made" && "text-primary-100"
-                      }`} onClick={() => setIsMenuOpen(!isMenuOpen)}> Récéption sur mesure</Link>
+                            <Link
+                              href={"/lounge-business/tailor-made"}
+                              className={`${
+                                pathName === "/lounge-business/tailor-made" &&
+                                "text-primary-100"
+                              }`}
+                              onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            >
+                              {" "}
+                              Récéption sur mesure
+                            </Link>
                           </motion.span>
                         </motion.div>
                       )}
@@ -633,10 +738,16 @@ const Navbar = () => {
                   animate="visible"
                   exit="exit"
                 >
-                   <Link href={'/notre-univers'} className={`${
-                        pathName === "/notre-univers" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}> Notre univers</Link>
-                 
+                  <Link
+                    href={"/notre-univers"}
+                    className={`${
+                      pathName === "/notre-univers" && "text-primary-100"
+                    }`}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  >
+                    {" "}
+                    Notre univers
+                  </Link>
                 </motion.span>
                 <motion.span
                   className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
@@ -646,10 +757,15 @@ const Navbar = () => {
                   animate="visible"
                   exit="exit"
                 >
-                   <Link href={'/gallery'} className={`${
-                        pathName === "/gallery" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Découvrez nos espaces</Link>
-                
+                  <Link
+                    href={"/gallery"}
+                    className={`${
+                      pathName === "/gallery" && "text-primary-100"
+                    }`}
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  >
+                    Découvrez nos espaces
+                  </Link>
                 </motion.span>
                 <motion.div className="">
                   <motion.span
@@ -660,10 +776,15 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                     <Link href={'/cartes-cadeaux'} className={`${
+                    <Link
+                      href={"/cartes-cadeaux"}
+                      className={`${
                         pathName === "/cartes-cadeaux" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Cartes cadeaux</Link>
-                  
+                      }`}
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                      Cartes cadeaux
+                    </Link>
                   </motion.span>
                   <motion.span
                     className="block px-4 py-2 hover:text-primary-100 transition"
@@ -673,10 +794,15 @@ const Navbar = () => {
                     animate="visible"
                     exit="exit"
                   >
-                    <Link href={'/contact'} className={`${
+                    <Link
+                      href={"/contact"}
+                      className={`${
                         pathName === "/contact" && "text-primary-100"
-                      }`}  onClick={() => setIsMenuOpen(!isMenuOpen)}>Contact</Link>
-                    
+                      }`}
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                      Contact
+                    </Link>
                   </motion.span>
                 </motion.div>
               </motion.div>

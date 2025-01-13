@@ -103,7 +103,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
                   <Image src={stone} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
-                  <p>Sauna infra rouge & pierres chaudes</p>
+                  <p>Sauna infra-rouge & pierres chaudes</p>
                 </div>
               </div>
 
@@ -121,7 +121,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
                   <Image src={drinks} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
-                  <p>Boissons chaudes & soft </p>
+                  <p>Boissons chaudes & soft à volonté </p>
                 </div>
               </div>
 

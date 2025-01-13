@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { FaInfoCircle } from "react-icons/fa";
-import stone from "../../../../public/images/lithotherapie.png";
+import stone from "../../../../public/images/icons/sauna.png";
 import jacuzzi from "../../../../public/images/jacuzzi.png";
 import drinks from "../../../../public/images/icons/drink.png";
 import toiletries from "../../../../public/images/bathroom.png";
@@ -103,8 +103,8 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         <h2 className="text-xl font-bold text-primary-800">
           Description de l’offre :
         </h2>
-        <p className="text-primary">
-          Tout un Spa rien que pour vous ! Accés privatif pendant <b>3h.</b>
+        <p className="text-primary my-3">
+          Tout un Spa rien que pour vous ! Accès privatif pendant <b>3h.</b>
         </p>
       </div>
 
@@ -118,8 +118,8 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={stone} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
-                      <p>Sauna infra rouge & pierres chaudes</p>
+                    <div className="text-sm col-span-3 flex items-center">
+                      <p>Sauna infra-rouge & pierres chaudes</p>
                     </div>
                   </div>
     
@@ -127,7 +127,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={jacuzzi} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
+                    <div className="text-sm col-span-3 flex items-center">
                       <p>Jaccuzzi professionnel</p>
                     </div>
                   </div>
@@ -136,8 +136,8 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={drinks} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
-                      <p>Boissons chaudes & soft </p>
+                    <div className="text-sm col-span-3 flex items-center">
+                      <p>Boissons chaudes & soft à volonté </p>
                     </div>
                   </div>
                 </div>
@@ -147,7 +147,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={toiletries} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
+                    <div className="text-sm col-span-3 flex items-center">
                       <p>Serviettes de toilette & chaussons spa</p>
                     </div>
                   </div>
@@ -156,8 +156,8 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={sound} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
-                      <p>Sound system </p>
+                    <div className="text-sm col-span-3 flex items-center">
+                      <p>Équipement audio complet & vidéoprojecteur</p>
                     </div>
                   </div>
     
@@ -165,7 +165,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                     <div className="bg-primary p-2 rounded-xl w-14 h-14">
                       <Image src={terraces} alt="" />
                     </div>
-                    <div className="col-span-3 flex items-center">
+                    <div className="text-sm col-span-3 flex items-center">
                       <p>Terrasses, jardins & parking privatifs </p>
                     </div>
                   </div>
@@ -225,7 +225,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
               </div>
               <label>Green Deal</label>
               <FaInfoCircle
-                className="text-blue-500 cursor-pointer"
+                className="text-primary cursor-pointer"
                 onClick={() =>
                   setShowModal({ type: "greenDeal", open: true })
                 }
@@ -251,7 +251,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
               </div>
               <label>Last Minute</label>
               <FaInfoCircle
-                className="text-blue-500 cursor-pointer"
+                className="text-primary cursor-pointer"
                 onClick={() =>
                   setShowModal({ type: "lastMinute", open: true })
                 }
@@ -307,22 +307,17 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
       {/* Modal */}
       {showModal.open && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-96">
+        <div  onClick={() => setShowModal({ type: null, open: false })} className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-primary text-white p-5 rounded-lg lg:w-1/2 mx-5 text-justify">
             <h3 className="text-xl font-bold">
-              {showModal.type === "greenDeal" ? "Green Deal Info" : "Last Minute Info"}
+              {showModal.type === "greenDeal" ? "Green Deal" : "Last Minute"}
             </h3>
             <p className="mt-4">
               {showModal.type === "greenDeal"
-                ? "Green Deal offers discounts on specific days."
-                : "Last Minute books all available slots for today and tomorrow."}
+                ? "2 heures de détente au lieu de 3, tout en réduisant notre impact écologique : nous débranchons le sauna à pierres chaudes énergivore, sans concession sur votre confort ! Seulement 80€ pour 2 personnes."
+                : "Last Minute, profitez des derniers créneaux encore disponibles pour aujourd'hui et demain et économisez 30 % "}
             </p>
-            <button
-              className="mt-6 bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => setShowModal({ type: null, open: false })}
-            >
-              Close
-            </button>
+            
           </div>
         </div>
       )}

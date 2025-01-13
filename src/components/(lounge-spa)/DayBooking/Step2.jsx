@@ -5,7 +5,7 @@ import snack from "../../../../public/images/snack.png"
 import remove from "../../../../public/images/remove.png"
 import Image from "next/image";
 const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
-  const [numPeople, setNumPeople] = useState(1);
+  const [numPeople, setNumPeople] = useState(2);
   const [selectedOptions, setSelectedOptions] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [modalType, setModalType] = useState("");
@@ -21,7 +21,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
    const spaOptions = [
     { id: "None", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "1hr", name: "1h supplémentaire", price: 45, icon: "⏳" },
+    { id: "1hr", name: "1h supplémentaire", price: 50, icon: "⏳" },
     {
       id: "massage",
       name: "Modelages type californien aux huiles chaudes",
@@ -149,7 +149,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
       total += option.price;
     });
-    return total*totalpeople;
+    return total;
   };
 
   const handleNext = () => {
@@ -280,6 +280,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 </button>
               ))}
             </div>
+            <p className="my-3 text-center">Sous réserve de disponibilité, avec confirmation au plus tard une semaine à l’avance par mail.</p>
           </div>
         </div>
       )}
@@ -401,8 +402,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
         )}
       </div>
 
-      <div className="mt-6">
-        <h3 className="text-lg font-bold">Coût Total</h3>
+      <div className="mt-6 text-right">
+        <h3 className="text-lg font-bold">votre expérience Lounge & spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 

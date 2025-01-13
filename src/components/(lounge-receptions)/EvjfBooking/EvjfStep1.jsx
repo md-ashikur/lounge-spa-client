@@ -208,7 +208,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
                                <Image src={stone} alt="" />
                              </div>
                              <div className="col-span-3 flex items-center">
-                               <p>Sauna infra rouge & pierres chaudes</p>
+                               <p>Sauna infra-rouge & pierres chaudes</p>
                              </div>
                            </div>
              

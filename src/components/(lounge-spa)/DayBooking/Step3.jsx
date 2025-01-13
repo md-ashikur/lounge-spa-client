@@ -35,7 +35,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
       {/* Booking Details */}
       <div>
-        <h3 className="font-bold">Détails de réservation :</h3>
+        <h3 className="font-bold">Récapitulatif de votre réservation </h3>
         <p>
           <b>Date :</b> {bookingDetails.date?.toDateString() || "Non disponible"}
         </p>
