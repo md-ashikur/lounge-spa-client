@@ -74,13 +74,13 @@ const Step1 = ({ onNext, setBookingDetails }) => {
       onNext();
     }
   };
-
   return (
     <div className="lg:px-20 space-y-6 my-10">
       <div className="text-center">
         <h2 className="text-xl font-bold text-primary-800">
           Description de l’offre :
         </h2>
+        
         <p className="text-primary">
           Tout un Spa rien que pour vous ! Accés privatif pendant <b>3h.</b>
         </p>
