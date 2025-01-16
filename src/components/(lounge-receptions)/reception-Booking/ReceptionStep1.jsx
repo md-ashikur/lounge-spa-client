@@ -77,7 +77,58 @@ const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
 
-          <p className="my-2 font-light">tarif par pers/nuit : à définir</p>
+          {/* <p className="my-2 font-light">tarif par pers/nuit : à définir</p> */}
+
+          <div className="text-primary">
+            <div className="font-light text-sm space-y-4">
+              {/* Weekdays Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold ">Semaine (LMMJ): </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">8h - 14h: </span>350€
+                  </p>
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>450€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>490€
+                  </p>
+                </div>
+              </div>
+              {/* Friday and Saturday Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold ">Vendredi et Samedi: </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>590€
+                  </p>
+                  <p>
+                    <span className="font-bold"> 14h30 - 1H: </span>990€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>690€
+                  </p>
+                </div>
+              </div>
+
+              {/* Sunday Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold">Dimanche: </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>490€
+                  </p>
+                  <p>
+                    <span className="font-bold">12h30 - 18h: </span>350€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>590€
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Right Side */}

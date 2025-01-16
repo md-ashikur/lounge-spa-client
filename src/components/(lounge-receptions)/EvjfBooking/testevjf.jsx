@@ -53,7 +53,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                   <SiApplemusic className="text-5xl text-primary" />
                 </div>
                 <div className="col-span-3">
-                  <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
+                  <p>Espace de 300m² </p>
                 </div>
               </div>
 

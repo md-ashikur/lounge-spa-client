@@ -79,7 +79,7 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
                   <Image src={palace} alt="" />
                 </div>
                 <div className="col-span-3">
-                  <p>Espace de 300m² digne d’un palais des 1001 nuits</p>
+                  <p>Espace de 300m² </p>
                 </div>
               </div>
 
@@ -118,59 +118,62 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
 
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">
-            Tarifs{" "}
+            Tarifs
             <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span>
           </h3>
 
-          <div className="grid grid-cols-2 gap-5">
-            <div className="font-light">
-              <h3 className="text-center my-2">Samedi</h3>
-              <div className="grid grid-cols-2">
-                <p>11h-19h</p>
-                <p>590€</p>
+          <div className="text-primary">
+            <div className="font-light text-sm space-y-4">
+              {/* Weekdays Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold ">Semaine (LMMJ): </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">8h - 14h: </span>350€
+                  </p>
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>450€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>490€
+                  </p>
+                </div>
+              </div>
+              {/* Friday and Saturday Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold ">Vendredi et Samedi: </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>590€
+                  </p>
+                  <p>
+                    <span className="font-bold"> 14h30 - 1H: </span>990€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>690€
+                  </p>
+                </div>
               </div>
 
-              <div className="grid grid-cols-2">
-                <p>20h-1h</p>
-                <p>690€</p>
-              </div>
-
-              <div className="grid grid-cols-2">
-                <p>15h-1h</p>
-                <p>990€</p>
-              </div>
-
-              <div className="grid grid-cols-2">
-                <p>Heure en +</p>
-                <p>80€</p>
-              </div>
-            </div>
-
-            <div className="font-light">
-              <h3 className="text-center my-2">Dimanche</h3>
-              <div className="grid grid-cols-2">
-                <p>11h-20h</p>
-                <p>490€</p>
-              </div>
-
-              <div className="grid grid-cols-2">
-                <p>14h-20h</p>
-                <p>350€</p>
-              </div>
-
-              <div className="grid grid-cols-2">
-                <p>19h-1h</p>
-                <p>590€</p>
-              </div>
-
-              <div className="grid grid-cols-2">
-                <p>Heure en +</p>
-                <p>70€</p>
+              {/* Sunday Section */}
+              <div className="grid grid-cols-4">
+                  <h2 className="font-bold">Dimanche: </h2>
+                <div className="space-x-3 col-span-3 flex items-center">
+                  <p>
+                    <span className="font-bold">11h - 18h: </span>490€
+                  </p>
+                  <p>
+                    <span className="font-bold">12h30 - 18h: </span>350€
+                  </p>
+                  <p>
+                    <span className="font-bold">18h30 - 1H: </span>590€
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <p className="my-3">
+          <p className="mt-6">
             Personnalisez votre évènement à la prochaine page.
           </p>
         </div>

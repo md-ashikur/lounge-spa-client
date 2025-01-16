@@ -11,23 +11,20 @@ import traditionalVIP from "../../../../public/images/icons/dinner (1).png";
 import prestige from "../../../../public/images/icons/flavoring.png";
 import remove from "../../../../public/images/remove.png";
 
-
-import dj from "../../../../public/images/icons/dj-music.png";
 import Photographe from "../../../../public/images/icons/photographer.png";
 
 import shooting from "../../../../public/images/icons/photo.png";
 import makeup from "../../../../public/images/icons/makeover.png";
 import Molkky from "../../../../public/images/icons/wooden-object.png";
 import wineTest from "../../../../public/images/icons/wine-tasting.png";
-import pole from "../../../../public/images/icons/pole-dance.png";
 import cake from "../../../../public/images/icons/birthday-cake.png";
-
-
-
 
 import Image from "next/image";
 const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [numCatering, setNumCatering] = useState({});
+  const [isCateringModal, setIsCateringModal] = useState(false);
+
   const [selectedMemories, setSelectedMemories] = useState([]);
 
   const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
@@ -40,7 +37,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [showModal, setShowModal] = useState(false);
   const [currentActivityId, setCurrentActivityId] = useState(null);
   const [moreInfo, setMoreInfo] = useState(null);
-
+  const [currentOptionId, setCurrentOptionId] = useState(null);
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove },
     {
@@ -112,8 +109,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     },
   ];
 
-
-  
   const activityOptions = [
     { id: "anniActivity0", name: "Aucune", price: 0, icon: remove },
     {
@@ -200,35 +195,37 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
-  const handleNumActivityChange = (delta) => {
-    setNumActivities((prev) => {
-      const currentCount = prev[currentActivityId] || 0;
-      const newCount = Math.max(0, currentCount + delta);
-      const updatedNumActivities = { ...prev, [currentActivityId]: newCount };
+  // catering------------
+  const handleOptionSelect = (optionId, isCatering = false) => {
+    const selectedOptions = isCatering
+      ? selectedCateringOptions
+      : selectedActivityOptions;
+    const setSelectedOptions = isCatering
+      ? setSelectedCateringOptions
+      : setSelectedActivityOptions;
+    const setNumOptions = isCatering ? setNumCatering : setNumActivities;
 
-      if (newCount === 0) {
-        setSelectedActivityOptions((prevOptions) =>
-          prevOptions.filter((id) => id !== currentActivityId)
-        );
+    if (optionId === (isCatering ? "cateringNone" : "anniActivity0")) {
+      setSelectedOptions([optionId]);
+      setNumOptions({});
+      return;
+    }
+
+    setSelectedOptions((prev) => {
+      if (prev.includes(isCatering ? "cateringNone" : "anniActivity0")) {
+        return [optionId];
       }
-
-      return updatedNumActivities;
-    });
-  };
-
-  const handleCateringSelect = (optionId) => {
-    if (optionId === "cateringNone") {
-      setSelectedCateringOptions([optionId]);
-    } else {
-      if (selectedCateringOptions.includes("cateringNone")) {
-        setSelectedCateringOptions([optionId]);
+      if (prev.includes(optionId)) {
+        return prev.filter((id) => id !== optionId);
       } else {
-        setSelectedCateringOptions((prev) =>
-          prev.includes(optionId)
-            ? prev.filter((id) => id !== optionId)
-            : [...prev, optionId]
-        );
+        return [...prev, optionId];
       }
+    });
+
+    if (!selectedOptions.includes(optionId)) {
+      setCurrentOptionId(optionId);
+      setIsCateringModal(isCatering);
+      setShowModal(true);
     }
   };
 
@@ -248,6 +245,22 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
+  const handleNumActivityChange = (delta) => {
+    setNumActivities((prev) => {
+      const currentCount = prev[currentActivityId] || 0;
+      const newCount = Math.max(0, currentCount + delta);
+      const updatedNumActivities = { ...prev, [currentActivityId]: newCount };
+
+      if (newCount === 0) {
+        setSelectedActivityOptions((prevOptions) =>
+          prevOptions.filter((id) => id !== currentActivityId)
+        );
+      }
+
+      return updatedNumActivities;
+    });
+  };
+
   const handleAccommodationSelect = (option) => {
     setSelectedAccommodationOption(option);
 
@@ -256,9 +269,31 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
+  const handleNumChange = (delta) => {
+    const numOptions = isCateringModal ? numCatering : numActivities;
+    const setNumOptions = isCateringModal ? setNumCatering : setNumActivities;
+
+    setNumOptions((prev) => {
+      const currentCount = prev[currentOptionId] || 0;
+      const newCount = Math.max(0, currentCount + delta);
+      const updatedNumOptions = { ...prev, [currentOptionId]: newCount };
+
+      if (newCount === 0) {
+        const setSelectedOptions = isCateringModal
+          ? setSelectedCateringOptions
+          : setSelectedActivityOptions;
+        setSelectedOptions((prevOptions) =>
+          prevOptions.filter((id) => id !== currentOptionId)
+        );
+      }
+
+      return updatedNumOptions;
+    });
+  };
+
   const closeModal = () => {
     setShowModal(false);
-    setCurrentActivityId(null);
+    setCurrentOptionId(null);
   };
 
   const calculateTotal = () => {
@@ -267,8 +302,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
-      if (option) {
-        total += option.price * totalPeople;
+      if (option && numCatering[optionId] > 0 && optionId !== "cateringNone") {
+        total += option.price * numCatering[optionId];
       }
     });
 
@@ -280,13 +315,13 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     });
 
     selectedActivityOptions.forEach((optionId) => {
-      const activity = activityOptions.find((opt) => opt.id === optionId);
+      const option = activityOptions.find((opt) => opt.id === optionId);
       if (
-        activity &&
+        option &&
         numActivities[optionId] > 0 &&
         optionId !== "anniActivity0"
       ) {
-        total += activity.price * numActivities[optionId];
+        total += option.price * numActivities[optionId];
       }
     });
 
@@ -331,16 +366,16 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <p>
-          <b>Date sélectionné: </b>
-          {bookingDetails.date
-            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
-                weekday: "long", // Full name of the day (e.g., "Mercredi")
-                day: "numeric", // Numeric day of the month (e.g., "29")
-                month: "long", // Full name of the month (e.g., "janvier")
-                year: "numeric", // Full year (e.g., "2025")
-              })
-            : "Non disponible"}
-        </p>
+        <b>Date sélectionné: </b>
+        {bookingDetails.date
+          ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+              weekday: "long", // Full name of the day (e.g., "Mercredi")
+              day: "numeric", // Numeric day of the month (e.g., "29")
+              month: "long", // Full name of the month (e.g., "janvier")
+              year: "numeric", // Full year (e.g., "2025")
+            })
+          : "Non disponible"}
+      </p>
       <p>
         <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
       </p>
@@ -353,6 +388,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </p>
 
       {/* catering options------------------ */}
+
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">Choisissez vos options :</h3>
         <div className="grid lg:grid-cols-6 gap-4">
@@ -364,7 +400,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                   ? "bg-green-500 text-white"
                   : "bg-primary text-white"
               }`}
-              onClick={() => handleCateringSelect(option.id)}
+              onClick={() => handleOptionSelect(option.id, true)}
             >
               <Image
                 src={option.icon}
@@ -390,6 +426,12 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                   </button>
                 )}
               </span>
+              {selectedCateringOptions.includes(option.id) &&
+                option.id !== "anniActivity0" && (
+                  <div className="text-sm mt-2">
+                    Quantité: {numCatering[option.id] || 0}
+                  </div>
+                )}
             </div>
           ))}
         </div>
@@ -437,8 +479,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 {option.name}
               </span>
               <span className="text-lg">
-              {option.id != "mNone" && <>{option.price}€</>}
-               
+                {option.id != "mNone" && <>{option.price}€</>}
+
                 {option.info && (
                   <button
                     className="ml-2 p-1 text-white"
@@ -471,9 +513,9 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                   ? "bg-green-500 text-white"
                   : "bg-primary text-white"
               }`}
-              onClick={() => handleActivitySelect(option.id)}
+              onClick={() => handleOptionSelect(option.id)}
             >
-             <Image
+              <Image
                 src={option.icon}
                 alt=""
                 width={60}
@@ -484,8 +526,12 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 {option.name}
               </span>
               <span className="text-lg">
-              {option.id != "anniActivity0" && <>{option.price}€ / {option.extra} per</>}
-                
+                {option.id != "anniActivity0" && (
+                  <>
+                    {option.price}€ / {option.extra} per
+                  </>
+                )}
+
                 {option.info && (
                   <button
                     className="ml-2 p-1 text-white"
@@ -511,23 +557,25 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       {/* Modal for Increment/Decrement */}
-      {showModal && currentActivityId !== "anniActivity0" && (
-        <div className="fixed !mt-0 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg mx-5 ">
-            <h3 className="text-lg font-bold mb-4">
-              Sélectionnez le nombre de personnes
-            </h3>
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
+            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre</h3>
             <div className="flex items-center space-x-2 mb-4">
               <button
                 className="px-4 py-2 bg-primary text-white rounded-lg"
-                onClick={() => handleNumActivityChange(-1)}
+                onClick={() => handleNumChange(-1)}
               >
                 -
               </button>
-              <span>{numActivities[currentActivityId] || 0}</span>
+              <span>
+                {(isCateringModal ? numCatering : numActivities)[
+                  currentOptionId
+                ] || 0}
+              </span>
               <button
                 className="px-4 py-2 bg-primary text-white rounded-lg"
-                onClick={() => handleNumActivityChange(1)}
+                onClick={() => handleNumChange(1)}
               >
                 +
               </button>
@@ -565,7 +613,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 {option.name}
               </span>
               <span className="text-lg">
-              {option.id != "accomNone" && <>{option.price}€</>}</span>
+                {option.id != "accomNone" && <>{option.price}€</>}
+              </span>
               {option.id !== "accomNone" &&
                 selectedAccommodationOption === option.id && (
                   <div className="flex items-center space-x-2 mt-2">
@@ -594,7 +643,9 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
+        <h3 className="text-lg font-bold">
+          Votre expérience Lounge & spa pour
+        </h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 
