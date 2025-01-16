@@ -168,7 +168,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-       
         <p>
           <b>Date sélectionné: </b>
           {bookingDetails.date

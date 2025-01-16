@@ -190,7 +190,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
           <div className="font-light grid grid-cols-2 gap-2">
             <div>
               <p className="text-center font-normal my-2">
-                Une nuit de 20h à 10h :{" "}
+              Une nuit de 19h à 10h:
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>290€ pour 2 pers</li>

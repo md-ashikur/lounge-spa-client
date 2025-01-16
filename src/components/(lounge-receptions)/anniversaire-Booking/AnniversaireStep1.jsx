@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import palace from "../../../../public/images/royal-palace.png";
-import spa from "../../../../public/images/massage-therapist.png";
+import spa from "../../../../public/images/jacuzzi.png";
 import cleaning from "../../../../public/images/cleaning.png";
-import cake from "../../../../public/images/cake.png";
+import chair from "../../../../public/images/chair.png";
 import sound from "../../../../public/images/sound-system.png";
 import terraces from "../../../../public/images/terrace.png";
 import Image from "next/image";
@@ -19,8 +19,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
 
   const timeSlots = [
     { time: "11h – 18h", price: 590 },
-    { time: "18h30 – 1am", price: 690 },
-    { time: "14h30 – 1am", price: 990 },
+    { time: "14h30 – 1h", price: 990 },
+    { time: "18h30 – 1h", price: 690 },
   ];
 
   const handlePeopleChange = (type, value) => {
@@ -69,14 +69,12 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
           Description de l’offre :
         </h2>
         <p className="text-primary">
-          Découvrez un univers d&apos;exception où nous créerons avec vous
-          l’événement de vos rêves. Pré-sélectionnez vos besoins, nous
-          analyserons votre demande et vous recontacterons dans les 48h !
+        Célébrez votre anniversaire dans un lieu d&apos;exception, où chaque détail est pensé pour donner vie à l’événement de vos rêves. Réservez directement ou réalisez votre devis personnalisé, et venez échanger avec notre équipe pour une expérience inoubliable.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
-        {/* left side----////////////--------- */}
+        {/* left side  */}
         <div>
           <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
           <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
@@ -111,13 +109,13 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
 
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={cake} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>Gâteaux maison</p>
-                </div>
-              </div>
+                           <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                               <Image src={chair} alt="" />
+                             </div>
+                             <div className="col-span-3">
+                               <p>Mobilier nécessaires (chaises, tables, nappes...)</p>
+                             </div>
+                           </div>
 
               <div className="grid grid-cols-4 gap-2">
                 <div className="bg-primary p-2 rounded-xl w-14 h-14">
@@ -135,7 +133,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                   <Image src={terraces} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
-                  <p>Terrasses, jardins & parking privatifs</p>
+                  <p>Terrasses, pergola, jardins & parking privatifs </p>
                 </div>
               </div>
             </div>
@@ -143,7 +141,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
 
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">
-            Tarifs{" "}
+            Tarifs
             <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span>
           </h3>
 
@@ -195,19 +193,20 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          <p className="my-3">
+          <p className="mt-6">
             Personnalisez votre évènement à la prochaine page.
           </p>
         </div>
 
+
+
         {/* Right Side */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
-
-          {/* number of person------- */}
+          {/* Number of People */}
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
-          <div className="flex gap-4 ">
+          <div className="flex gap-4">
             <div className="flex items-center space-x-4 text-primary-800">
               <label className="font-bold">Adultes (13 ans et +) :</label>
               <input
@@ -264,7 +263,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                       }`}
                       onClick={() => handleSlotClick(slot)}
                     >
-                      {slot.time} - {slot.price}€
+                      {slot.time}
                     </button>
                   ))}
                 </div>
@@ -274,19 +273,26 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
         </div>
       </div>
 
-      {/* Next Button */}
-      <div className="flex justify-end mt-6">
-        <button
-          className={`px-4 py-2 rounded-full ${
-            numAdults >= 1 && selectedDate && selectedSlot
-              ? "bg-green-500 text-white"
-              : "bg-primary-500 text-white cursor-not-allowed"
-          }`}
-          onClick={handleNext}
-          disabled={numAdults < 1 || !selectedDate || !selectedSlot}
-        >
-          Suivant
-        </button>
+      {/* Price Display and Next Button */}
+      <div className="mt-6">
+        {selectedSlot && (
+          <div className="text-right text-lg font-bold text-primary-800">
+            Prix: {selectedSlot.price}€
+          </div>
+        )}
+        <div className="flex justify-end mt-2">
+          <button
+            className={`px-4 py-2 rounded-full ${
+              numAdults >= 1 && selectedDate && selectedSlot
+                ? "bg-green-500 text-white"
+                : "bg-primary-500 text-white cursor-not-allowed"
+            }`}
+            onClick={handleNext}
+            disabled={numAdults < 1 || !selectedDate || !selectedSlot}
+          >
+            Suivant
+          </button>
+        </div>
       </div>
     </div>
   );

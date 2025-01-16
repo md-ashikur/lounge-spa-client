@@ -103,7 +103,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const memories = [
     { id: "mNone", name: "Aucune salle seule", price: 0, icon: remove },
-    { id: "memo1", name: "Dj", price: 700, icon: dj, info: "ghghjs" },
     {
       id: "memo2",
       name: "Photographe",
@@ -143,13 +142,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       name: "Dégustation de vin",
       price: 30,
       icon: wineTest,
-      info: "test ",
-    },
-    {
-      id: "anniActivity5",
-      name: "Pole dance",
-      price: 15,
-      icon: pole,
       info: "test ",
     },
     {
@@ -339,8 +331,16 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <p>
-        <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
-      </p>
+          <b>Date sélectionné: </b>
+          {bookingDetails.date
+            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })
+            : "Non disponible"}
+        </p>
       <p>
         <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
       </p>
@@ -593,8 +593,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      <div className="mt-6">
-        <h3 className="text-lg font-bold">Coût Total</h3>
+      <div className="mt-6 text-right">
+        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 

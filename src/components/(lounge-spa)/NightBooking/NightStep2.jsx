@@ -75,7 +75,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
     {
       id: "nightCatering4",
       name: "Menu saveur",
-      price: 30,
+      price: 45,
       icon: "🧖",
       extra: "/pers",
       info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
@@ -151,7 +151,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   };
 
   const calculateTotal = () => {
-    let total = numPeople * 50; // Base price per person
+    let total = numPeople * 290; // Base price per person
     selectedOptions.forEach((optionId) => {
       const option = nightSpaOptions.find((opt) => opt.id === optionId);
       if (optionId === "NightSpa4") {
@@ -170,8 +170,16 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
       <p>
-        <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
-      </p>
+          <b>Date sélectionné: </b>
+          {bookingDetails.date
+            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })
+            : "Non disponible"}
+        </p>
       <p>
         <b>Plage horaire: </b> {bookingDetails.slot}
       </p>
@@ -287,7 +295,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
             <h3 className="text-lg font-bold">Massages</h3>
             <div className="mt-4">
-              <label>Number of People:</label>
+              <label>Nombre de personnes: </label>
               <div className="flex items-center space-x-2 mt-2">
                 <button
                   className="px-3 py-1 bg-gray-300 rounded-md"
@@ -315,7 +323,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
               </div>
             </div>
             <div className="mt-4">
-              <label>Duration (minutes):</label>
+              <label>Durée: </label>
               <div className="flex items-center space-x-2 mt-2">
                 {[20, 30, 60].map((duration) => (
                   <button
@@ -396,8 +404,8 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
       )}
     </div>
 
-      <div className="mt-6">
-        <h3 className="text-lg font-bold">Total Cost</h3>
+    <div className="mt-6 text-right">
+        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 
