@@ -8,10 +8,9 @@ import countries from "world-countries";
 
 // Prepare country options for react-select
 const countryOptions = countries.map((country) => ({
-    value: country.cca2, // Country code (e.g., US, IN)
-    label: country.name.common, // Country name (e.g., United States, India)
-  }));
-
+  value: country.cca2, // Country code (e.g., US, IN)
+  label: country.name.common, // Country name (e.g., United States, India)
+}));
 
 const stripePromise = loadStripe("your-stripe-public-key-here");
 
@@ -24,8 +23,6 @@ const Step4 = ({ onBack, onSubmit }) => {
     formState: { errors },
     control,
   } = useForm();
-
-
 
   const onSubmitForm = async (data) => {
     setLoading(true);
@@ -71,7 +68,7 @@ const Step4 = ({ onBack, onSubmit }) => {
           <div>
             <input
               type="text"
-              {...register("name", { required: "Nom is required" })}
+              {...register("name", { required: "Nom est requis" })}
               placeholder="Nom"
               className="block w-full p-2 border rounded outline-none"
             />
@@ -83,7 +80,7 @@ const Step4 = ({ onBack, onSubmit }) => {
           <div>
             <input
               type="text"
-              {...register("sureName", { required: "Prénom is required" })}
+              {...register("sureName", { required: "Prénom est requis" })}
               placeholder="Prénom"
               className="block w-full p-2 border rounded outline-none"
             />
@@ -94,30 +91,30 @@ const Step4 = ({ onBack, onSubmit }) => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-5">
-        <div>
-          <Controller
-            name="country"
-            control={control}
-            rules={{ required: "Pays is required" }}
-            render={({ field }) => (
-              <Select
-                {...field}
-                options={countryOptions}
-                placeholder="Pays"
-                className="basic-single"
-                classNamePrefix="select"
-              />
+          <div>
+            <Controller
+              name="country"
+              control={control}
+              rules={{ required: "Pays est requis" }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  options={countryOptions}
+                  placeholder="Pays"
+                  className="basic-single"
+                  classNamePrefix="select"
+                />
+              )}
+            />
+            {errors.country && (
+              <p className="text-red-500">{errors.country.message}</p>
             )}
-          />
-          {errors.country && (
-            <p className="text-red-500">{errors.country.message}</p>
-          )}
-        </div>
+          </div>
           <div>
             <input
               type="text"
               {...register("postalCode", {
-                required: "Code postal is required",
+                required: "Code postal est requis",
               })}
               placeholder="Code postal"
               className="block w-full p-2 border rounded outline-none"
@@ -133,7 +130,7 @@ const Step4 = ({ onBack, onSubmit }) => {
             <input
               type="text"
               {...register("laneNumber", {
-                required: "N° de voie is required",
+                required: "N° de voie est requis",
               })}
               placeholder="N° de voie"
               className="block w-full p-2 border rounded outline-none"
@@ -146,7 +143,7 @@ const Step4 = ({ onBack, onSubmit }) => {
           <div>
             <input
               type="text"
-              {...register("address", { required: "Adresse is required" })}
+              {...register("address", { required: "Adresse est requis" })}
               placeholder="Adresse"
               className="block w-full p-2 border rounded outline-none"
             />
@@ -161,7 +158,7 @@ const Step4 = ({ onBack, onSubmit }) => {
             <input
               type="email"
               {...register("email", {
-                required: "Adresse mail is required",
+                required: "Adresse mail est requis",
                 pattern: {
                   value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                   message: "Invalid Adresse mail format",
@@ -174,15 +171,22 @@ const Step4 = ({ onBack, onSubmit }) => {
               <p className="text-red-500">{errors.email.message}</p>
             )}
           </div>
+
           <div>
             <input
-              type="phone"
+              type="tel" 
               {...register("phone", {
-                required: "Numéro de téléphone is required",
-                
+                required: "Numéro de téléphone est requis",
+                pattern: {
+                  value: /^[0-9()+\s-]*$/, 
+                  message: "Invalid phone number format",
+                },
               })}
               placeholder="Numéro de téléphone"
               className="block w-full p-2 border rounded outline-none"
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9()+\s-]/g, ""); 
+              }}
             />
             {errors.phone && (
               <p className="text-red-500">{errors.phone.message}</p>
@@ -190,20 +194,35 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
         </div>
 
-       <div className="flex justify-end">
-       <button
-          type="submit"
-          className="bg-primary text-white py-2 px-4 rounded outline-none"
-          disabled={loading}
-        >
-          {loading ? "Processing..." : "Proceed to Payment"}
-        </button>
-       </div>
+        <div>
+            <textarea
+              type="text"
+              {...register("note", {
+                required: "Commentaires ou requêtes est requis",
+              })}
+              placeholder="Commentaires ou requêtes"
+              className="block w-full p-2 border rounded outline-none"
+            />
+            {errors.note && (
+              <p className="text-red-500">{errors.note.message}</p>
+            )}
+          </div>
+
+        <div className="flex justify-between">
+        <button onClick={onBack} className="px-4 py-2 bg-primary text-white rounded-md">
+      Précédent
+      </button>
+          <button
+            type="submit"
+            className="bg-primary text-white py-2 px-4 rounded outline-none"
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Proceed to Payment"}
+          </button>
+        </div>
       </form>
 
-      <button onClick={onBack} className="mt-4 text-primary">
-        Back
-      </button>
+     
     </div>
   );
 };

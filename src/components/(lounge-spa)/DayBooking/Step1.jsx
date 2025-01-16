@@ -108,7 +108,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-2 gap-5 !mt-0">
         {/* Left Side */}
      <div>
               <h3 className="font-bold mb-4">Inclus</h3>
@@ -307,9 +307,9 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
       {/* Modal */}
       {showModal.open && (
-        <div  onClick={() => setShowModal({ type: null, open: false })} className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-primary text-white p-5 rounded-lg lg:w-1/2 mx-5 text-justify">
-            <h3 className="text-xl font-bold">
+        <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-5 rounded-lg lg:w-1/2 mx-5 text-justify">
+            <h3 className="text-xl font-bold text-primary">
               {showModal.type === "greenDeal" ? "Green Deal" : "Last Minute"}
             </h3>
             <p className="mt-4">
@@ -317,7 +317,9 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                 ? "2 heures de détente au lieu de 3, tout en réduisant notre impact écologique : nous débranchons le sauna à pierres chaudes énergivore, sans concession sur votre confort ! Seulement 80€ pour 2 personnes."
                 : "Last Minute, profitez des derniers créneaux encore disponibles pour aujourd'hui et demain et économisez 30 % "}
             </p>
-            
+            <div className="text-right">
+            <button onClick={() => setShowModal({ type: null, open: false })} className="bg-primary text-white px-4 py-2 rounded mt-4">Fermer</button>
+            </div>
           </div>
         </div>
       )}

@@ -73,13 +73,13 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(1)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="hover:text-primary-100 flex items-center justify-center space-x-2 ">
+            <button className=" flex items-center justify-center space-x-2 ">
               <Link
                 href={"/lounge-spa"}
                 className={`${
                   pathName === "/lounge-spa/journee" ||
                   pathName === "/lounge-spa/nuitee"
-                    ? "border-b-2 border-primary pb-2"
+                    ? "border-b-2 border-primary pb-2 font-bold"
                     : "pb-0"
                 }`}
               >
@@ -103,13 +103,14 @@ const Navbar = () => {
                   custom="left"
                 >
                   <motion.span
-                    className="block px-2 py-2 flex justify-start w-48 items-center hover:text-primary-100 transition"
+                    className=" block px-2 py-2 flex justify-start w-48 items-center  transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                   >
+                 
                     <Link
                       href={"/lounge-spa/journee"}
                       className={`${
@@ -119,9 +120,10 @@ const Navbar = () => {
                     >
                       Journée
                     </Link>
+                    
                   </motion.span>
                   <motion.span
-                    className="block px-2 py-2 flex justify-start items-center w-48 hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-48 transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -149,7 +151,7 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(2)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="hover:text-primary-100 flex items-center justify-center space-x-2">
+            <button className=" flex items-center justify-center space-x-2">
               <Link
                 href={"/reception"}
                 className={`${
@@ -158,7 +160,7 @@ const Navbar = () => {
                   pathName === "/lounge-receptions/mariage" ||
                   pathName === "/lounge-receptions/week-end" ||
                   pathName === "/lounge-receptions/reception"
-                    ? "border-b-2 border-primary pb-2"
+                    ? "border-b-2 border-primary pb-2 font-bold"
                     : "pb-0"
                 }`}
               >
@@ -182,7 +184,7 @@ const Navbar = () => {
                   custom="left"
                 >
                   <motion.span
-                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -200,7 +202,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -218,7 +220,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -236,7 +238,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -254,7 +256,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -281,7 +283,7 @@ const Navbar = () => {
             onMouseEnter={() => setDropdownOpen(3)}
             onMouseLeave={() => setDropdownOpen(null)}
           >
-            <button className="flex items-center justify-center space-x-2 hover:text-primary-100">
+            <button className="flex items-center justify-center space-x-2">
               <Link
                 href={"/reception"}
                 className={`${
@@ -313,7 +315,7 @@ const Navbar = () => {
                   custom="left"
                 >
                   <motion.span
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -331,7 +333,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -350,7 +352,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block px-2 py-2 flex justify-start items-center w-full hover:text-primary-100 transition"
+                    className="block px-2 py-2 flex justify-start items-center w-full hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"
@@ -423,7 +425,7 @@ const Navbar = () => {
                   >
                     <motion.span
                       href="#"
-                      className="flex items-center gap-2 hover:text-primary-100 transition"
+                      className="flex items-center gap-2 hover:font-bold transition"
                       variants={dropdownCrossVariants}
                       custom="left"
                       initial="hidden"
@@ -452,7 +454,7 @@ const Navbar = () => {
                           custom="left"
                         >
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -471,7 +473,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="right"
                             initial="hidden"
@@ -501,7 +503,7 @@ const Navbar = () => {
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
                     <motion.span
-                      className="flex items-center gap-2 hover:text-primary-100 transition"
+                      className="flex items-center gap-2 hover:font-bold transition"
                       variants={dropdownCrossVariants}
                       custom="right"
                       initial="hidden"
@@ -530,7 +532,7 @@ const Navbar = () => {
                           custom="left"
                         >
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -549,7 +551,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="right"
                             initial="hidden"
@@ -569,7 +571,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -588,7 +590,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="right"
                             initial="hidden"
@@ -607,7 +609,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -636,7 +638,7 @@ const Navbar = () => {
                     onMouseLeave={() => setDropdownOpen(null)}
                   >
                     <motion.span
-                      className="flex items-center gap-2 hover:text-primary-100 transition"
+                      className="flex items-center gap-2 hover:font-bold transition"
                       variants={dropdownCrossVariants}
                       custom="left"
                       initial="hidden"
@@ -665,7 +667,7 @@ const Navbar = () => {
                           custom="left"
                         >
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -685,7 +687,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="right"
                             initial="hidden"
@@ -705,7 +707,7 @@ const Navbar = () => {
                             </Link>
                           </motion.span>
                           <motion.span
-                            className="block px-4 py-2 hover:text-primary-100 transition"
+                            className="block px-4 py-2 hover:font-bold transition"
                             variants={dropdownCrossVariants}
                             custom="left"
                             initial="hidden"
@@ -731,7 +733,7 @@ const Navbar = () => {
                 </div>
 
                 <motion.span
-                  className="block px-4 py-2 hover:text-primary-100 transition"
+                  className="block px-4 py-2 hover:font-bold transition"
                   variants={dropdownCrossVariants}
                   custom="right"
                   initial="hidden"
@@ -750,7 +752,7 @@ const Navbar = () => {
                   </Link>
                 </motion.span>
                 <motion.span
-                  className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
+                  className="block px-4 py-2 lg:my-5 hover:font-bold transition"
                   variants={dropdownCrossVariants}
                   custom="left"
                   initial="hidden"
@@ -769,7 +771,7 @@ const Navbar = () => {
                 </motion.span>
                 <motion.div className="">
                   <motion.span
-                    className="block px-4 py-2 lg:my-5 hover:text-primary-100 transition"
+                    className="block px-4 py-2 lg:my-5 hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="right"
                     initial="hidden"
@@ -787,7 +789,7 @@ const Navbar = () => {
                     </Link>
                   </motion.span>
                   <motion.span
-                    className="block px-4 py-2 hover:text-primary-100 transition"
+                    className="block px-4 py-2 hover:font-bold transition"
                     variants={dropdownCrossVariants}
                     custom="left"
                     initial="hidden"

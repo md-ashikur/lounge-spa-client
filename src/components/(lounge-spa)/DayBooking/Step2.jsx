@@ -168,9 +168,19 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-       <p>
-        <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
-      </p>
+       
+        <p>
+          <b>Date sélectionné: </b>
+          {bookingDetails.date
+            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })
+            : "Non disponible"}
+        </p>
+ 
       <p>
         <b>Plage horaire: </b> {bookingDetails.slot}
       </p>
@@ -265,7 +275,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {showModal && modalType === "1hr" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md lg:w-1/2">
-            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
+            <h3 className="text-lg font-bold">Prolongez l’instant</h3>
             <div className="mt-4 space-y-2">
               {additionalHourOptions.map((option) => (
                 <button
@@ -280,7 +290,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 </button>
               ))}
             </div>
-            <p className="my-3 text-center">Sous réserve de disponibilité, avec confirmation au plus tard une semaine à l’avance par mail.</p>
+            <p className="my-3 text-center">Sous réserve de disponibilité, avec confirmation au plus tard une semaine à l’avance par mail. Vous serez immédiatement remboursé en cas d&apos;indisponibilité</p>
           </div>
         </div>
       )}
@@ -403,7 +413,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">votre expérience Lounge & spa pour</h3>
+        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 

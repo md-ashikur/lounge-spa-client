@@ -64,11 +64,7 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
           Description de l’offre :
         </h2>
         <p className="text-primary">
-          Célébrez votre union dans un cadre digne des 1001 nuits. Au sein de
-          nos espaces somptueux, nous créerons avec vous l’évènement de vos
-          rêves pour une journée inoubliable. Savourez une expérience culinaire
-          de prestige avec notre service traiteur, proposant des menus
-          personnalisables à base de produits frais et de saison.
+        Célébrez votre union dans un cadre d’exception, où raffinement et élégance se mêlent au dévouement de nos équipes pour faire de votre journée un moment inoubliable. Nos espaces somptueux offrent le décor parfait pour un mariage conçu sur mesure, selon vos rêves. Savourez une expérience culinaire de prestige grâce à notre service traiteur, et vivez des instants uniques entouré de ceux qui vous sont chers.
         </p>
       </div>
 

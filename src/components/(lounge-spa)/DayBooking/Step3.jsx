@@ -8,7 +8,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
   const validCoupons = {
     WELCOME10: 10, // 10% discount
-    SAVE20: 20,    // 20% discount
+    SAVE20: 20, // 20% discount
   };
 
   const calculateTotal = () => {
@@ -26,25 +26,41 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
- 
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Anniversaires</span></div>
+      <div className="text-center">
+        {" "}
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+          Anniversaires
+        </span>
+      </div>
 
       {/* Booking Details */}
       <div>
-        <h3 className="font-bold">Récapitulatif de votre réservation </h3>
+        <h3 className="font-bold my-5 text-xl">
+          Récapitulatif de votre réservation{" "}
+        </h3>
         <p>
-          <b>Date :</b> {bookingDetails.date?.toDateString() || "Non disponible"}
+          <b>Date :</b>
+          {bookingDetails.date
+            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })
+            : "Non disponible"}
         </p>
+
         <p>
-        <b>Plage horaire:</b> {bookingDetails.slot} 
-      </p>
-    
-      <p><b>Nombre total de personnes:</b> {bookingDetails.totalPeople}</p>
+          <b>Plage horaire:</b> {bookingDetails.slot}
+        </p>
+
+        <p>
+          <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
+        </p>
       </div>
 
-   
       {/* spa Options */}
       <div>
         <h3 className="font-bold">Options de spa sélectionnées :</h3>
@@ -66,10 +82,11 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
             })}
           </ul>
         ) : (
-          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
+          <p className="text-gray-500">
+            Aucune option de restauration sélectionnée.
+          </p>
         )}
       </div>
-
 
       {/* Catering Options */}
       <div>
@@ -92,14 +109,11 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
             })}
           </ul>
         ) : (
-          <p className="text-gray-500">Aucune option de restauration sélectionnée.</p>
+          <p className="text-gray-500">
+            Aucune option de restauration sélectionnée.
+          </p>
         )}
       </div>
-
-     
-
-     
-     
 
       {/* Apply Coupon */}
       <div className="space-y-4">
@@ -107,7 +121,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         <div className="flex items-center space-x-4">
           <input
             type="text"
-            className="border px-3 py-2 rounded-md w-1/2"
+            className="border px-3 py-2 rounded-md "
             placeholder="Entrez le code promo"
             value={couponCode}
             onChange={(e) => setCouponCode(e.target.value)}
@@ -120,22 +134,29 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
           </button>
         </div>
         {couponError && <p className="text-red-500">{couponError}</p>}
-        {discount > 0 && <p className="text-green-500">Coupon appliqué : {discount}% de réduction</p>}
+        {discount > 0 && (
+          <p className="text-green-500">
+            Coupon appliqué : {discount}% de réduction
+          </p>
+        )}
       </div>
 
       {/* Total Cost */}
-      <div>
-        <h3 className="font-bold">Coût total :</h3>
+      <div className="text-right">
+        <h3 className="font-bold">Votre expérience Lounge & spa pour :</h3>
         <p className="text-xl font-semibold">{calculateTotal().toFixed(2)}€</p>
       </div>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
           Précédent
         </button>
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded-md"
+          className="px-4 py-2 bg-primary text-white rounded-md"
           onClick={onNext}
         >
           Suivant

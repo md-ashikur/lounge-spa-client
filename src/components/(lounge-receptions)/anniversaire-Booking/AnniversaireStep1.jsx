@@ -125,7 +125,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                 </div>
                 <div className="col-span-3 flex items-center">
                   <p>
-                    Sound system, rétro projecteur, wifi et cuisine équipée...
+                  Sound system, vidéoprojecteur, wifi, cuisine équipée et chambre froide
                   </p>
                 </div>
               </div>
