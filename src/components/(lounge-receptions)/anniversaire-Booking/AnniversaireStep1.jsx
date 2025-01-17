@@ -205,7 +205,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
           </p>
         </div>
 
-        {/* Right Side */}
+        {/* Right Side========== */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
           {/* Number of People */}
           <h3 className="font-bold text-primary-800">
