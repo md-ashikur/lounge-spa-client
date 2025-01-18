@@ -234,7 +234,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          {/* Calendar and Time Slots */}
+          {/* Calendar and Time Slots ==========*/}
           <div>
             <div>
               <h3 className="font-bold text-primary-800">
