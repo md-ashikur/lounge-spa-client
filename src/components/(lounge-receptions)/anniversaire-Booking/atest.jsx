@@ -552,7 +552,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       )}
 
-      {/* House for sleep------------------- */}
+      {/* House for sleep------------ */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
           Choisissez vos options logements :
