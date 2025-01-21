@@ -6,7 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import Select from "react-select";
 import countries from "world-countries";
 
-// Prepare country options for react-select
+
 const countryOptions = countries.map((country) => ({
     value: country.cca2, // Country code (e.g., US, IN)
     label: country.name.common, // Country name (e.g., United States, India)
