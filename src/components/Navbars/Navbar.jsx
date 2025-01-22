@@ -366,8 +366,7 @@ const Navbar = () => {
                         "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}
                     >
-                      {" "}
-                      Récéption sur mesure
+                      Réception sur mesure
                     </Link>
                   </motion.span>
                 </motion.div>

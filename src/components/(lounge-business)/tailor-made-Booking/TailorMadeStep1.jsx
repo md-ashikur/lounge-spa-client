@@ -34,7 +34,7 @@ const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
           Description de l’offre :
         </h2>
         <p className="text-primary">
-        Découvrez un univers d&apos;exception pour un événement d&apos;entreprise inoubliable. 300m², digne d’un palais des 1001 nuits et des menus personnalisés inventif à base de produits frais et de saison proposé par notre cheffe sur place. offrez à vos collaborateurs une soirée mémorable.
+        Offrez à vos collaborateurs une expérience unique dans un cadre d’exception. Avec 300 m² élégamment aménagés, nos espaces sont conçus pour sublimer vos soirées d’entreprise. Savourez des menus personnalisés et créatifs, élaborés à base de produits frais et de saison par notre cheffe sur place. Alliez raffinement et convivialité pour faire de votre événement un moment mémorable.
         </p>
       </div>
 
