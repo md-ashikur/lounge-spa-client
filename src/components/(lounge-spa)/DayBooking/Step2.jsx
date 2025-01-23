@@ -135,7 +135,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   };
 
   const calculateTotal = () => {
-    let total= 0; // Base price per person
+    let total= bookingDetails.price; // Base price per person
     let totalpeople = numPeople; // Base price per person
     selectedOptions.forEach((optionId) => {
       const option = spaOptions.find((opt) => opt.id === optionId);
@@ -191,10 +191,10 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
           </span>
           <span>
             {new Date(bookingDetails.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString("fr-FR", {
-                weekday: "long", // Full name of the day (e.g., "Mercredi")
-                day: "numeric", // Numeric day of the month (e.g., "29")
-                month: "long", // Full name of the month (e.g., "janvier")
-                year: "numeric", // Full year (e.g., "2025")
+                weekday: "long", 
+                day: "numeric", 
+                month: "long", 
+                year: "numeric", 
               })}
           </span>
         </>

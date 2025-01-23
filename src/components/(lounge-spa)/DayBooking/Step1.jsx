@@ -20,6 +20,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
   const [greenDeal, setGreenDeal] = useState(false);
   const [lastMinute, setLastMinute] = useState(false);
   const [showModal, setShowModal] = useState({ type: null, open: false });
+  const [price, setPrice] = useState(0);
 
   const defaultSlots = useMemo(
     () => ["11h – 14h", "15h – 18h", "19h – 22h"],
@@ -37,6 +38,24 @@ const Step1 = ({ onNext, setBookingDetails }) => {
     ],
     []
   );
+
+  const calculatePrice = () => {
+    if (greenDeal) {
+      setPrice(80); // Fixed price for Green Deal
+    } else if (lastMinute && selectedDate) {
+      const day = selectedDate.getDay();
+      setPrice(day >= 1 && day <= 4 ? 85 : 100); // Mon-Thu: 85€, Fri-Sun: 100€
+    } else if (selectedDate && selectedSlot) {
+      const day = selectedDate.getDay();
+      setPrice(day >= 1 && day <= 4 ? 120 : 140); // Mon-Thu: 120€, Fri-Sun: 140€
+    } else {
+      setPrice(0); // Default price when no selection
+    }
+  };
+
+  useEffect(() => {
+    calculatePrice();
+  }, [greenDeal, lastMinute, selectedDate, selectedSlot]);
 
   useEffect(() => {
     if (lastMinute) {
@@ -104,6 +123,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         slot: selectedSlot,
         greenDeal,
         lastMinute,
+        price
       });
       onNext();
     }
@@ -111,91 +131,100 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
   return (
     <div className="lg:px-20 space-y-6 my-10 relative">
+         <div className="text-center">
+        <h2 className="text-xl font-bold text-primary-800">
+          Description de l’offre :
+        </h2>
+        
+        <p className="text-primary my-3">
+          Tout un Spa rien que pour vous ! Accés privatif pendant <b>3h.</b>
+        </p>
+      </div>
       <div className="grid lg:grid-cols-2 gap-5 !mt-0">
-        {/* left side----------- */}
-        <div>
-          <h3 className="font-bold mb-4">Inclus</h3>
-          <div className="grid lg:grid-cols-2 gap-5 font-light my-5">
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={stone} alt="" />
+        {/* Left Side */}
+       <div>
+                <h3 className="font-bold mb-4">Inclus</h3>
+                <div className="grid lg:grid-cols-2 gap-5 font-light my-5">
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={stone} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Sauna infra-rouge & pierres chaudes</p>
+                      </div>
+                    </div>
+      
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={jacuzzi} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Jaccuzzi professionnel</p>
+                      </div>
+                    </div>
+      
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={drinks} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Boissons chaudes & soft à volonté </p>
+                      </div>
+                    </div>
+                  </div>
+      
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={toiletries} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Serviettes de toilette & chaussons spa</p>
+                      </div>
+                    </div>
+      
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={sound} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Équipement audio complet & vidéoprojecteur</p>
+                      </div>
+                    </div>
+      
+                    <div className="grid grid-cols-4 gap-2 ">
+                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                        <Image src={terraces} alt="" />
+                      </div>
+                      <div className="text-sm col-span-3 flex items-center">
+                        <p>Terrasses, jardins & parking privatifs </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Sauna infra-rouge & pierres chaudes</p>
+      
+                {/* ---------Tarifs------ */}
+                <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
+                <div className="font-light grid grid-cols-2 gap-2">
+                  <div>
+                    <p className="text-center font-normal my-2">Semaine (LMMJ) : </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>120€ pour 2 pers</li>
+                      <li>45€/pers à partir de 3 pers.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-center font-normal my-2">Weekend (VSD) : </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>140€ pour 2 pers</li>
+                      <li>50€/pers à partir de 3 pers.</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={jacuzzi} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Jaccuzzi professionnel</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={drinks} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Boissons chaudes & soft à volonté </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={toiletries} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Serviettes de toilette & chaussons spa</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={sound} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Équipement audio complet & vidéoprojecteur</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={terraces} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Terrasses, jardins & parking privatifs </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* ---------Tarifs------ */}
-          <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
-          <div className="font-light grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-center font-normal my-2">Semaine (LMMJ) : </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>120€ pour 2 pers</li>
-                <li>45€/pers à partir de 3 pers.</li>
-              </ul>
-            </div>
-            <div>
-              <p className="text-center font-normal my-2">Weekend (VSD) : </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>140€ pour 2 pers</li>
-                <li>50€/pers à partir de 3 pers.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* right side-------- */}
+        {/* Right Side */}
         <div>
           <h3 className="font-bold text-primary-800">
             Choisissez votre créneau horaire :
@@ -251,7 +280,9 @@ const Step1 = ({ onNext, setBookingDetails }) => {
               <label>Last Minute</label>
               <FaInfoCircle
                 className="text-primary cursor-pointer"
-                onClick={() => setShowModal({ type: "lastMinute", open: true })}
+                onClick={() =>
+                  setShowModal({ type: "lastMinute", open: true })
+                }
               />
             </div>
           </div>
@@ -332,7 +363,10 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         </div>
       )}
 
-      <div className="flex justify-end mt-6">
+      <div className="text-right mt-6">
+        <p className="font-bold text-lg text-primary-800">
+          Prix : {price}€
+        </p>
         <button
           className={`px-4 py-2 rounded-full ${
             (selectedDate && lastMinute) || (selectedDate && selectedSlot)
