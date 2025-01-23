@@ -721,8 +721,7 @@ const Navbar = () => {
                               }`}
                               onClick={() => setIsMenuOpen(!isMenuOpen)}
                             >
-                              {" "}
-                              Récéption sur mesure
+                               Réception sur mesure
                             </Link>
                           </motion.span>
                         </motion.div>

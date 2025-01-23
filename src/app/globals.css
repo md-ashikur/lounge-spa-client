@@ -111,7 +111,7 @@ body{
 
 .react-calendar__tile--active {
   background: #6E4F45 !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .react-calendar__tile:disabled {

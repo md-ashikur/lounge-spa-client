@@ -181,18 +181,21 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
         </p>
  
       <p>
-        <b>Plage horaire: </b> {bookingDetails.slot}
+       {!bookingDetails.lastMinute && (<> <b>Plage horaire: </b> {bookingDetails.slot}</>)}
       </p>
       {bookingDetails.greenDeal && <p>Green Deal Choisi</p>}
       {bookingDetails.lastMinute && (
         <>
           <span>
-            <b>Last Minute:</b> Ends{" "}
+            <b>Last Minute:</b> Se termine{" "}
           </span>
           <span>
-            {new Date(
-              bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
-            ).toDateString()}
+            {new Date(bookingDetails.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })}
           </span>
         </>
       )}
