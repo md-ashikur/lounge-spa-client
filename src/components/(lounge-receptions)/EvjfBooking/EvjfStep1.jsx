@@ -301,9 +301,10 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
                   </p>
                 </div>
               </div>
+              <p className="text-primary-800 mt-6 font-semibold">Personnalisez votre évènement à la prochaine page.</p>
             </div>
     
-            {/* right side---////////////------------- */}
+            {/* right side---////////////----- */}
      <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
         {/* Select number of people */}
         <div className="flex items-center gap-4">

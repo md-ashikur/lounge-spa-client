@@ -1,355 +1,442 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { FaInfoCircle } from "react-icons/fa";
-import stone from "../../../../public/images/icons/sauna.png";
-import jacuzzi from "../../../../public/images/jacuzzi.png";
-import drinks from "../../../../public/images/icons/drink.png";
-import toiletries from "../../../../public/images/bathroom.png";
-import sound from "../../../../public/images/sound-system.png";
-import terraces from "../../../../public/images/terrace.png";
+import React, { useState } from "react";
+import snack from "../../../../public/images/snack.png"
+import remove from "../../../../public/images/remove.png"
 import Image from "next/image";
+const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
+  const [numPeople, setNumPeople] = useState(2);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [modalType, setModalType] = useState("");
+    const [additionalHourOptions, setAdditionalHourOptions] = useState([]);
+    const [massageDetails, setMassageDetails] = useState({
+      numPeople: 1,
+      duration: 20,
+    });
+  
+    const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+    const [cateringInfo, setCateringInfo] = useState(null);
+    const [spaInfo, setSpaInfo] = useState(null);
 
-const Step1 = ({ onNext, setBookingDetails }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [bookedSlots, setBookedSlots] = useState({});
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [greenDeal, setGreenDeal] = useState(false);
-  const [lastMinute, setLastMinute] = useState(false);
-  const [showModal, setShowModal] = useState({ type: null, open: false });
+   const spaOptions = [
+    { id: "None", name: "Aucune", price: 0, icon: "🚫" },
+    { id: "1hr", name: "1h supplémentaire", price: 50, icon: "⏳" },
+    {
+      id: "massage",
+      name: "Modelages type californien aux huiles chaudes",
+      extra: "(+10€ soir et dimanche)",
+      price: 50,
+      icon: "💆",
+      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
+    },
+    { id: "robe", name: "Location de peignoir", price: 5, icon: "🧖" },
+    {
+      id: "vip",
+      name: "Accueil VIP",
+      price: 35,
+      extra: "/pers",
+      icon: "🍾",
+      info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
+    },
+  ];
 
-  const defaultSlots = useMemo(
-    () => ["11h – 14h", "15h – 18h", "19h – 22h"],
-    []
-  );
-  const saturdaySlots = useMemo(() => ["11h – 14h", "15h – 18h"], []);
-  const greenDealSlots = useMemo(
-    () => [
-      "9h30 – 11h30",
-      "12h – 14h",
-      "14h30 – 16h30",
-      "17h – 19h",
-      "19h30 – 21h30",
-      "22h – 00h",
-    ],
-    []
-  );
+  const cateringOptions = [
+    { id: "cateringNone", name: "Aucune", price: 0, icon: "🚫" },
+    {
+      id: "GourmetSnack",
+      name: "En-cas gourmand",
+      price: 20,
+      icon: "⏳",
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "DinnerBoard",
+      name: "Planche dînatoire",
+      price: 30,
+      icon: "💆",
+      info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
+    },
+    {
+      id: "FlavorMenu",
+      name: "Menu saveur",
+      price: 30,
+      icon: "🧖",
+      info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
+    },
+    {
+      id: "service",
+      name: "Service à table par notre cheffe",
+      price: 35,
+      icon: "🧖",
+    },
+  ];
 
-  useEffect(() => {
-    if (lastMinute) {
-      const today = new Date();
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
-
-      const todayDate = today.toISOString().split("T")[0];
-      const tomorrowDate = tomorrow.toISOString().split("T")[0];
-
-      setBookedSlots({
-        [todayDate]: defaultSlots,
-        [tomorrowDate]: defaultSlots,
-      });
-
-      setTimeSlots([]);
-      setSelectedSlot(null);
-    } else {
-      const slots = greenDeal
-        ? greenDealSlots
-        : selectedDate?.getDay() === 6
-        ? saturdaySlots
-        : defaultSlots;
-      setTimeSlots(slots);
-      setSelectedSlot(null);
-    }
-  }, [
-    greenDeal,
-    lastMinute,
-    selectedDate,
-    defaultSlots,
-    saturdaySlots,
-    greenDealSlots,
-  ]);
-
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    if (greenDeal) {
-      const day = date.getDay();
-      return day !== 2 && day !== 3 && day !== 4;
-    }
-
-    if (lastMinute) {
-      const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 0);
-      return date < today || date > limitDate;
+  const handleOptionSelect = (option) => {
+    if (option === "None") {
+      setSelectedOptions([option]);
+      return;
     }
 
-    const formattedDate = date.toISOString().split("T")[0];
-    return (
-      date < today || bookedSlots[formattedDate]?.length === timeSlots.length
-    );
+    setSelectedOptions((prev) => {
+      if (prev.includes("None")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
+
+    if (option === "1hr" && !selectedOptions.includes(option)) {
+      const { slot } = bookingDetails;
+      const [start, end] = slot.split(" – ");
+      const additionalStart = new Date(
+        `2022-01-01T${start.replace("h", ":")}:00`
+      );
+      const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
+
+      const options = [
+        `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
+          .toTimeString()
+          .slice(0, 5)} – ${end}`,
+        `${start} – ${new Date(
+          additionalEnd.setHours(additionalEnd.getHours() + 1)
+        )
+          .toTimeString()
+          .slice(0, 5)}`,
+      ];
+
+      setAdditionalHourOptions(options);
+      setModalType("1hr");
+      setShowModal(true);
+    }
+
+    if (option === "massage" && !selectedOptions.includes(option)) {
+      setModalType("massage");
+      setShowModal(true);
+    }
   };
 
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot);
+  const handleCateringSelect = (option) => {
+    if (option === "cateringNone") {
+      setSelectedCateringOptions([option]);
+      return;
+    }
+
+    setSelectedCateringOptions((prev) => {
+      if (prev.includes("cateringNone")) {
+        return [option];
+      }
+      return prev.includes(option)
+        ? prev.filter((opt) => opt !== option)
+        : [...prev, option];
+    });
+  };
+
+  const handleMassageChange = (field, value) => {
+    setMassageDetails((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const calculateTotal = () => {
+    let total= bookingDetails.price; // Base price per person
+    let totalpeople = numPeople; // Base price per person
+    selectedOptions.forEach((optionId) => {
+      const option = spaOptions.find((opt) => opt.id === optionId);
+    
+     if (optionId === "massage") {
+        total += option.price * massageDetails.numPeople;
+      } else {
+        total += option.price * totalpeople;
+      }
+
+    });
+    selectedCateringOptions.forEach((optionId) => {
+      const option = cateringOptions.find((opt) => opt.id === optionId);
+      total += option.price *totalpeople;
+    });
+    return total;
   };
 
   const handleNext = () => {
-    if ((selectedDate && selectedSlot) || (selectedDate && lastMinute)) {
-      setBookingDetails({
-        date: selectedDate,
-        slot: selectedSlot,
-        greenDeal,
-        lastMinute,
-      });
-      onNext();
-    }
+    const totalPeople = numPeople;
+    const data = {
+      ...bookingDetails,
+      totalPeople,
+      selectedOptions,
+      selectedCateringOptions,
+      spaOptions,
+      cateringOptions,
+      totalPrice: calculateTotal(),
+    };
+    onNext(data);
   };
 
   return (
-    <div className="lg:px-20 space-y-6 my-10 relative">
-       <div className="text-center">
-        <h2 className="text-xl font-bold text-primary-800">
-          Description de l’offre :
-        </h2>
-        
-        <p className="text-primary my-3">
-          Tout un Spa rien que pour vous ! Accés privatif pendant <b>3h.</b>
+    <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
+        <p>
+          <b>Date sélectionné: </b>
+          {bookingDetails.date
+            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+                weekday: "long", // Full name of the day (e.g., "Mercredi")
+                day: "numeric", // Numeric day of the month (e.g., "29")
+                month: "long", // Full name of the month (e.g., "janvier")
+                year: "numeric", // Full year (e.g., "2025")
+              })
+            : "Non disponible"}
         </p>
+ 
+      <p>
+       {!bookingDetails.lastMinute && (<> <b>Plage horaire: </b> {bookingDetails.slot}</>)}
+      </p>
+      {bookingDetails.greenDeal && <p>Green Deal Choisi</p>}
+      {bookingDetails.lastMinute && (
+        <>
+          <span>
+            <b>Last Minute:</b> Se termine{" "}
+          </span>
+          <span>
+            {new Date(bookingDetails.date.getTime() + 24 * 60 * 60 * 1000).toLocaleDateString("fr-FR", {
+                weekday: "long", 
+                day: "numeric", 
+                month: "long", 
+                year: "numeric", 
+              })}
+          </span>
+        </>
+      )}
+
+ {/* Number of People------------ */}
+ <div className="flex items-center space-x-4">
+        <label className="font-bold">
+          Sélectionnez le nombres de personnes (13ans et +) :
+        </label>
+        <button
+          className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+          onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
+        >
+          -
+        </button>
+        <span className="px-4">{numPeople}</span>
+        <button
+          className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+          onClick={() => setNumPeople(numPeople + 1)}
+        >
+          +
+        </button>
       </div>
-      <div className="grid lg:grid-cols-2 gap-5 !mt-0">
-        {/* left side----------- */}
-        <div>
-          <h3 className="font-bold mb-4">Inclus</h3>
-          <div className="grid lg:grid-cols-2 gap-5 font-light my-5">
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={stone} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Sauna infra-rouge & pierres chaudes</p>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={jacuzzi} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Jaccuzzi professionnel</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={drinks} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Boissons chaudes & soft à volonté </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={toiletries} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Serviettes de toilette & chaussons spa</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={sound} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Équipement audio complet & vidéoprojecteur</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2 ">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={terraces} alt="" />
-                </div>
-                <div className="text-sm col-span-3 flex items-center">
-                  <p>Terrasses, jardins & parking privatifs </p>
-                </div>
-              </div>
+   {/* =================Choose Spa section start============ */}
+   <div>
+   <h3 className="text-lg font-bold">Choisissez vos options Spa :</h3>
+      <div className="grid lg:grid-cols-5 gap-4 text-sm">
+        {spaOptions.map((option) => (
+          <div
+            key={option.id}
+            className={`flex justify-center items-center p-3 rounded-md shadow-md ${
+              selectedOptions.includes(option.id)
+                ? "bg-green-500 text-white"
+                : "bg-primary text-white"
+            }`}
+            onClick={() => handleOptionSelect(option.id)}
+          >
+            <div className="text-center flex flex-col items-center">
+              <span className="my-3 text-4xl">{option.icon}</span>
+              <span className=" text-sm">{option.name}</span>
+              <p className="text-sm">
+                {option.price}€<span className="text-sm">{option.extra}</span>{" "}
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSpaInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </p>
             </div>
           </div>
+        ))}
+      </div>
 
-          {/* ---------Tarifs------ */}
-          <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
-          <div className="font-light grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-center font-normal my-2">Semaine (LMMJ) : </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>120€ pour 2 pers</li>
-                <li>45€/pers à partir de 3 pers.</li>
-              </ul>
-            </div>
-            <div>
-              <p className="text-center font-normal my-2">Weekend (VSD) : </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>140€ pour 2 pers</li>
-                <li>50€/pers à partir de 3 pers.</li>
-              </ul>
-            </div>
+      {spaInfo && (
+        <div
+          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+        "
+          onClick={() => setSpaInfo(null)}
+        >
+          <div
+            className="bg-primary text-white p-4 rounded-md lg:w-1/2 "
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
           </div>
         </div>
+      )}
+   </div>
 
-        {/* right side-------- */}
-        <div>
-          <h3 className="font-bold text-primary-800">
-            Choisissez votre créneau horaire :
-          </h3>
-          <Calendar
-            onChange={setSelectedDate}
-            value={selectedDate}
-            tileDisabled={tileDisabled}
-            minDate={new Date()}
-            className="react-calendar my-5"
-          />
 
-          <div className="flex items-center mt-4 space-x-4">
-            <div className="flex items-center space-x-2">
-              <div
-                className={`toggle-button hover:!bg-gray-300 ${
-                  greenDeal ? "bg-green-500" : "bg-gray-300"
-                }`}
-                onClick={() => {
-                  setGreenDeal(!greenDeal);
-                  setLastMinute(false);
-                }}
-              >
-                <div
-                  className={`toggle-circle ${
-                    greenDeal ? "translate-x-6" : "translate-x-0"
-                  }`}
-                />
-              </div>
-              <label>Green Deal</label>
-              <FaInfoCircle
-                className="text-primary cursor-pointer"
-                onClick={() => setShowModal({ type: "greenDeal", open: true })}
-              />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <div
-                className={`toggle-button hover:!bg-gray-300 ${
-                  lastMinute ? "bg-green-500" : "bg-gray-300"
-                }`}
-                onClick={() => {
-                  setLastMinute(!lastMinute);
-                  setGreenDeal(false);
-                }}
-              >
-                <div
-                  className={`toggle-circle ${
-                    lastMinute ? "translate-x-6" : "translate-x-0"
-                  }`}
-                />
-              </div>
-              <label>Last Minute</label>
-              <FaInfoCircle
-                className="text-primary cursor-pointer"
-                onClick={() => setShowModal({ type: "lastMinute", open: true })}
-              />
-            </div>
-          </div>
-
-          {lastMinute ? (
-            <div className="mt-5">
-              <h3 className="font-bold">Créneaux réservés :</h3>
-              {Object.entries(bookedSlots).map(([date, slots]) => (
-                <div key={date} className="mt-2">
-                  <p className="font-semibold">{date}</p>
-                  <div className="flex gap-4">
-                    {slots.map((slot) => (
-                      <span
-                        className="py-1 px-3 rounded-full bg-green-500 text-center text-white"
-                        key={slot}
-                      >
-                        {slot}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+      {/* 1 hour modal----------------- */}
+      {showModal && modalType === "1hr" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+          <div className="bg-white p-4 rounded-md lg:w-1/2">
+            <h3 className="text-lg font-bold">Prolongez l’instant</h3>
+            <div className="mt-4 space-y-2">
+              {additionalHourOptions.map((option) => (
+                <button
+                  key={option}
+                  className="block w-full p-2 bg-gray-200 rounded-md"
+                  onClick={() => {
+                    setShowModal(false);
+                    setSelectedOptions((prev) => [...prev, "1hr"]);
+                  }}
+                >
+                  {option}
+                </button>
               ))}
             </div>
-          ) : (
-            selectedDate && (
-              <div>
-                <h3 className="font-bold mt-4">
-                  Sélectionnez un créneau horaire
-                </h3>
-                <div className="flex gap-2 flex-wrap mt-2">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      className={`py-2 px-3 rounded-full text-white text-center text-sm ${
-                        bookedSlots[
-                          selectedDate?.toISOString().split("T")[0]
-                        ]?.includes(slot)
-                          ? "bg-red-500 text-white cursor-not-allowed"
-                          : selectedSlot === slot
-                          ? "bg-green-500 text-white"
-                          : "bg-primary"
-                      }`}
-                      onClick={() => handleSlotClick(slot)}
-                      disabled={bookedSlots[
-                        selectedDate?.toISOString().split("T")[0]
-                      ]?.includes(slot)}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )
-          )}
+            <p className="my-3 text-center">Sous réserve de disponibilité, avec confirmation au plus tard une semaine à l’avance par mail. Vous serez immédiatement remboursé en cas d&apos;indisponibilité</p>
+          </div>
         </div>
-      </div>
+      )}
 
-      {showModal.open && (
-        <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-5 rounded-lg lg:w-1/2 mx-5 text-justify">
-            <h3 className="text-xl font-bold text-primary">
-              {showModal.type === "greenDeal" ? "Green Deal" : "Last Minute"}
-            </h3>
-            <p className="mt-4">
-              {showModal.type === "greenDeal"
-                ? "2 heures de détente au lieu de 3, tout en réduisant notre impact écologique : nous débranchons le sauna à pierres chaudes énergivore, sans concession sur votre confort ! Seulement 80€ pour 2 personnes."
-                : "Last Minute, profitez des derniers créneaux encore disponibles pour aujourd'hui et demain et économisez 30 % "}
-            </p>
-            <div className="text-right">
+      {/* massage modal---------------- */}
+      {showModal && modalType === "massage" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
+          <div className="bg-white p-4 rounded-sm lg:w-1/2">
+            <h3 className="text-lg font-bold">Massages</h3>
+            <div className="mt-4">
+              <label>Number of People:</label>
+              <div className="flex items-center space-x-2 mt-2">
+                <button
+                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.max(1, massageDetails.numPeople - 1)
+                    )
+                  }
+                >
+                  -
+                </button>
+                <span>{massageDetails.numPeople}</span>
+                <button
+                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.min(numPeople, massageDetails.numPeople + 1)
+                    )
+                  }
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label>Duration (minutes):</label>
+              <div className="flex items-center space-x-2 mt-2">
+                {[20, 30, 60].map((duration) => (
+                  <button
+                    key={duration}
+                    className={`px-4 py-2 rounded-md ${
+                      massageDetails.duration === duration
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() => handleMassageChange("duration", duration)}
+                  >
+                    {duration} min
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 text-right">
               <button
-                onClick={() => setShowModal({ type: null, open: false })}
-                className="bg-primary text-white px-4 py-2 rounded mt-4"
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setShowModal(false)}
               >
-                Fermer
+                Confirm
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <div className="flex justify-end mt-6">
+      {/* =================Choose Catering Section start================= */}
+      <div className="py-10 ">
+        <h3 className="text-lg font-bold">
+          Choisissez vos options restauration :
+        </h3>
+        <div className="grid lg:grid-cols-5 gap-4">
+          {cateringOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex items-center justify-center space-x-2 p-3 rounded-md shadow-md ${
+                selectedCateringOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleCateringSelect(option.id)}
+            >
+              <div className="flex flex-col text-center items-center justify-center">
+                <span className="my-2 text-4xl">{option.icon}</span>
+                <span className="text-sm">{option.name}</span>
+                <span className="text-sm">
+                  {option.price}€
+                  {option.info && (
+                    <button
+                      className="ml-2 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCateringInfo(option.info);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+                  )}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cateringInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+        "
+            onClick={() => setCateringInfo(null)}
+          >
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 text-right">
+        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
+        <p className="text-xl font-semibold">{calculateTotal()}€</p>
+      </div>
+
+      <div className="flex justify-between mt-6">
         <button
-          className={`px-4 py-2 rounded-full ${
-            (selectedDate && lastMinute) || (selectedDate && selectedSlot)
-              ? "bg-green-500 text-white"
-              : "bg-primary-500 text-white cursor-not-allowed"
-          }`}
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
+          Précédent
+        </button>
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded-md"
           onClick={handleNext}
-          disabled={!lastMinute && !(selectedDate && selectedSlot)}
         >
           Suivant
         </button>
@@ -358,4 +445,4 @@ const Step1 = ({ onNext, setBookingDetails }) => {
   );
 };
 
-export default Step1;
+export default AnniversaireStep2;
