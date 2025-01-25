@@ -180,10 +180,10 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
           <b>Date sélectionné: </b>
           {bookingDetails.date
             ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
-                weekday: "long", // Full name of the day (e.g., "Mercredi")
-                day: "numeric", // Numeric day of the month (e.g., "29")
-                month: "long", // Full name of the month (e.g., "janvier")
-                year: "numeric", // Full year (e.g., "2025")
+                weekday: "long", 
+                day: "numeric", 
+                month: "long", 
+                year: "numeric", 
               })
             : "Non disponible"}
         </p>
