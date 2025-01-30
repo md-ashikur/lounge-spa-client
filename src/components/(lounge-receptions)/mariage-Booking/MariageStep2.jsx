@@ -5,9 +5,23 @@ import snack from "../../../../public/images/snack.png"
 import remove from "../../../../public/images/remove.png"
 import Image from "next/image";
 const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
+ const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [numCatering, setNumCatering] = useState({});
+  const [isCateringModal, setIsCateringModal] = useState(false);
 
-  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
-   const [cateringInfo, setCateringInfo] = useState(null);
+  const [selectedMemories, setSelectedMemories] = useState([]);
+
+  const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
+  const [numActivities, setNumActivities] = useState({});
+
+  const [selectedAccommodationOption, setSelectedAccommodationOption] =
+    useState("accomNone");
+  const [numAccommodations, setNumAccommodations] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentActivityId, setCurrentActivityId] = useState(null);
+  const [moreInfo, setMoreInfo] = useState(null);
+  const [currentOptionId, setCurrentOptionId] = useState(null);
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove, },
@@ -23,8 +37,27 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
  
  
 
- 
-
+   const accommodationOptions = [
+    { id: "accomNone", name: "Aucune", price: 0, icon: "🚫" },
+    {
+      id: "accomChaletSelf",
+      name: "Dormir au spa (3 places) *matelas accepté",
+      price: 290,
+      icon: "⏳",
+    },
+    {
+      id: "accomChaletShuttle",
+      name: "Dormir au domaine des 2 étangs *À 5 min en voiture du spa",
+      price: 60,
+      icon: "⏳",
+    },
+    {
+      id: "accomspa",
+      name: "Dormir au domaine des 2 étangs + navette *À 5 min en voiture du spa",
+      price: 110,
+      icon: "⏳",
+    },
+  ];
   const handleCateringSelect = (optionId) => {
     if (optionId === "cateringNone") {
       setSelectedCateringOptions([optionId]);
@@ -140,7 +173,7 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
                     className="ml-2 p-1 text-white"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setCateringInfo(option.info);
+                      setMoreInfo(option.info);
                     }}
                   >
                     ⓘ
@@ -150,17 +183,17 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
           ))}
         </div>
 
-        {cateringInfo && (
+        {moreInfo && (
           <div
             className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
         "
-            onClick={() => setCateringInfo(null)}
+            onClick={() => setMoreInfo(null)}
           >
             <div
               className="bg-primary text-white p-4 rounded-md lg:w-1/2"
               onClick={(e) => e.stopPropagation()}
             >
-              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+              <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
             </div>
           </div>
         )}

@@ -386,17 +386,18 @@ const Navbar = () => {
               animate={isMenuOpen ? { rotate: 0, y: 0 } : { rotate: 0, y: 0 }}
             >
               <motion.div
-                className={`bg-primary w-6 h-1`}
+                 className={isMenuOpen ? "bg-secondary w-6 h-1" : "bg-primary w-6 h-1"}
                 animate={
                   isMenuOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }
                 }
               ></motion.div>
               <motion.div
-                className={`bg-primary w-6 h-1`}
+               className={isMenuOpen ? "bg-secondary w-6 h-1" : "bg-primary w-6 h-1"}
                 animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               ></motion.div>
+          
               <motion.div
-                className={`bg-primary w-6 h-1`}
+                 className={isMenuOpen ? "bg-secondary w-6 h-1" : "bg-primary w-6 h-1"}
                 animate={
                   isMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }
                 }
@@ -409,7 +410,7 @@ const Navbar = () => {
           <AnimatePresence>
             {isMenuOpen && (
               <motion.div
-                className="absolute md:top-0 top-16 md:py-20 md:px-20 left-0 w-full !h-screen text-white bg-third -z-1 md:text-4xl"
+                className="absolute md:top-0 top-16 md:py-20 md:px-20 left-0 w-full !h-screen text-secondary bg-primary -z-1 md:text-4xl"
                 variants={mobileMenuVariants}
                 initial="hidden"
                 animate="visible"

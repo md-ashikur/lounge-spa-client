@@ -9,6 +9,9 @@ import chair from "../../../../public/images/chair.png"
 import sound from "../../../../public/images/sound-system.png"
 import terraces from "../../../../public/images/terrace.png"
 
+import mattress from "../../../../public/images/air-mattress.png";
+import chalet from "../../../../public/images/chalet.png";
+import shuttles from "../../../../public/images/shuttle-van.png";
 
 const MariageStep1 = ({ onNext, setBookingDetails }) => {
   const [numAdults, setNumAdults] = useState(0);
@@ -115,6 +118,37 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
               </div>
             </div>
           </div>
+
+                   {/* logements-------------- */}
+                         <div className="font-light">
+                                <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+                                <div className="grid grid-cols-1 gap-3">
+                                  <div className="grid grid-cols-9 gap-2">
+                                  <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                      <Image src={mattress} alt="" /> 
+                                    </div>
+                                    <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                      <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-9 gap-2">
+                                  <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                      <Image src={chalet} alt="" /> 
+                                    </div>
+                                    <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                      <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-9 gap-2">
+                                  <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                      <Image src={shuttles} alt="" /> 
+                                    </div>
+                                    <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                      <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
 
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">

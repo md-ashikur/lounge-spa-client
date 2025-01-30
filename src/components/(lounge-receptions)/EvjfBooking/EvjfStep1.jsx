@@ -17,6 +17,10 @@ import ruby from "../../../../public/images/ruby.png";
 import sapphire from "../../../../public/images/sapphire.png";
 import diamond from "../../../../public/images/diamond.png";
 
+import mattress from "../../../../public/images/air-mattress.png";
+import chalet from "../../../../public/images/chalet.png";
+import shuttles from "../../../../public/images/shuttle-van.png";
+
 const InfoModal = ({ content, onClose }) => {
   const renderContent = (content) => {
     return content.map((item, index) => {
@@ -185,8 +189,8 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
   return (
     <div className="lg:px-16 space-y-6 my-10">
       <div className="text-center">
-        <h1 className="text-3xl my-5">EVJF</h1>
-        <h2 className="text-xl font-bold text-primary-800">
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">EVJF</span>
+        <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary w-3/4 mx-auto">
@@ -288,6 +292,37 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
                   <InfoModal content={modalContent} onClose={closeModal} />
                 )}
               </div>
+
+               {/* logements-------------- */}
+               <div className="font-light">
+                      <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+                      <div className="grid grid-cols-1 gap-3">
+                        <div className="grid grid-cols-9 gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={mattress} alt="" /> 
+                          </div>
+                          <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                            <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-9 gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={chalet} alt="" /> 
+                          </div>
+                          <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-9 gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={shuttles} alt="" /> 
+                          </div>
+                          <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
     
               {/* ---------Tarifs------ */}
               <h3 className="font-bold mt-8 mb-4">Tarifs</h3>

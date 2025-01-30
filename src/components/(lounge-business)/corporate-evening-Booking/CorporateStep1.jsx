@@ -6,48 +6,58 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { SiApplemusic } from "react-icons/si";
 
-import wifi from "../../../../public/images/icons/business/free-wifi.png"
-import projector from "../../../../public/images/icons/business/projector.png"
-import micro from "../../../../public/images/icons/business/micro.png"
-import parking from "../../../../public/images/icons/business/parking-area.png"
-import paper from "../../../../public/images/icons/business/clip-board.png"
-import pmr from "../../../../public/images/icons/business/toilet.png"
+import wifi from "../../../../public/images/icons/business/free-wifi.png";
+import projector from "../../../../public/images/icons/business/projector.png";
+import micro from "../../../../public/images/icons/business/micro.png";
+import parking from "../../../../public/images/icons/business/parking-area.png";
+import paper from "../../../../public/images/icons/business/clip-board.png";
+import pmr from "../../../../public/images/icons/business/toilet.png";
 
+import banquet from "../../../../public/images/icons/business/dinner (1).png";
+import coctailBuffet from "../../../../public/images/icons/business/buffet.png";
+import coffe from "../../../../public/images/icons/business/coffee-cup (1).png";
+import coffeBreak from "../../../../public/images/icons/business/coffee-break.png";
+import lunch from "../../../../public/images/icons/business/food.png";
+import snack from "../../../../public/images/icons/business/snack.png";
+import cocktail from "../../../../public/images/icons/business/cocktail.png";
+import dinner1 from "../../../../public/images/icons/business/dinner.png";
 
-
-import banquet from "../../../../public/images/icons/business/dinner (1).png"
-import coctailBuffet from "../../../../public/images/icons/business/buffet.png"
-import coffe from "../../../../public/images/icons/business/coffee-cup (1).png"
-import coffeBreak from "../../../../public/images/icons/business/coffee-break.png"
-import lunch from "../../../../public/images/icons/business/food.png"
-import snack from "../../../../public/images/icons/business/snack.png"
-import cocktail from "../../../../public/images/icons/business/cocktail.png"
-import dinner1 from "../../../../public/images/icons/business/dinner.png"
-
-
-import catlet from "../../../../public/images/chalet.png"
-import shuttle from "../../../../public/images/shuttle-van.png"
-
+import mattress from "../../../../public/images/air-mattress.png";
+import chalet from "../../../../public/images/chalet.png";
+import shuttles from "../../../../public/images/shuttle-van.png";
 
 const CorporateStep1 = ({ onNext, setBookingDetails }) => {
+  const [numAdults, setNumAdults] = useState(0);
+  const [numChildren, setNumChildren] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [bookedDates, setBookedDates] = useState(["2024-12-28", "2024-12-30"]); // Mock database for booked dates
 
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
-
-    const formattedDate = date.toISOString().split("T")[0];
-    return date < today || bookedDates.includes(formattedDate);
+  const handlePeopleChange = (type, value) => {
+    const sanitizedValue = Math.max(0, value); // Prevent negative values
+    if (type === "adult") {
+      setNumAdults(sanitizedValue);
+    } else if (type === "child") {
+      setNumChildren(sanitizedValue);
+    }
+    setSelectedDate(null); // Reset date on people change
   };
 
   const handleNext = () => {
-    if (selectedDate) {
+    if (numAdults >= 1 && selectedDate) {
+      const totalPeople = numAdults + numChildren;
       setBookingDetails({
+        totalPeople,
+        adults: numAdults,
+        children: numChildren,
         date: selectedDate,
       });
       onNext();
     }
+  };
+
+  const tileDisabled = ({ date }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Only compare dates
+    return date < today;
   };
 
   return (
@@ -75,7 +85,6 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
           <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
           <div className="grid lg:grid-cols-2 gap-3 text-sm font-light my-5">
             <div className="space-y-5">
-              <p className="text-xs font-bold">Disposition au choix</p>
               <div className="grid grid-cols-4 gap-2">
                 <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={wifi} alt="" />
@@ -86,7 +95,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={projector} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -95,7 +104,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={paper} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -105,12 +114,8 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
             </div>
 
             <div className="space-y-5">
-              <p className="text-xs font-bold">
-                Vous n’avez rien à prévoir, tout est sur place:
-              </p>
-
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={micro} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -119,7 +124,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={parking} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -128,7 +133,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={pmr} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -140,140 +145,151 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
 
           {/* Traiteur-------- */}
           <div className="text-sm font-light">
-                              <h3 className="font-bold mt-8 mb-4 text-primary-800">Traiteur</h3>
-                              <div className="grid lg:grid-cols-2 gap-3">
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={banquet} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Banquet assis (30 personnes)</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={coctailBuffet} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Cocktail ou buffet (50 personne)</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={coffe} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Accueil café croissant</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={coffeBreak} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Pause café</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={lunch} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Déjeuner</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={snack} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>En-cas sucré</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={cocktail} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Cocktail</p>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2">
-                                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                                    <Image src={dinner1} alt="" />
-                                  </div>
-                                  <div className="col-span-3 flex items-center">
-                                    <p>Dîner</p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+            <h3 className="font-bold mt-8 mb-4 text-primary-800">Traiteur</h3>
+            <div className="grid lg:grid-cols-2 gap-3">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={banquet} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Banquet assis (30 personnes)</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={coctailBuffet} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Cocktail ou buffet (50 personne)</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={cocktail} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Cocktail</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={dinner1} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Dîner</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* logements-------------- */}
-          <div className="text-sm font-light">
+          <div className="font-light">
             <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
-            <div className="grid lg:grid-cols-2 gap-3">
-              <div className="grid grid-cols-4">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={catlet} alt="" />
+            <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={mattress} alt="" />
                 </div>
-                <div className="col-span-3 text-xs flex items-center">
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                  <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={chalet} alt="" />
+                </div>
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
                   <p>
                     Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en
                     autonomie
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-4">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={shuttle} alt="" />
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={shuttles} alt="" />
                 </div>
-                <div className="col-span-3 text-xs flex items-center">
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
                   <p>
                     Couchage en chalet : “Au domaine des 2 étangs” (à 15min) +
-                    navettes
+                    Navette aller / retour{" "}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
-          <p className="text-sm font-light">à définir</p>
+          <div className="flex text-primary text-sm">
+            <h2 className="font-bold ">Week : Semaine (LMMJ) : </h2>
+            <p>
+              <span className="ml-2"> 18h30 - 1H :</span> 490€
+            </p>
+          </div>
+          <div className="flex text-primary text-sm mt-2">
+            <h2 className="font-bold ">Vendredi et Samedi : </h2>
+            <p>
+              <span className="ml-2"> 18h30 - 1H : </span> 690€
+            </p>
+          </div>
         </div>
 
         {/* Right Side */}
         <div>
-          <h3 className="font-bold text-primary-800">
-            Choisissez votre date :
-          </h3>
-          <Calendar
-            onChange={setSelectedDate}
-            value={selectedDate}
-            tileDisabled={tileDisabled}
-            minDate={new Date()}
-            className="react-calendar my-5"
-          />
+          <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
+            {/* Number of People */}
+            <h3 className="font-bold text-primary-800">
+              Indiquer le nombre de personnes :
+            </h3>
+            <div className="flex gap-4">
+              <div className="flex items-center space-x-4 text-primary-800">
+                <label className="font-bold">Adultes (13 ans et +) :</label>
+                <input
+                  type="number"
+                  className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
+                  value={numAdults}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("adult", +e.target.value)}
+                />
+              </div>
+              <div className="flex items-center space-x-4 text-primary-800">
+                <label className="font-bold">Enfants (-13 ans) :</label>
+                <input
+                  type="number"
+                  className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
+                  value={numChildren}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("child", +e.target.value)}
+                />
+              </div>
+            </div>
 
-          {selectedDate &&
-            bookedDates.includes(selectedDate.toISOString().split("T")[0]) && (
-              <p className="text-red-500 mt-2">Cette date est déjà réservée.</p>
-            )}
+            {/* Calendar */}
+            <div>
+              <h3 className="font-bold text-primary-800">Choisissez une date :</h3>
+              <Calendar
+                onChange={setSelectedDate}
+                value={selectedDate}
+                tileDisabled={tileDisabled}
+                minDate={new Date()}
+                className={`react-calendar my-5 ${
+                  numAdults < 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={numAdults < 1}
+              />
+            </div>
+          </div>
 
           <div className="flex justify-end mt-6">
             <button
               className={`px-4 py-2 rounded-full ${
-                selectedDate &&
-                !bookedDates.includes(selectedDate.toISOString().split("T")[0])
+                numAdults >= 1 && selectedDate
                   ? "bg-green-500 text-white"
                   : "bg-primary-500 text-white cursor-not-allowed"
               }`}
               onClick={handleNext}
-              disabled={
-                !selectedDate ||
-                bookedDates.includes(selectedDate.toISOString().split("T")[0])
-              }
+              disabled={!(numAdults >= 1 && selectedDate)}
             >
               Suivant
             </button>

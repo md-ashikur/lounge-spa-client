@@ -119,37 +119,36 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          {/* logements-------------- */}
-          <div className="text-sm font-light">
-            <h3 className="font-bold mt-8 mb-4 text-primary-800">logements</h3>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                  <Image src={mattress} alt="" /> 
-                </div>
-                <div className="col-span-3 text-xs ml-2 flex items-center">
-                  <p>C3 couchages au spa + matelas (non fournis) </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                  <Image src={chalet} alt="" /> 
-                </div>
-                <div className="col-span-3 text-xs ml-2 flex items-center">
-                  <p>Couchage en chalet (à 15min) en autonomie </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                  <Image src={shuttles} alt="" /> 
-                </div>
-                <div className="col-span-3 text-xs ml-2 flex items-center">
-                  <p>Couchage en chalet (à 15min) + navettes </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
+       {/* logements-------------- */}
+       <div className="font-light">
+                      <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+                      <div className="grid grid-cols-1 gap-3">
+                        <div className="flex gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={mattress} alt="" /> 
+                          </div>
+                          <div className="col-span-3 text-xs ml-2 flex items-center">
+                            <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={chalet} alt="" /> 
+                          </div>
+                          <div className="col-span-3 text-xs ml-2 flex items-center">
+                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                            <Image src={shuttles} alt="" /> 
+                          </div>
+                          <div className="col-span-3 text-xs ml-2 flex items-center">
+                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
 

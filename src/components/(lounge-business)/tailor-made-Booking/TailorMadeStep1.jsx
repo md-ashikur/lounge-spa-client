@@ -5,6 +5,12 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { SiApplemusic } from "react-icons/si";
 
+import mattress from "../../../../public/images/air-mattress.png";
+import chalet from "../../../../public/images/chalet.png";
+import shuttles from "../../../../public/images/shuttle-van.png";
+import Image from "next/image";
+
+
 const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [bookedDates, setBookedDates] = useState(["2024-12-28", "2024-12-30"]); // Mock database for booked dates
@@ -150,28 +156,36 @@ const TailorMadeStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          {/* logements-------------- */}
-          <div className="text-sm font-light">
-            <h3 className="font-bold mt-8 mb-4 text-primary-800">logements</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2">
-                <div>
-                  <SiApplemusic className="text-5xl text-primary" />
-                </div>
-                <div className="col-span-3">
-                  <p>Couchage en chalet (à 15min) en autonomie </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div>
-                  <SiApplemusic className="text-5xl text-primary" />
-                </div>
-                <div className="col-span-3">
-                  <p>Couchage en chalet (à 15min) + navettes </p>
-                </div>
-              </div>
-            </div>
-          </div>
+             {/* logements-------------- */}
+                   <div className="font-light">
+                          <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+                          <div className="grid grid-cols-1 gap-3">
+                            <div className="grid grid-cols-9 gap-2">
+                            <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                <Image src={mattress} alt="" /> 
+                              </div>
+                              <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-9 gap-2">
+                            <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                <Image src={chalet} alt="" /> 
+                              </div>
+                              <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-9 gap-2">
+                            <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                                <Image src={shuttles} alt="" /> 
+                              </div>
+                              <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                                <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
           {/* Tarifs */}
           <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
