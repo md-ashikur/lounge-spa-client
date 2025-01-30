@@ -30,6 +30,22 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
   const [numAdults, setNumAdults] = useState(0);
   const [numChildren, setNumChildren] = useState(0);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+
+  // Function to get time slots based on the selected date
+  const getTimeSlots = (date) => {
+    if (date) {
+      const dayOfWeek = date.getDay();
+      if (dayOfWeek === 5 || dayOfWeek === 6) {
+        // Friday or Saturday
+        return [{ time: "18h30 - 1H", price: 690 }];
+      } else {
+        // Other weekdays
+        return [{ time: "18h30 - 1H", price: 490 }];
+      }
+    }
+    return [];
+  };
 
   const handlePeopleChange = (type, value) => {
     const sanitizedValue = Math.max(0, value); // Prevent negative values
@@ -38,17 +54,24 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
     } else if (type === "child") {
       setNumChildren(sanitizedValue);
     }
-    setSelectedDate(null); // Reset date on people change
+    setSelectedDate(null); // Reset date and time slot on people change
+    setSelectedSlot(null);
+  };
+
+  const handleSlotClick = (slot) => {
+    setSelectedSlot(slot);
   };
 
   const handleNext = () => {
-    if (numAdults >= 1 && selectedDate) {
+    if (numAdults >= 1 && selectedDate && selectedSlot) {
       const totalPeople = numAdults + numChildren;
       setBookingDetails({
         totalPeople,
         adults: numAdults,
         children: numChildren,
         date: selectedDate,
+        slot: selectedSlot.time,
+        price: selectedSlot.price, // Include price for Step2
       });
       onNext();
     }
@@ -57,7 +80,8 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
   const tileDisabled = ({ date }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Only compare dates
-    return date < today;
+    const dayOfWeek = date.getDay();
+    return date < today || dayOfWeek === 0; // Disable past dates and Sundays
   };
 
   return (
@@ -265,34 +289,72 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
               </div>
             </div>
 
-            {/* Calendar */}
+            {/* Calendar and Time Slots ==========*/}
             <div>
-              <h3 className="font-bold text-primary-800">Choisissez une date :</h3>
-              <Calendar
-                onChange={setSelectedDate}
-                value={selectedDate}
-                tileDisabled={tileDisabled}
-                minDate={new Date()}
-                className={`react-calendar my-5 ${
-                  numAdults < 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={numAdults < 1}
-              />
+              <div>
+                <h3 className="font-bold text-primary-800">
+                  Choisissez une date :
+                </h3>
+                <Calendar
+                  onChange={(date) => {
+                    setSelectedDate(date);
+                    setSelectedSlot(null); // Reset the selected slot when date changes
+                  }}
+                  value={selectedDate}
+                  tileDisabled={tileDisabled}
+                  minDate={new Date()}
+                  className={`react-calendar my-5 ${
+                    numAdults < 1 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={numAdults < 1}
+                />
+              </div>
+
+              {selectedDate && (
+                <div>
+                  <h3 className="font-bold text-primary-800 mt-4">
+                    Sélectionnez un créneau horaire :
+                  </h3>
+                  <div className="flex gap-2 flex-wrap mt-2">
+                    {getTimeSlots(selectedDate).map((slot) => (
+                      <button
+                        key={slot.time}
+                        className={`py-2 px-3 rounded-full text-sm ${
+                          selectedSlot?.time === slot.time
+                            ? "bg-green-500 text-white"
+                            : "bg-primary text-white"
+                        }`}
+                        onClick={() => handleSlotClick(slot)}
+                      >
+                        {slot.time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex justify-end mt-6">
-            <button
-              className={`px-4 py-2 rounded-full ${
-                numAdults >= 1 && selectedDate
-                  ? "bg-green-500 text-white"
-                  : "bg-primary-500 text-white cursor-not-allowed"
-              }`}
-              onClick={handleNext}
-              disabled={!(numAdults >= 1 && selectedDate)}
-            >
-              Suivant
-            </button>
+          {/* Price Display and Next Button */}
+          <div className="mt-6">
+            {selectedSlot && (
+              <div className="text-right text-lg font-bold text-primary-800">
+                Prix: {selectedSlot.price}€
+              </div>
+            )}
+            <div className="flex justify-end mt-2">
+              <button
+                className={`px-4 py-2 rounded-full ${
+                  numAdults >= 1 && selectedDate && selectedSlot
+                    ? "bg-green-500 text-white"
+                    : "bg-primary-500 text-white cursor-not-allowed"
+                }`}
+                onClick={handleNext}
+                disabled={numAdults < 1 || !selectedDate || !selectedSlot}
+              >
+                Suivant
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -9,17 +9,25 @@ import marocaines from "../../../../public/images/icons/harira.png";
 import traditional from "../../../../public/images/icons/chicken.png";
 import traditionalVIP from "../../../../public/images/icons/dinner (1).png";
 import prestige from "../../../../public/images/icons/flavoring.png";
+import coctail from "../../../../public/images/icons/business/cocktail.png";
+import barbecue from "../../../../public/images/icons/barbecue.png";
+import brunch from "../../../../public/images/icons/brunch.png";
 import remove from "../../../../public/images/remove.png";
 
 import Photographe from "../../../../public/images/icons/photographer.png";
 
-import shooting from "../../../../public/images/icons/photo.png";
-import makeup from "../../../../public/images/icons/makeover.png";
 import Molkky from "../../../../public/images/icons/wooden-object.png";
 import wineTest from "../../../../public/images/icons/wine-tasting.png";
 import cake from "../../../../public/images/icons/birthday-cake.png";
+import extraHour from "../../../../public/images/icons/extra-time.png";
+import living from "../../../../public/images/icons/living-room.png";
+import boardgame from "../../../../public/images/icons/board-game.png";
+import mixology from "../../../../public/images/icons/mixology.png";
+import karaoke from "../../../../public/images/icons/karaoke.png";
+import casino from "../../../../public/images/icons/poker-cards.png";
 
 import Image from "next/image";
+
 const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
   const [numCatering, setNumCatering] = useState({});
@@ -29,17 +37,15 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
   const [numActivities, setNumActivities] = useState({});
+  const [extraHours, setExtraHours] = useState(0);
+  const [extraHourBefore, setExtraHourBefore] = useState(false);
 
   const [selectedAccommodationOption, setSelectedAccommodationOption] =
     useState("accomNone");
-  const [numAccommodations, setNumAccommodations] = useState(0);
 
   const [showModal, setShowModal] = useState(false);
-  const [currentActivityId, setCurrentActivityId] = useState(null);
-  const [moreInfo, setMoreInfo] = useState(null);
   const [currentOptionId, setCurrentOptionId] = useState(null);
-
-
+  const [moreInfo, setMoreInfo] = useState(null);
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove },
@@ -99,6 +105,27 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
       icon: prestige,
       info: "Encas désaltérant + pâtisseries",
     },
+    {
+      id: "annicat9",
+      name: "Cocktail",
+      price: 15,
+      icon: coctail,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat10",
+      name: "Cocktail + plancha",
+      price: 19,
+      icon: barbecue,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat11",
+      name: "Brunch du lendemain",
+      price: 17,
+      icon: brunch,
+      info: "Encas désaltérant + pâtisseries",
+    },
   ];
 
   const memories = [
@@ -129,11 +156,23 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
   const activityOptions = [
     { id: "anniActivity0", name: "Aucune", price: 0, icon: remove },
     {
+      id: "extraHour",
+      name: "Extra hour",
+      price: bookingDetails.date &&
+        ["Friday", "Saturday", "Sunday"].includes(
+          new Date(bookingDetails.date).toLocaleDateString("en-US", {
+            weekday: "long",
+          })
+        )
+        ? 80
+        : 60,
+      icon: extraHour,
+    },
+    {
       id: "anniActivity1",
       name: "Décoration de la salle",
       price: 700,
-      icon: shooting,
-      info: "test ",
+      icon: living,
     },
     {
       id: "anniActivity3",
@@ -153,28 +192,28 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
       id: "anniActivity6",
       name: "Jeux de société géants",
       price: 20,
-      icon: cake,
+      icon: boardgame,
       info: "test ",
     },
     {
       id: "anniActivity7",
       name: "Atelier de mixologie",
       price: 30,
-      icon: cake,
+      icon: mixology,
       info: "test ",
     },
     {
       id: "anniActivity8",
       name: "Karaoké",
       price: 3,
-      icon: cake,
+      icon: karaoke,
       info: "test ",
     },
     {
       id: "anniActivity9",
       name: "Casino",
       price: 20,
-      icon: cake,
+      icon: casino,
       info: "test ",
     },
   ];
@@ -190,19 +229,20 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     {
       id: "accomChaletShuttle",
       name: "Dormir au domaine des 2 étangs *À 15 min en voiture du spa",
-      price: 60,
+      price: 0,
       icon: "⏳",
+      link: "https://domainelesdeuxetangs.lodgify.com/fr/toutes-les-proprietes",
     },
     {
       id: "accomspa",
       name: "Dormir à l'hôtel 3 étoiles - la Closeraie” (établissement partenaire - Sous réserve de disponibilités) *À 5 min en voiture du spa",
-      price: 110,
+      price: 0,
       icon: "⏳",
     },
     {
       id: "accomspa4",
       name: "Navette Aller / retour (seulement pour le domaine des 2 étangs ou l’hotel 3 étoiles - la Closeraie)",
-      price: 110,
+      price: 100,
       icon: "⏳",
     },
   ];
@@ -211,27 +251,36 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     if (optionId === "anniActivity0") {
       setSelectedActivityOptions([optionId]);
       setNumActivities({});
+      setExtraHours(0);
       return;
-    } else {
-      setSelectedActivityOptions((prev) => {
-        if (prev.includes("anniActivity0")) {
-          return [optionId];
-        }
-        if (prev.includes(optionId)) {
-          return prev.filter((id) => id !== optionId);
-        } else {
-          return [...prev, optionId];
-        }
-      });
+    }
 
-      if (!selectedActivityOptions.includes(optionId)) {
-        setCurrentActivityId(optionId);
-        setShowModal(true);
+    if (optionId === "extraHour") {
+      setShowModal(true);
+      setCurrentOptionId(optionId);
+      return;
+    }
+
+    setSelectedActivityOptions((prev) => {
+      if (prev.includes("anniActivity0")) {
+        return [optionId];
       }
+      if (prev.includes(optionId)) {
+        return prev.filter((id) => id !== optionId);
+      } else {
+        return [...prev, optionId];
+      }
+    });
+
+    if (
+      !selectedActivityOptions.includes(optionId) &&
+      optionId !== "anniActivity1"
+    ) {
+      setCurrentOptionId(optionId);
+      setShowModal(true);
     }
   };
 
-  // catering------------
   const handleOptionSelect = (optionId, isCatering = false) => {
     const selectedOptions = isCatering
       ? selectedCateringOptions
@@ -283,13 +332,13 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const handleNumActivityChange = (delta) => {
     setNumActivities((prev) => {
-      const currentCount = prev[currentActivityId] || 0;
+      const currentCount = prev[currentOptionId] || 0;
       const newCount = Math.max(0, currentCount + delta);
-      const updatedNumActivities = { ...prev, [currentActivityId]: newCount };
+      const updatedNumActivities = { ...prev, [currentOptionId]: newCount };
 
       if (newCount === 0) {
         setSelectedActivityOptions((prevOptions) =>
-          prevOptions.filter((id) => id !== currentActivityId)
+          prevOptions.filter((id) => id !== currentOptionId)
         );
       }
 
@@ -301,7 +350,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     setSelectedAccommodationOption(option);
 
     if (option === "accomNone") {
-      setNumAccommodations(0);
+      setNumActivities({});
     }
   };
 
@@ -338,8 +387,8 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
 
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
-      if (option && numCatering[optionId] > 0 && optionId !== "cateringNone") {
-        total += option.price * numCatering[optionId];
+      if (option && optionId !== "cateringNone") {
+        total += option.price * (numCatering[optionId] || 1);
       }
     });
 
@@ -352,22 +401,31 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
 
     selectedActivityOptions.forEach((optionId) => {
       const option = activityOptions.find((opt) => opt.id === optionId);
-      if (
-        option &&
-        numActivities[optionId] > 0 &&
-        optionId !== "anniActivity0"
-      ) {
-        total += option.price * numActivities[optionId];
+      if (option) {
+        total += option.price * (numActivities[optionId] || 1);
       }
     });
 
-    if (selectedAccommodationOption) {
-      const accommodation = accommodationOptions.find(
-        (opt) => opt.id === selectedAccommodationOption
+    if (extraHours > 0) {
+      const extraHourOption = activityOptions.find(
+        (opt) => opt.id === "extraHour"
       );
-      if (accommodation) {
-        total += accommodation.price * numAccommodations;
+      if (extraHourOption) {
+        total += extraHourOption.price * extraHours;
       }
+    }
+
+    const accommodation = accommodationOptions.find(
+      (opt) => opt.id === selectedAccommodationOption
+    );
+    if (accommodation) {
+      total += accommodation.price;
+    }
+
+    // Calculate shuttle price dynamically based on the number of people
+    if (selectedAccommodationOption === "accomspa4") {
+      const shuttlePrice = (Math.ceil(totalPeople / 4) * 100) -100;
+      total += shuttlePrice;
     }
 
     return total;
@@ -387,8 +445,10 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
       numActivities,
       selectedAccommodationOption,
       accommodationOptions,
-      numAccommodations,
+      numAccommodations: 1,
       totalPrice: calculateTotal(),
+      extraHours,
+      extraHourBefore,
     };
     onNext(data);
   };
@@ -397,7 +457,7 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
       <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-        Soirée d’entreprise
+          Soirée d’entreprise
         </span>
       </div>
 
@@ -474,233 +534,291 @@ const CorporateStep2 = ({ bookingDetails, onBack, onNext }) => {
 
         {moreInfo && (
           <div
-            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
-        "
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
             onClick={() => setMoreInfo(null)}
           >
             <div
-              className="bg-primary text-white  p-4 rounded-md lg:w-1/2"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Souvenirs---------- */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">
-        Souvenirs :
-        </h3>
-        <div className="grid lg:grid-cols-6 gap-4">
-          {memories.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
-                selectedMemories.includes(option.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleMemories(option.id)}
-            >
-              <Image
-                src={option.icon}
-                alt=""
-                width={60}
-                height={60}
-                className="rounded-md mb-3"
-              />
-              <span className="font-bold text-sm text-center">
-                {option.name}
-              </span>
-              <span className="text-lg">
-                {option.id != "mNone" && <>{option.price}€</>}
-
-                {option.info && (
-                  <button
-                    className="ml-2 p-1 text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMoreInfo(option.info);
-                    }}
-                  >
-                    ⓘ
-                  </button>
-                )}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Choose your activity options */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">
-          Choisissez vos options activités (préciser le nombre de participants)
-          :
-        </h3>
-        <div className="grid lg:grid-cols-6 gap-4">
-          {activityOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
-                selectedActivityOptions.includes(option.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleOptionSelect(option.id)}
-            >
-              <Image
-                src={option.icon}
-                alt=""
-                width={60}
-                height={60}
-                className="rounded-md mb-3"
-              />
-              <span className="font-bold text-sm text-center">
-                {option.name}
-              </span>
-              <span className="text-lg">
-                {option.id != "anniActivity0" && (
-                  <>
-                    {option.price}€ / {option.extra} per
-                  </>
-                )}
-
-                {option.info && (
-                  <button
-                    className="ml-2 p-1 text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMoreInfo(option.info);
-                    }}
-                  >
-                    ⓘ
-                  </button>
-                )}
-              </span>
-              {/* Show quantity below the price if option is selected and not "Aucune" */}
-              {selectedActivityOptions.includes(option.id) &&
-                option.id !== "anniActivity0" && (
-                  <div className="text-sm mt-2">
-                    Quantité: {numActivities[option.id] || 0}
-                  </div>
-                )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Modal for Increment/Decrement */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
-            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre</h3>
-            <div className="flex items-center space-x-2 mb-4">
-              <button
-                className="px-4 py-2 bg-primary text-white rounded-lg"
-                onClick={() => handleNumChange(-1)}
-              >
-                -
-              </button>
-              <span>
-                {(isCateringModal ? numCatering : numActivities)[
-                  currentOptionId
-                ] || 0}
-              </span>
-              <button
-                className="px-4 py-2 bg-primary text-white rounded-lg"
-                onClick={() => handleNumChange(1)}
-              >
-                +
-              </button>
-            </div>
-            <div className="flex justify-between">
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 bg-green-500 text-white rounded-md"
-              >
-                Confirmer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* House for sleep------------------- */}
-      <div className="py-5">
-        <h3 className="text-lg font-bold my-5">
-          Choisissez vos options logements :
-        </h3>
-        <div className="grid lg:grid-cols-5 gap-4">
-          {accommodationOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
-                selectedAccommodationOption === option.id
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleAccommodationSelect(option.id)}
-            >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className=" text-xs text-center">
-                {option.name}
-              </span>
-              <span className="text-lg">
-                {option.id != "accomNone" && <>{option.price}€</>}
-              </span>
-              {option.id !== "accomNone" &&
-                selectedAccommodationOption === option.id && (
-                  <div className="flex items-center space-x-2 mt-2">
-                    <button
-                      className="px-2 py-1 bg-primary rounded-2xl w-8"
-                      onClick={() =>
-                        setNumAccommodations(Math.max(0, numAccommodations - 1))
-                      }
-                    >
-                      -
-                    </button>
-                    <span>{numAccommodations}</span>
-                    <button
-                      className="px-2 py-1 bg-primary rounded-2xl w-8"
-                      onClick={() =>
-                        setNumAccommodations(numAccommodations + 1)
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">
-          Votre expérience Lounge & spa pour
-        </h3>
-        <p className="text-xl font-semibold">{calculateTotal()}€</p>
-      </div>
-
-      <div className="flex justify-between mt-6">
-        <button
-          className="px-4 py-2 bg-primary text-white rounded-md"
-          onClick={onBack}
-        >
-          Précédent
-        </button>
-        <button
-          className="px-4 py-2 bg-green-500 text-white rounded-md"
-          onClick={handleNext}
-        >
-          Suivant
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default CorporateStep2;
+             className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+             onClick={(e) => e.stopPropagation()}
+           >
+             <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
+           </div>
+         </div>
+       )}
+     </div>
+ 
+     {/* Souvenirs---------- */}
+     <div className="py-5">
+       <h3 className="text-lg font-bold my-5">Souvenirs :</h3>
+       <div className="grid lg:grid-cols-6 gap-4">
+         {memories.map((option) => (
+           <div
+             key={option.id}
+             className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+               selectedMemories.includes(option.id)
+                 ? "bg-green-500 text-white"
+                 : "bg-primary text-white"
+             }`}
+             onClick={() => handleMemories(option.id)}
+           >
+             <Image
+               src={option.icon}
+               alt=""
+               width={60}
+               height={60}
+               className="rounded-md mb-3"
+             />
+             <span className="font-bold text-sm text-center">
+               {option.name}
+             </span>
+             <span className="text-lg">
+               {option.id != "mNone" && <>{option.price}€</>}
+               {option.info && (
+                 <button
+                   className="ml-2 p-1 text-white"
+                   onClick={(e) => {
+                     e.stopPropagation();
+                     setMoreInfo(option.info);
+                   }}
+                 >
+                   ⓘ
+                 </button>
+               )}
+             </span>
+           </div>
+         ))}
+       </div>
+     </div>
+ 
+     {/* Choose your activity options */}
+     <div className="py-5">
+       <h3 className="text-lg font-bold my-5">
+         Choisissez vos options activités (préciser le nombre de participants) :
+       </h3>
+       <div className="grid lg:grid-cols-6 gap-4">
+         {activityOptions.map((option) => (
+           <div
+             key={option.id}
+             className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+               selectedActivityOptions.includes(option.id) ||
+               (option.id === "extraHour" && extraHours > 0)
+                 ? "bg-green-500 text-white"
+                 : "bg-primary text-white"
+             }`}
+             onClick={() => handleActivitySelect(option.id)}
+           >
+             <Image
+               src={option.icon}
+               alt=""
+               width={60}
+               height={60}
+               className="rounded-md mb-3"
+             />
+             <span className="font-bold text-sm text-center">
+               {option.name}
+             </span>
+             <span className="text-lg">
+               {option.id !== "anniActivity0" && (
+                 <>
+                   {option.price}€ {option.id === "extraHour" ? "/ hour" : ""}
+                 </>
+               )}
+               {option.info && (
+                 <button
+                   className="ml-2 p-1 text-white"
+                   onClick={(e) => {
+                     e.stopPropagation();
+                     setMoreInfo(option.info);
+                   }}
+                 >
+                   ⓘ
+                 </button>
+               )}
+             </span>
+             {((selectedActivityOptions.includes(option.id) &&
+               option.id !== "anniActivity0" &&
+               option.id !== "anniActivity1") ||
+               (option.id === "extraHour" && extraHours > 0)) && (
+               <div className="text-sm mt-2">
+                 {option.id === "extraHour"
+                   ? `Heures : ${extraHours}`
+                   : `Quantité: ${numActivities[option.id] || 0}`}
+               </div>
+             )}
+           </div>
+         ))}
+       </div>
+     </div>
+ 
+     {/* Modal for Increment/Decrement */}
+     {showModal && currentOptionId !== "anniActivity1" && (
+       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+         <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
+           <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre</h3>
+           <div className="flex items-center space-x-2 mb-4">
+             <button
+               className="px-4 py-2 bg-primary text-white rounded-lg"
+               onClick={() => handleNumChange(-1)}
+             >
+               -
+             </button>
+             <span>
+               {(isCateringModal ? numCatering : numActivities)[currentOptionId] ||
+                 0}
+             </span>
+             <button
+               className="px-4 py-2 bg-primary text-white rounded-lg"
+               onClick={() => handleNumChange(1)}
+             >
+               +
+             </button>
+           </div>
+           <div className="flex justify-between">
+             <button
+               onClick={closeModal}
+               className="px-4 py-2 bg-green-500 text-white rounded-md"
+             >
+               Confirmer
+             </button>
+           </div>
+         </div>
+       </div>
+     )}
+ 
+     {showModal && currentOptionId === "extraHour" && (
+       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+         <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
+           <h3 className="text-lg font-bold mb-4">
+             Sélectionnez le nombre d&apos;heures supplémentaires
+           </h3>
+           <p className="mb-4">Plage horaire sélectionnée: {bookingDetails.slot}</p>
+           <div className="mb-4">
+             <label className="flex items-center">
+               <input
+                 type="radio"
+                 name="extraHourTime"
+                 value="before"
+                 checked={extraHourBefore}
+                 onChange={() => setExtraHourBefore(true)}
+                 className="mr-2"
+               />
+               Ajouter avant la plage horaire
+             </label>
+             <label className="flex items-center mt-2">
+               <input
+                 type="radio"
+                 name="extraHourTime"
+                 value="after"
+                 checked={!extraHourBefore}
+                 onChange={() => setExtraHourBefore(false)}
+                 className="mr-2"
+               />
+               Ajouter après la plage horaire
+             </label>
+           </div>
+           <div className="flex items-center space-x-2 mb-4">
+             <button
+               className="px-4 py-2 bg-primary text-white rounded-lg"
+               onClick={() => setExtraHours(Math.max(0, extraHours - 1))}
+             >
+               -
+             </button>
+             <span>{extraHours}</span>
+             <button
+               className="px-4 py-2 bg-primary text-white rounded-lg"
+               onClick={() => setExtraHours(extraHours + 1)}
+             >
+               +
+             </button>
+           </div>
+           <div className="flex justify-between">
+             <button
+               onClick={closeModal}
+               className="px-4 py-2 bg-green-500 text-white rounded-md"
+             >
+               Confirmer
+             </button>
+           </div>
+         </div>
+       </div>
+     )}
+ 
+     {/* House for sleep------------------- */}
+     <div className="py-5">
+       <h3 className="text-lg font-bold my-5">
+         Choisissez vos options logements :
+       </h3>
+       <div className="grid lg:grid-cols-5 gap-4">
+         {accommodationOptions.map((option) => (
+           <div
+             key={option.id}
+             className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+               selectedAccommodationOption === option.id
+                 ? "bg-green-500 text-white"
+                 : "bg-primary text-white"
+             }`}
+             onClick={() => handleAccommodationSelect(option.id)}
+           >
+             <span className="font-bold text-4xl my-2">{option.icon}</span>
+             {option.link ? (
+              <>
+                <span className="text-xs text-center">{option.name}</span>
+               <a
+                 href={option.link}
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="text-lg text-center underline"
+               >
+                 reservez ici
+               </a></>
+             ) : (
+               <span className="text-xs text-center">{option.name}</span>
+             )}
+             <span className="text-lg">
+               {option.id !== "accomNone" && option.price > 0 && `${option.price}€`}
+             </span>
+           </div>
+         ))}
+       </div>
+     </div>
+ 
+     {/* Shuttle option */}
+     {selectedAccommodationOption === "accomChaletShuttle" && (
+       <div className="py-5">
+         <h3 className="text-lg font-bold my-5">Navette Aller / retour</h3>
+         <div className="flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md bg-primary text-white">
+           <span className="font-bold text-4xl my-2">⏳</span>
+           <span className="text-xs text-center">
+             Navette Aller / retour (seulement pour le domaine des 2 étangs ou l’hotel 3 étoiles - la Closeraie)
+           </span>
+           <span className="text-lg">
+             {`100€ pour 4 personnes (chaque cycle de 4 personnes ajoute +100€)`}
+           </span>
+         </div>
+       </div>
+     )}
+ 
+     <div className="mt-6 text-right">
+       <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
+       <p className="text-xl font-semibold">{calculateTotal()}€</p>
+     </div>
+ 
+     <div className="flex justify-between mt-6">
+       <button
+         className="px-4 py-2 bg-primary text-white rounded-md"
+         onClick={onBack}
+       >
+         Précédent
+       </button>
+       <button
+         className="px-4 py-2 bg-green-500 text-white rounded-md"
+         onClick={handleNext}
+       >
+         Suivant
+       </button>
+     </div>
+   </div>
+ );
+ };
+ 
+ export default CorporateStep2;
