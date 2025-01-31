@@ -37,7 +37,7 @@ const TailorMadeStep3 = ({ bookingDetails, onBack, onNext }) => {
   );
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Soirée d’entreprise</span></div>
+       <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">Réception sur mesure</span></div>
      
       {/* Booking Details */}
       <div>

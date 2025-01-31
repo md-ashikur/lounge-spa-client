@@ -37,7 +37,7 @@ const ReceptionStep1 = ({ onNext, setBookingDetails }) => {
     <div className="lg:px-10 space-y-6 my-10">
       <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-        Concevez votre réception de A à Z
+        Réception sur mesure
         </span>
         <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :

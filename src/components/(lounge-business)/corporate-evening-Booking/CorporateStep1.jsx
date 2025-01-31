@@ -15,10 +15,6 @@ import pmr from "../../../../public/images/icons/business/toilet.png";
 
 import banquet from "../../../../public/images/icons/business/dinner (1).png";
 import coctailBuffet from "../../../../public/images/icons/business/buffet.png";
-import coffe from "../../../../public/images/icons/business/coffee-cup (1).png";
-import coffeBreak from "../../../../public/images/icons/business/coffee-break.png";
-import lunch from "../../../../public/images/icons/business/food.png";
-import snack from "../../../../public/images/icons/business/snack.png";
 import cocktail from "../../../../public/images/icons/business/cocktail.png";
 import dinner1 from "../../../../public/images/icons/business/dinner.png";
 
@@ -339,7 +335,9 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
           <div className="mt-6">
             {selectedSlot && (
               <div className="text-right text-lg font-bold text-primary-800">
-                Prix: {selectedSlot.price}€
+                <p>Votre expérience Lounge & spa pour</p>
+                
+                 {selectedSlot.price}€
               </div>
             )}
             <div className="flex justify-end mt-2">
