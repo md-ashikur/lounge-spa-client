@@ -62,6 +62,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       id: "GourmetSnack",
       name: "En-cas gourmand",
       price: 20,
+      extra: "/pers",
       icon: gourmetSnack,
       info: "Encas désaltérant + pâtisseries",
     },
@@ -69,6 +70,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       id: "DinnerBoard",
       name: "Planche dînatoire",
       price: 30,
+      extra: "/pers",
       icon: dinnerboard,
       info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
     },
@@ -76,6 +78,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       id: "FlavorMenu",
       name: "Menu saveur",
       price: 30,
+      extra: "/pers",
       icon: menuSaveur,
       info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
     },
@@ -295,7 +298,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                 <span className=" text-sm">{option.name}</span>
                 <p className="text-sm">
                   {option.price}€
-                  <span className="text-xs"> {option.extra}</span>{" "}
+                  <span className="text-xs"> {option.extra}</span>
                   {option.info && (
                     <button
                       className="ml-2 p-1 text-white"
@@ -455,7 +458,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
                 <span className="text-sm">{option.name}</span>
                 <span className="text-sm">
-                  {option.price}€
+                  {option.price}€  <span className="text-xs"> {option.extra}</span>
                   {option.info && (
                     <button
                       className="ml-2 text-white"
