@@ -431,7 +431,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       )}
 
-      {/* =================Choose Catering Section start================= */}
+      {/* =================Choose Catering Section start======================== */}
       <div className="py-10 ">
         <h3 className="text-lg font-bold my-5">
           Choisissez vos options restauration :
