@@ -136,21 +136,34 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     let total = bookingDetails.price; // Base price per person multiplied by the number of people
     const bookingDate = new Date(bookingDetails.date);
     const isWeekend = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Saturday is 6, Sunday is 0
-  
+    const isEvening = bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
+
     selectedOptions.forEach((optionId) => {
       const option = spaOptions.find((opt) => opt.id === optionId);
-  
+
       if (optionId === "massage") {
-        total += option.price * massageDetails.numPeople;
+        let massagePrice = 0;
+        if (massageDetails.duration === 20) {
+          massagePrice = 50;
+        } else if (massageDetails.duration === 30) {
+          massagePrice = 60;
+        } else if (massageDetails.duration === 60) {
+          massagePrice = 90;
+        }
+        if (isEvening || isWeekend) {
+          massagePrice += 10;
+        }
+        total += massagePrice * massageDetails.numPeople;
       } else if (optionId !== "1hr") {
         total += option.price * numPeople;
       }
     });
+
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
       total += option.price * numPeople;
     });
-  
+
     // Add the fixed price for additional hour options
     if (selectedOptions.includes("1hr") && selectedAdditionalHourOption !== null) {
       let additionalHourPrice = isWeekend ? 60 : 50; // base price for each hour during weekends and weekdays
@@ -159,9 +172,10 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       }
       total += additionalHourPrice;
     }
-  
+
     return total;
   };
+
   const handleNext = () => {
     const totalPeople = numPeople;
     const data = {
@@ -214,6 +228,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     if (selectedTimeSlot) {
       setShowModal(false);
     }
+  };
+
+  const handleMassageCancel = () => {
+    setSelectedOptions((prev) => prev.filter((opt) => opt !== "massage"));
+    setShowModal(false);
   };
 
   return (
@@ -306,7 +325,9 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
                 <span className=" text-sm">{option.name}</span>
                 <p className="text-sm">
-                  {option.price}€
+                  {option.id === "massage"
+                    ? `${massageDetails.duration === 20 ? 50 : massageDetails.duration === 30 ? 60 : 90}€/pers`
+                    : `${option.price}€`}
                   <span className="text-xs"> {option.extra}</span>
                   {option.info && (
                     <button
@@ -320,6 +341,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                     </button>
                   )}
                 </p>
+                {option.id === "massage" && selectedOptions.includes("massage") && (
+                  <p className="text-xs mt-2">
+                    Durée sélectionnée: {massageDetails.duration} min
+                  </p>
+                )}
                 {option.id === "1hr" &&
                   selectedOptions.includes("1hr") &&
                   selectedTimeSlot && (
@@ -438,12 +464,21 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                     }`}
                     onClick={() => handleMassageChange("duration", duration)}
                   >
-                    {duration} min
+                    {duration} min - {
+                      duration === 20 ? "50€" :
+                      duration === 30 ? "60€" : "90€"
+                    }
                   </button>
                 ))}
               </div>
             </div>
-            <div className="mt-4 text-right">
+            <div className="mt-4 text-right space-x-4">
+            <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleMassageCancel}
+              >
+                Cancel
+              </button>
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded-md"
                 onClick={() => setShowModal(false)}
@@ -500,7 +535,6 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
           ))}
         </div>
 
-      
         {cateringInfo && (
           <div
             className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
