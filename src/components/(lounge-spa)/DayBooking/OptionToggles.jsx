@@ -494,7 +494,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">Votre expérience Lounge & spa pour</h3>
+        <h3 className="text-lg font-bold">Votre expérience Lounge & Spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 

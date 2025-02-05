@@ -365,10 +365,10 @@ const Step1 = ({ onNext, setBookingDetails }) => {
       )}
 
       <div className="text-right mt-6">
-        <p className="font-bold text-lg text-primary-800">
-          <p>Votre expérience Lounge & spa pour</p>
+        <div className="font-bold text-lg text-primary-800">
+          <p>Votre expérience Lounge & Spa pour</p>
           {price}€
-        </p>
+        </div>
         <button
           className={`px-4 py-2 rounded-full ${
             (selectedDate && lastMinute) || (selectedDate && selectedSlot)

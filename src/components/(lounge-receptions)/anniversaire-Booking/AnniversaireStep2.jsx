@@ -644,7 +644,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
       <div className="mt-6 text-right">
         <h3 className="text-lg font-bold">
-          Votre expérience Lounge & spa pour
+          Votre expérience Lounge & Spa pour
         </h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>

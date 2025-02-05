@@ -335,7 +335,7 @@ const CorporateStep1 = ({ onNext, setBookingDetails }) => {
           <div className="mt-6">
             {selectedSlot && (
               <div className="text-right text-lg font-bold text-primary-800">
-                <p>Votre expérience Lounge & spa pour</p>
+                <p>Votre expérience Lounge & Spa pour</p>
                 
                  {selectedSlot.price}€
               </div>

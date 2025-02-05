@@ -1,35 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import snack from "../../../../public/images/snack.png";
 import remove from "../../../../public/images/remove.png";
 import massage from "../../../../public/images/lithotherapie.png";
 import extraHour from "../../../../public/images/icons/extra-time.png";
 import robe from "../../../../public/images/icons/spa/robe.png";
 import vip from "../../../../public/images/icons/spa/red-carpet.png";
-
-
 import gourmetSnack from "../../../../public/images/icons/beverage.png";
 import dinnerboard from "../../../../public/images/icons/dinner-table.png";
 import menuSaveur from "../../../../public/images/icons/serving-dish.png";
 import service from "../../../../public/images/icons/catering.png";
 
-
-import Image from "next/image";
-
 const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [numPeople, setNumPeople] = useState(2);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(["None"]);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState("");
   const [additionalHourOptions, setAdditionalHourOptions] = useState([]);
-  const [selectedAdditionalHourOption, setSelectedAdditionalHourOption] =
-    useState(null);
-  const [massageDetails, setMassageDetails] = useState({
-    numPeople: 1,
-    duration: 20,
-  });
-  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [selectedAdditionalHourOption, setSelectedAdditionalHourOption] = useState(null);
+  const [massageDetails, setMassageDetails] = useState({ numPeople: 1, duration: 20 });
+  const [selectedCateringOptions, setSelectedCateringOptions] = useState(["cateringNone"]);
   const [cateringInfo, setCateringInfo] = useState(null);
   const [spaInfo, setSpaInfo] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
@@ -45,7 +37,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       icon: massage,
       info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
     },
-    { id: "robe", name: "Location de peignoir", price: 5, icon: robe },
+    { id: "robe", name: "Location de peignoir", price: 5,  extra: "/pers", icon: robe },
     {
       id: "vip",
       name: "Accueil VIP",
@@ -142,9 +134,12 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
   const calculateTotal = () => {
     let total = bookingDetails.price; // Base price per person multiplied by the number of people
+    const bookingDate = new Date(bookingDetails.date);
+    const isWeekend = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Saturday is 6, Sunday is 0
+  
     selectedOptions.forEach((optionId) => {
       const option = spaOptions.find((opt) => opt.id === optionId);
-
+  
       if (optionId === "massage") {
         total += option.price * massageDetails.numPeople;
       } else if (optionId !== "1hr") {
@@ -155,22 +150,18 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
       total += option.price * numPeople;
     });
-
+  
     // Add the fixed price for additional hour options
-    if (
-      selectedOptions.includes("1hr") &&
-      selectedAdditionalHourOption !== null
-    ) {
+    if (selectedOptions.includes("1hr") && selectedAdditionalHourOption !== null) {
+      let additionalHourPrice = isWeekend ? 60 : 50; // base price for each hour during weekends and weekdays
       if (selectedAdditionalHourOption === 2) {
-        total += 100;
-      } else {
-        total += 50;
+        additionalHourPrice *= 2; // price for both before and after options
       }
+      total += additionalHourPrice;
     }
-
+  
     return total;
   };
-
   const handleNext = () => {
     const totalPeople = numPeople;
     const data = {
@@ -212,8 +203,26 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     return [beforeOption, afterOption, bothOption];
   };
 
+  const handleModalClose = () => {
+    setSelectedOptions((prev) => prev.filter((opt) => opt !== "1hr"));
+    setSelectedAdditionalHourOption(null);
+    setSelectedTimeSlot("");
+    setShowModal(false);
+  };
+
+  const handleModalOkay = () => {
+    if (selectedTimeSlot) {
+      setShowModal(false);
+    }
+  };
+
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
+      <div className="flex justify-center">
+      <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+          Journée
+        </span>
+      </div>
       <div>
         <b>Date sélectionné: </b>
         {bookingDetails.date
@@ -347,12 +356,12 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
               {additionalHourOptions.map((option, index) => (
                 <button
                   key={option}
-                  className="block w-full p-2 bg-gray-200 rounded-md"
+                  className={`block w-full p-2 rounded-md ${
+                    selectedTimeSlot === option ? "bg-green-500 text-white" : "bg-gray-200"
+                  }`}
                   onClick={() => {
                     setSelectedTimeSlot(option);
                     setSelectedAdditionalHourOption(index);
-                    setShowModal(false);
-                    setSelectedOptions((prev) => [...prev, "1hr"]);
                   }}
                 >
                   {option}
@@ -364,6 +373,21 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
               semaine à l’avance par mail. Vous serez immédiatement remboursé en
               cas d&apos;indisponibilité
             </p>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleModalClose}
+              >
+                Close
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={handleModalOkay}
+                disabled={!selectedTimeSlot}
+              >
+                Okay
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -476,6 +500,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
           ))}
         </div>
 
+      
         {cateringInfo && (
           <div
             className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
@@ -492,9 +517,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       </div>
 
       <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">
-          Votre expérience Lounge & spa pour
-        </h3>
+        <h3 className="text-xl font-bold">Votre expérience Lounge & Spa pour</h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 

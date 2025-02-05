@@ -28,10 +28,9 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-      <div className="text-center">
-        {" "}
-        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-          Anniversaires
+       <div className="flex justify-center">
+      <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+          Journée
         </span>
       </div>
 
@@ -143,7 +142,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
       {/* Total Cost */}
       <div className="text-right">
-        <h3 className="font-bold">Votre expérience Lounge & spa pour :</h3>
+        <h3 className="font-bold">Votre expérience Lounge & Spa pour :</h3>
         <p className="text-xl font-semibold">{calculateTotal().toFixed(2)}€</p>
       </div>
 
