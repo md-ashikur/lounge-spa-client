@@ -25,6 +25,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [cateringInfo, setCateringInfo] = useState(null);
   const [spaInfo, setSpaInfo] = useState(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+  const [modalNumPeople, setModalNumPeople] = useState(1);
 
   const spaOptions = [
     { id: "None", name: "Aucune", price: 0, icon: remove },
@@ -92,6 +93,12 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       if (prev.includes("None")) {
         return [option];
       }
+      if (option === "robe" && prev.includes("vip")) {
+        return prev;
+      }
+      if (option === "vip" && prev.includes("robe")) {
+        return prev.filter((opt) => opt !== "robe").concat(option);
+      }
       return prev.includes(option)
         ? prev.filter((opt) => opt !== option)
         : [...prev, option];
@@ -105,6 +112,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
     if (option === "massage" && !selectedOptions.includes(option)) {
       setModalType("massage");
+      setShowModal(true);
+    }
+
+    if (option !== "None" && option !== "1hr" && option !== "massage" && option !== "vip" && option !== "robe") {
+      setModalType(option);
       setShowModal(true);
     }
   };
@@ -123,6 +135,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         ? prev.filter((opt) => opt !== option)
         : [...prev, option];
     });
+
+    if (option !== "cateringNone") {
+      setModalType(option);
+      setShowModal(true);
+    }
   };
 
   const handleMassageChange = (field, value) => {
@@ -155,13 +172,13 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         }
         total += massagePrice * massageDetails.numPeople;
       } else if (optionId !== "1hr") {
-        total += option.price * numPeople;
+        total += option.price * modalNumPeople;
       }
     });
 
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
-      total += option.price * numPeople;
+      total += option.price * modalNumPeople;
     });
 
     // Add the fixed price for additional hour options
@@ -218,16 +235,15 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   };
 
   const handleModalClose = () => {
-    setSelectedOptions((prev) => prev.filter((opt) => opt !== "1hr"));
+    setSelectedOptions((prev) => prev.filter((opt) => opt !== modalType));
     setSelectedAdditionalHourOption(null);
     setSelectedTimeSlot("");
     setShowModal(false);
+    setModalNumPeople(1);
   };
 
-  const handleModalOkay = () => {
-    if (selectedTimeSlot) {
-      setShowModal(false);
-    }
+  const handleModalConfirm = () => {
+    setShowModal(false);
   };
 
   const handleMassageCancel = () => {
@@ -353,6 +369,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                       Plage horaire: {selectedTimeSlot}
                     </p>
                   )}
+                {selectedOptions.includes(option.id) && option.id !== "None" && option.id !== "1hr" && option.id !== "massage" && (
+                  <p className="text-xs mt-2">
+                    Nombre de personnes: {modalNumPeople}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -408,7 +429,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
               </button>
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded-md"
-                onClick={handleModalOkay}
+                onClick={handleModalConfirm}
                 disabled={!selectedTimeSlot}
               >
                 Okay
@@ -464,7 +485,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                     }`}
                     onClick={() => handleMassageChange("duration", duration)}
                   >
-                    {duration} min - {
+                                      {duration} min - {
                       duration === 20 ? "50€" :
                       duration === 30 ? "60€" : "90€"
                     }
@@ -482,6 +503,44 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded-md"
                 onClick={() => setShowModal(false)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* general modal for other options---------------- */}
+      {showModal && modalType !== "1hr" && modalType !== "massage" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+          <div className="bg-white p-4 rounded-md lg:w-1/2">
+            <h3 className="text-lg font-bold">Select Number of People</h3>
+            <div className="mt-4 flex items-center space-x-2">
+              <button
+                className="px-3 py-1 bg-gray-300 rounded-md"
+                onClick={() => setModalNumPeople(Math.max(1, modalNumPeople - 1))}
+              >
+                -
+              </button>
+              <span>{modalNumPeople}</span>
+              <button
+                className="px-3 py-1 bg-gray-300 rounded-md"
+                onClick={() => setModalNumPeople(modalNumPeople + 1)}
+              >
+                +
+              </button>
+            </div>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleModalClose}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={handleModalConfirm}
               >
                 Confirm
               </button>
@@ -530,6 +589,11 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                     </button>
                   )}
                 </span>
+                {selectedCateringOptions.includes(option.id) && option.id !== "cateringNone" && (
+                  <p className="text-xs mt-2">
+                    Nombre de personnes: {modalNumPeople}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -569,6 +633,9 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
           Suivant
         </button>
       </div>
+
+
+      
     </div>
   );
 };
