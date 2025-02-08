@@ -609,12 +609,12 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       {showModal && modalType === "massage" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
-            <h3 className="text-lg font-bold">Massages</h3>
+            <h3 className="text-lg font-bold">À partir de 50€</h3>
             <div className="mt-4">
-              <label>Number of People:</label>
+              <label>Nombre de personnes :</label>
               <div className="flex items-center space-x-2 mt-2">
                 <button
-                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() =>
                     handleMassageChange(
                       "numPeople",
@@ -626,7 +626,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
                 </button>
                 <span>{massageDetails.numPeople}</span>
                 <button
-                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() =>
                     handleMassageChange(
                       "numPeople",
@@ -639,7 +639,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
               </div>
             </div>
             <div className="mt-4">
-              <label>Duration (minutes):</label>
+              <label>Durée (minutes) :</label>
               <div className="flex items-center space-x-2 mt-2">
                 {[20, 30, 60].map((duration) => (
                   <button
