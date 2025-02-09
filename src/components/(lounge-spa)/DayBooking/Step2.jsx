@@ -308,7 +308,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     return total;
   };
 
-  // Generic modal cancel for spa/catering options
+  // Generic modal cancel for spa/catering options========
   const handleGenericModalCancel = () => {
     setShowModal(false);
     if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
@@ -323,7 +323,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     setModalActiveOption(null);
   };
 
-  // Generic modal confirm for spa/catering options
+  // Generic modal confirm for spa/catering options========
   const handleGenericModalConfirm = () => {
     if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
       setOptionPeople((prev) => ({ ...prev, [modalActiveOption]: modalCount }));
