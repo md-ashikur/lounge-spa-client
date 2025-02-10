@@ -458,7 +458,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
         </label>
         <button
           className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-          onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
+          onClick={() => setNumPeople(Math.max(2, numPeople - 1))}
         >
           -
         </button>

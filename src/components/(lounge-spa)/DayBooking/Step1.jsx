@@ -66,8 +66,13 @@ const Step1 = ({ onNext, setBookingDetails }) => {
       const todayDate = today.toISOString().split("T")[0];
       const tomorrowDate = tomorrow.toISOString().split("T")[0];
 
+      const remainingSlotsToday = defaultSlots.filter((slot) => {
+        const [startHour] = slot.split("h");
+        return today.getHours() < parseInt(startHour, 10);
+      });
+
       setBookedSlots({
-        [todayDate]: defaultSlots,
+        [todayDate]: remainingSlotsToday,
         [tomorrowDate]: defaultSlots,
       });
 
@@ -102,7 +107,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
     if (lastMinute) {
       const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 0);
+      limitDate.setDate(limitDate.getDate() + 1);
       return date < today || date > limitDate;
     }
 
@@ -296,12 +301,17 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                   <p className="font-semibold">{date}</p>
                   <div className="flex gap-4">
                     {slots.map((slot) => (
-                      <span
-                        className="py-1 px-3 rounded-full bg-green-500 text-center text-white"
+                      <button
                         key={slot}
+                        className={`py-2 px-3 rounded-full text-white text-center text-sm ${
+                          selectedSlot === slot
+                            ? "bg-green-500 text-white"
+                            : "bg-primary"
+                        }`}
+                        onClick={() => handleSlotClick(slot)}
                       >
                         {slot}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 </div>
