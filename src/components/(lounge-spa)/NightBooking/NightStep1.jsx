@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -15,79 +15,120 @@ import terraces from "../../../../public/images/terrace.png";
 import Image from "next/image";
 
 const NightStep1 = ({ onNext, setBookingDetails }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [bookedSlots, setBookedSlots] = useState({}); // To track booked slots per date
-  const [selectedSlot, setSelectedSlot] = useState(null); // To track the selected time slot
-  const [greenDeal, setGreenDeal] = useState(false);
-  const [lastMinute, setLastMinute] = useState(false);
+   const [selectedDate, setSelectedDate] = useState(null);
+   const [timeSlots, setTimeSlots] = useState([]);
+   const [bookedSlots, setBookedSlots] = useState({});
+   const [selectedSlot, setSelectedSlot] = useState(null);
+   const [greenDeal, setGreenDeal] = useState(false);
+   const [lastMinute, setLastMinute] = useState(false);
+   const [showModal, setShowModal] = useState({ type: null, open: false });
+   const [price, setPrice] = useState(0);
+ 
+   const defaultSlots = useMemo(
+     () => ["19h – 10h"],
+     []
+   );
 
-  const defaultSlots = ["19h00 – 10h00"];
+ 
+   const calculatePrice = () => {
+     if (greenDeal) {
+       setPrice(80); // Fixed price for Green Deal
+     } else if (lastMinute && selectedDate) {
+       const day = selectedDate.getDay();
+       setPrice(day >= 1 && day <= 4 ? 85 : 100); // Mon-Thu: 85€, Fri-Sun: 100€
+     } else if (selectedDate && selectedSlot) {
+       const day = selectedDate.getDay();
+       setPrice(day >= 1 && day <= 4 ? 290 : 290); // Mon-Thu: 120€, Fri-Sun: 140€
+     } else {
+       setPrice(0); // Default price when no selection
+     }
+   };
+ 
+   useEffect(() => {
+     calculatePrice();
+   }, [lastMinute, selectedDate, selectedSlot]);
+ 
+   useEffect(() => {
+     if (lastMinute) {
+       const today = new Date();
+       const tomorrow = new Date(today);
+       tomorrow.setDate(today.getDate() + 1);
+ 
+       const todayDate = today.toISOString().split("T")[0];
+       const tomorrowDate = tomorrow.toISOString().split("T")[0];
+ 
+       const remainingSlotsToday = defaultSlots.filter((slot) => {
+         const [startHour] = slot.split("h");
+         return today.getHours() < parseInt(startHour, 10);
+       });
+ 
+       setBookedSlots({
+         [todayDate]: remainingSlotsToday,
+         [tomorrowDate]: defaultSlots,
+       });
+ 
+       setTimeSlots([]);
+       setSelectedSlot(null);
+     } else {
+      const slots = defaultSlots;
+       setTimeSlots(slots);
+       setSelectedSlot(null);
+     }
+   }, [
+     lastMinute,
+     selectedDate,
+     defaultSlots,
 
-  const greenDealSlots = [
-    "9h30 – 11h30",
-    "12h – 14h",
-    "14h30 – 16h30",
-    "17h – 19h",
-    "19h30 – 21h30",
-    "22h – 00h",
-  ];
-
-  useEffect(() => {
-    // Reset time slots when toggling options
-    const slots = greenDeal ? greenDealSlots : defaultSlots;
-    setTimeSlots(slots);
-    setSelectedSlot(null); // Reset selected slot when slots change
-  }, [greenDeal]);
-
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Ensure only the date is considered
-
-    if (greenDeal) {
-      const day = date.getDay();
-      return day !== 2 && day !== 3 && day !== 4; // Only Tuesday, Wednesday, Thursday
-    }
-
-    if (lastMinute) {
-      const limitDate = new Date();
-      limitDate.setDate(limitDate.getDate() + 1);
-      return date < today || date > limitDate;
-    }
-
-    const formattedDate = date.toISOString().split("T")[0];
-    return (
-      date < today || bookedSlots[formattedDate]?.length === timeSlots.length
-    );
-  };
-
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot);
-  };
-
-  const handleNext = () => {
-    if (selectedDate && selectedSlot) {
-      setBookingDetails({
-        date: selectedDate,
-        slot: selectedSlot,
-        greenDeal,
-        lastMinute,
-      });
-      onNext();
-    }
-  };
-
+   ]);
+ 
+   const tileDisabled = ({ date }) => {
+     const today = new Date();
+     today.setHours(0, 0, 0, 0);
+ 
+    
+ 
+     if (lastMinute) {
+       const limitDate = new Date();
+       limitDate.setDate(limitDate.getDate() + 1);
+       return date < today || date > limitDate;
+     }
+ 
+     const formattedDate = date.toISOString().split("T")[0];
+     return (
+       date < today || bookedSlots[formattedDate]?.length === timeSlots.length
+     );
+   };
+ 
+   const handleSlotClick = (slot) => {
+     setSelectedSlot(slot);
+   };
+ 
+   const handleNext = () => {
+     if ((selectedDate && selectedSlot) || (selectedDate && lastMinute)) {
+       setBookingDetails({
+         date: selectedDate,
+         slot: selectedSlot,
+         greenDeal,
+         lastMinute,
+         price,
+       });
+       onNext();
+     }
+   };
   return (
     <div className="lg:px-20 space-y-6 my-10">
       <div className="text-center">
-        <h2 className="text-xl font-bold text-primary-800">
+      <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+      Nuitée
+        </span>
+        <h2 className="text-xl font-bold  my-5 text-primary-800">
           Description de l’offre :
         </h2>
-        <p className="text-primary ">
+        <p className="text-primary">
           Découvrez un univers d&apos;exception : une nuit dans un spa privatisé
           de plus de 300m². Ici, élégance, raffinement et prestige se mêlent
           pour créer une atmosphère luxueuse et intimiste pour une nuit
-          inoubliable..
+          inoubliable.
         </p>
       </div>
 
@@ -283,15 +324,19 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
         </div>
       </div>
 
-      <div className="flex justify-end mt-6">
+      <div className="text-right mt-6">
+        <div className="font-bold text-lg text-primary-800">
+          <p>Votre expérience Lounge & Spa pour</p>
+          {price}€
+        </div>
         <button
           className={`px-4 py-2 rounded-full ${
-            selectedDate && selectedSlot
+            (selectedDate && lastMinute) || (selectedDate && selectedSlot)
               ? "bg-green-500 text-white"
               : "bg-primary-500 text-white cursor-not-allowed"
           }`}
           onClick={handleNext}
-          disabled={!selectedDate || !selectedSlot}
+          disabled={!lastMinute && !(selectedDate && selectedSlot)}
         >
           Suivant
         </button>

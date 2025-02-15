@@ -1,146 +1,248 @@
 "use client";
-import React, { useState } from "react";
 
-const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
-  const [numPeople, setNumPeople] = useState(1);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+import React, { useState } from "react";
+import Image from "next/image";
+import snack from "../../../../public/images/snack.png";
+import remove from "../../../../public/images/remove.png";
+import massage from "../../../../public/images/lithotherapie.png";
+import extraHour from "../../../../public/images/icons/extra-time.png";
+import robe from "../../../../public/images/icons/spa/robe.png";
+import vip from "../../../../public/images/icons/spa/red-carpet.png";
+import gourmetSnack from "../../../../public/images/icons/beverage.png";
+import dinnerboard from "../../../../public/images/icons/dinner-table.png";
+import menuSaveur from "../../../../public/images/icons/serving-dish.png";
+import service from "../../../../public/images/icons/catering.png";
+import { toast } from "react-toastify";
+
+const NightStep2 = ({ bookingDetails, onBack, onNext }) => {
+  // main states
+  const [numPeople, setNumPeople] = useState(2);
+  const [selectedOptions, setSelectedOptions] = useState(["None"]);
+  const [selectedCateringOptions, setSelectedCateringOptions] = useState([
+    "cateringNone",
+  ]);
   const [showModal, setShowModal] = useState(false);
+  // modalType is used for special modals (1hr and massage) and for generic modal we use modalActiveOption
   const [modalType, setModalType] = useState("");
+  const [modalActiveOption, setModalActiveOption] = useState(null);
+  // separate count for generic spa/catering modals
+  const [modalCount, setModalCount] = useState(1);
+  // storing counts per option
+  const [optionPeople, setOptionPeople] = useState({}); // for spa options
+  const [cateringPeople, setCateringPeople] = useState({}); // for catering options
+
+  // special states
   const [additionalHourOptions, setAdditionalHourOptions] = useState([]);
+  const [selectedAdditionalHourOption, setSelectedAdditionalHourOption] =
+    useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [massageDetails, setMassageDetails] = useState({
     numPeople: 1,
     duration: 20,
   });
-
-  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
-  const [cateringInfo, setCateringInfo] = useState(null);
   const [spaInfo, setSpaInfo] = useState(null);
+  const [cateringInfo, setCateringInfo] = useState(null);
 
-
-  const nightSpaOptions = [
-    { id: "NightSpa1", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "NightSpa2", name: "Arrivée anticipée (si disponible)", price: 80, icon: "17H" },
+  const spaOptions = [
+    { id: "None", name: "Aucune", price: 0, icon: remove },
+    { id: "1hr", name: "1h supplémentaire", price: 50, icon: extraHour },
     {
-      id: "NightSpa3",
-      name: "Départ tardif (si disponible)",
-      price: 80,
-      icon: "13H",
-      
-    },
-    { id: "NightSpa4", 
-      name: "Modelages type californien aux huiles chaudes", 
+      id: "massage",
+      name: "Modelages type californien aux huiles chaudes",
+      extra: "(+10€ soir et dimanche)",
       price: 50,
-      extra: " (+10€ soir et dimanche)", 
-      icon: "🧖",
-      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté."
+      icon: massage,
+      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
     },
     {
-      id: "NightSpa5",
+      id: "robe",
       name: "Location de peignoir",
       price: 5,
-      icon: "🍾",
-   
+      extra: "/pers",
+      icon: robe,
     },
     {
-      id: "NightSpa6",
+      id: "vip",
       name: "Accueil VIP",
       price: 35,
       extra: "/pers",
-      icon: "🍾",
+      icon: vip,
       info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
     },
   ];
 
   const cateringOptions = [
-    { id: "nightCatering1", 
-      name: "Aucune", 
-      price: 0, 
-      icon: "🚫" },
+    { id: "cateringNone", name: "Aucune", price: 0, icon: remove },
     {
-      id: "nightCatering2",
+      id: "GourmetSnack",
       name: "En-cas gourmand",
       price: 20,
-      icon: "⏳",
       extra: "/pers",
+      icon: gourmetSnack,
       info: "Encas désaltérant + pâtisseries",
     },
     {
-      id: "nightCatering3",
+      id: "DinnerBoard",
       name: "Planche dînatoire",
       price: 30,
-      icon: "💆",
       extra: "/pers",
+      icon: dinnerboard,
       info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
     },
     {
-      id: "nightCatering4",
+      id: "FlavorMenu",
       name: "Menu saveur",
-      price: 45,
-      icon: "🧖",
+      price: 30,
       extra: "/pers",
-      info: `Préparé par notre cheffe de cuisine (fait maison)\nChoix à faire quelques jours à l’avance sur propositions\n\nEntrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique\nPlat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien\nTrilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison\n\nPropositions susceptibles d’être modifiées en fonction des saisons et des arrivages.\nVous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.\nPour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
+      icon: menuSaveur,
+      info: `Préparé par notre cheffe de cuisine (fait maison)
+Choix à faire quelques jours à l’avance sur propositions
+
+Entrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique
+Plat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien
+Trilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison
+
+Propositions susceptibles d’être modifiées en fonction des saisons et des arrivages.
+Vous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.
+Pour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
+    },
+    {
+      id: "service",
+      name: "Service à table par notre cheffe",
+      price: 35,
+      icon: service,
     },
   ];
 
-  const handleOptionSelect = (option) => {
-    if (option === "NightSpa1") {
-      setSelectedOptions([option]);
+  // SPA OPTION CLICK
+  const handleOptionSelect = (optionId) => {
+    // if selecting 'None', clear others
+    if (optionId === "None") {
+      setSelectedOptions(["None"]);
+      setOptionPeople({});
       return;
     }
 
-    setSelectedOptions((prev) => {
-      if (prev.includes("NightSpa1")) {
-        return [option];
+    // if clicking on "robe" while VIP is selected, show message
+    if (optionId === "robe" && selectedOptions.includes("vip")) {
+      toast(
+        "Si vous avez choisi l'option VIP, vous ne pouvez pas sélectionner la Location de peignoir."
+        , {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          
+          });
+      return;
+    }
+
+    // if selecting VIP and "robe" is currently selected, remove "robe"
+    if (optionId === "vip" && selectedOptions.includes("robe")) {
+      setSelectedOptions((prev) =>
+        prev.filter((id) => id !== "robe").concat(optionId)
+      );
+      setOptionPeople((prev) => {
+        const newMap = { ...prev };
+        delete newMap["robe"];
+        return newMap;
+      });
+    } else {
+      // toggle selection
+      if (selectedOptions.includes(optionId)) {
+        setSelectedOptions(selectedOptions.filter((id) => id !== optionId));
+        setOptionPeople((prev) => {
+          const newMap = { ...prev };
+          delete newMap[optionId];
+          return newMap;
+        });
+        return;
       }
-      return prev.includes(option)
-        ? prev.filter((opt) => opt !== option)
-        : [...prev, option];
-    });
+      let newSelection = [...selectedOptions];
+      if (newSelection.includes("None")) {
+        newSelection = [];
+      }
+      newSelection.push(optionId);
+      setSelectedOptions(newSelection);
+    }
+    // Modified modal count initialization for VIP
+    if (optionId === "vip") {
+      setModalCount(2); // Start with minimum 2 people for VIP
+    } else {
+      setModalCount(1);
+    }
 
-    // if (option === "1hr" && !selectedOptions.includes(option)) {
-    //   const { slot } = bookingDetails;
-    //   const [start, end] = slot.split(" – ");
-    //   const additionalStart = new Date(
-    //     `2022-01-01T${start.replace("h", ":")}:00`
-    //   );
-    //   const additionalEnd = new Date(`2022-01-01T${end.replace("h", ":")}:00`);
-
-    //   const options = [
-    //     `${new Date(additionalStart.setHours(additionalStart.getHours() - 1))
-    //       .toTimeString()
-    //       .slice(0, 5)} – ${end}`,
-    //     `${start} – ${new Date(
-    //       additionalEnd.setHours(additionalEnd.getHours() + 1)
-    //     )
-    //       .toTimeString()
-    //       .slice(0, 5)}`,
-    //   ];
-
-    //   setAdditionalHourOptions(options);
-    //   setModalType("1hr");
-    //   setShowModal(true);
-    // }
-
-    if (option === "NightSpa4" && !selectedOptions.includes(option)) {
-      setModalType("NightSpa4");
+    // For special options use their own modal
+    if (optionId === "1hr") {
+      setAdditionalHourOptions(getAdditionalHourOptions(bookingDetails.slot));
+      setModalType("1hr");
+      setShowModal(true);
+    } else if (optionId === "massage") {
+      setModalType("massage");
+      setShowModal(true);
+    } else {
+      setModalActiveOption(optionId);
+      setModalType(optionId);
       setShowModal(true);
     }
   };
 
-  const handleCateringSelect = (option) => {
-    if (option === "nightCatering1") {
-      setSelectedCateringOptions([option]);
+  // CATERING OPTION CLICK
+  const handleCateringSelect = (optionId) => {
+    // if selecting "cateringNone", clear others
+    if (optionId === "cateringNone") {
+      setSelectedCateringOptions(["cateringNone"]);
+      setCateringPeople({});
       return;
     }
 
-    setSelectedCateringOptions((prev) => {
-      if (prev.includes("nightCatering1")) {
-        return [option];
+    // Handle service option separately
+    if (optionId === "service") {
+      if (selectedCateringOptions.includes("service")) {
+        setSelectedCateringOptions((prev) =>
+          prev.filter((id) => id !== "service")
+        );
+        setCateringPeople((prev) => {
+          const newMap = { ...prev };
+          delete newMap["service"];
+          return newMap;
+        });
+        return;
       }
-      return prev.includes(option)
-        ? prev.filter((opt) => opt !== option)
-        : [...prev, option];
-    });
+
+      const newSelection = selectedCateringOptions.includes("cateringNone")
+        ? [optionId]
+        : [...selectedCateringOptions, optionId];
+
+      setSelectedCateringOptions(newSelection);
+      setCateringPeople((prev) => ({ ...prev, [optionId]: 1 }));
+      return;
+    }
+
+    // toggle selection for catering
+    if (selectedCateringOptions.includes(optionId)) {
+      setSelectedCateringOptions(
+        selectedCateringOptions.filter((id) => id !== optionId)
+      );
+      setCateringPeople((prev) => {
+        const newMap = { ...prev };
+        delete newMap[optionId];
+        return newMap;
+      });
+      return;
+    }
+    let newSelection = [...selectedCateringOptions];
+    if (newSelection.includes("cateringNone")) {
+      newSelection = [];
+    }
+    newSelection.push(optionId);
+    setSelectedCateringOptions(newSelection);
+    // open generic modal for the catering option
+    setModalActiveOption(optionId);
+    setModalCount(1);
+    setModalType(optionId);
+    setShowModal(true);
   };
 
   const handleMassageChange = (field, value) => {
@@ -151,154 +253,368 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
   };
 
   const calculateTotal = () => {
-    let total = numPeople * 290; // Base price per person
+    let total = bookingDetails.price; // Base price per person multiplied by the number of people
+    const bookingDate = new Date(bookingDetails.date);
+    const isWeekend = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Saturday is 6, Sunday is 0
+    const isEvening =
+      bookingDetails.slot.includes("18h") ||
+      bookingDetails.slot.includes("19h");
+
     selectedOptions.forEach((optionId) => {
-      const option = nightSpaOptions.find((opt) => opt.id === optionId);
-      if (optionId === "NightSpa4") {
-        total += option.price * massageDetails.numPeople;
-      } else {
-        total += option.price;
+      const option = spaOptions.find((opt) => opt.id === optionId);
+      if (!option) return;
+
+      if (optionId === "massage") {
+        let massagePrice = 0;
+        if (massageDetails.duration === 20) {
+          massagePrice = 50;
+        } else if (massageDetails.duration === 30) {
+          massagePrice = 60;
+        } else if (massageDetails.duration === 60) {
+          massagePrice = 90;
+        }
+        if (isEvening || isWeekend) {
+          massagePrice += 10;
+        }
+        total += massagePrice * massageDetails.numPeople;
+      } else if (optionId !== "1hr") {
+        // use the specific count chosen (defaulting to 1 if not set)
+        const count = optionPeople[optionId] || 1;
+        total += option.price * count;
       }
     });
+
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
-      total += option.price;
+      if (!option) return;
+      if (optionId !== "cateringNone") {
+        const count = cateringPeople[optionId] || 1;
+        total += option.price * count;
+      }
     });
+
+    // Add the fixed price for additional hour options
+    if (
+      selectedOptions.includes("1hr") &&
+      selectedAdditionalHourOption !== null
+    ) {
+      let additionalHourPrice = isWeekend ? 60 : 50; // base price for each hour during weekends and weekdays
+      if (selectedAdditionalHourOption === 2) {
+        additionalHourPrice *= 2; // price for both before and after options
+      }
+      total += additionalHourPrice;
+    }
+
     return total;
   };
 
+  // Generic modal cancel for spa/catering options========
+  const handleGenericModalCancel = () => {
+    setShowModal(false);
+    if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
+      setSelectedOptions(
+        selectedOptions.filter((id) => id !== modalActiveOption)
+      );
+    } else if (cateringOptions.some((opt) => opt.id === modalActiveOption)) {
+      setSelectedCateringOptions(
+        selectedCateringOptions.filter((id) => id !== modalActiveOption)
+      );
+    }
+    setModalActiveOption(null);
+  };
+
+  // Generic modal confirm for spa/catering options========
+  const handleGenericModalConfirm = () => {
+    if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
+      setOptionPeople((prev) => ({ ...prev, [modalActiveOption]: modalCount }));
+    } else if (cateringOptions.some((opt) => opt.id === modalActiveOption)) {
+      setCateringPeople((prev) => ({
+        ...prev,
+        [modalActiveOption]: modalCount,
+      }));
+    }
+    setShowModal(false);
+    setModalActiveOption(null);
+  };
+
+  // Special modal cancel for massage
+  const handleMassageCancel = () => {
+    setSelectedOptions((prev) => prev.filter((opt) => opt !== "massage"));
+    setShowModal(false);
+  };
+
+  const handleNext = () => {
+    const totalPeople = numPeople;
+    const data = {
+      ...bookingDetails,
+      totalPeople,
+      selectedOptions,
+      selectedCateringOptions,
+      spaOptions,
+      cateringOptions,
+      optionPeople,
+      cateringPeople,
+      totalPrice: calculateTotal(),
+    };
+    onNext(data);
+  };
+
+  const getAdditionalHourOptions = (slot) => {
+    const [start, end] = slot.split(" – ");
+    const [startHour, startMinutes] = start.split("h").map(Number);
+    const [endHour, endMinutes] = end.split("h").map(Number);
+
+    const beforeStartHour = startHour - 1;
+    const afterEndHour = endHour + 1;
+
+    const formatTime = (hour, minutes) =>
+      `${hour}h${String(minutes).padStart(2, "0")}`;
+
+    const beforeOption = `${formatTime(
+      beforeStartHour,
+      startMinutes
+    )} – ${formatTime(endHour, endMinutes)}`;
+    const afterOption = `${formatTime(startHour, startMinutes)} – ${formatTime(
+      afterEndHour,
+      endMinutes
+    )}`;
+    const bothOption = `${formatTime(
+      beforeStartHour,
+      startMinutes
+    )} – ${formatTime(afterEndHour, endMinutes)}`;
+
+    return [beforeOption, afterOption, bothOption];
+  };
+
+  const handleModalClose = () => {
+    if (modalType === "1hr") {
+      setSelectedOptions((prev) => prev.filter((opt) => opt !== "1hr"));
+      setShowModal(false);
+    } else if (modalType === "massage") {
+      setSelectedOptions((prev) => prev.filter((opt) => opt !== "massage"));
+      setShowModal(false);
+    }
+  };
+
+  const handleModalConfirm = () => {
+    // For special modals (1hr)
+    setShowModal(false);
+  };
+
+ 
+
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <p>
-          <b>Date sélectionné: </b>
-          {bookingDetails.date
-            ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
-                weekday: "long", // Full name of the day (e.g., "Mercredi")
-                day: "numeric", // Numeric day of the month (e.g., "29")
-                month: "long", // Full name of the month (e.g., "janvier")
-                year: "numeric", // Full year (e.g., "2025")
-              })
-            : "Non disponible"}
-        </p>
-      <p>
-        <b>Plage horaire: </b> {bookingDetails.slot}
-      </p>
-      {bookingDetails.greenDeal && <p>Green Deal Choisi</p>}
-      {bookingDetails.lastMinute && (
-        <>
-          <span>
-            <b>Last Minute:</b> Ends{" "}
-          </span>
-          <span>
+      <div className="flex justify-center">
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+        Nuitée
+        </span>
+      </div>
+
+
+      <div>
         
-            {new Date(
-              bookingDetails.date.getTime() + 48 * 60 * 60 * 1000
-            ).toDateString()}
+        <b>Date sélectionné: </b>
+        {bookingDetails.date
+          ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
+          : "Non disponible"}
+      </div>
+
+      <div>
+        {!bookingDetails.lastMinute && (
+          <>
+            <b>Plage horaire: </b> {bookingDetails.slot}
+          </>
+        )}
+      </div>
+    
+      {bookingDetails.lastMinute && (
+        <div>
+          <span>
+            <b>Last Minute:</b> Se termine{" "}
           </span>
-        </>
+          <span>
+            {new Date(
+              new Date(bookingDetails.date).getTime() + 24 * 60 * 60 * 1000
+            ).toLocaleDateString("fr-FR", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </span>
+        </div>
       )}
 
-      {/* Number of People------------ */}
+      {/* Number of People */}
       <div className="flex items-center space-x-4">
         <label className="font-bold">
           Sélectionnez le nombres de personnes (13ans et +) :
         </label>
         <button
-        className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-          onClick={() => setNumPeople(Math.max(1, numPeople - 1))}
+          className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
+          onClick={() => setNumPeople(Math.max(2, numPeople - 1))}
         >
           -
         </button>
         <span className="px-4">{numPeople}</span>
         <button
           className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-          onClick={() => setNumPeople(numPeople + 1)}
+          onClick={() => setNumPeople(numPeople)}
         >
           +
         </button>
       </div>
 
       {/* =================Choose Spa section start============ */}
-      <h3 className="text-lg font-bold">Choisissez vos options Spa :</h3>
-      <div className="grid lg:grid-cols-5 gap-4 text-sm">
-        {nightSpaOptions.map((option) => (
+      <div>
+        <h3 className="text-lg font-bold my-5">Choisissez vos options Spa :</h3>
+        <div className="grid lg:grid-cols-5 gap-4 text-sm">
+          {spaOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                selectedOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleOptionSelect(option.id)}
+            >
+              <div className="text-center flex flex-col items-center">
+                <Image
+                  src={option.icon}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
+                <span className=" text-sm">{option.name}</span>
+                <p className="text-sm">
+                  {option.id === "massage"
+                    ? `${
+                        massageDetails.duration === 20
+                          ? 50
+                          : massageDetails.duration === 30
+                          ? 60
+                          : 90
+                      }€/pers`
+                    : `${option.price}€`}
+                  <span className="text-xs"> {option.extra}</span>
+                  {option.info && (
+                    <button
+                      className="ml-2 p-1 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSpaInfo(option.info);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+                  )}
+                </p>
+                {option.id === "massage" &&
+                  selectedOptions.includes("massage") && (
+                    <p className="text-xs mt-2">
+                      Durée sélectionnée: {massageDetails.duration} min
+                    </p>
+                  )}
+                {option.id === "1hr" &&
+                  selectedOptions.includes("1hr") &&
+                  selectedTimeSlot && (
+                    <p className="text-xs mt-2">
+                      Plage horaire: {selectedTimeSlot}
+                    </p>
+                  )}
+                {selectedOptions.includes(option.id) &&
+                  option.id !== "None" &&
+                  option.id !== "1hr" &&
+                  option.id !== "massage" && (
+                    <p className="text-xs mt-2">
+                      Nombre de personnes: {optionPeople[option.id] || 1}
+                    </p>
+                  )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {spaInfo && (
           <div
-            key={option.id}
-            className={`flex justify-center items-center p-3 rounded-3xl shadow-md ${
-              selectedOptions.includes(option.id)
-                ? "bg-green-500 text-white"
-                : "bg-primary text-white"
-            }`}
-            onClick={() => handleOptionSelect(option.id)}
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
+            onClick={() => setSpaInfo(null)}
           >
-            <div className="text-center flex flex-col items-center">
-            <span className="my-2 text-4xl">{option.icon}</span>
-            <span className="font-bold">{option.name}</span>
-           <p className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span> {option.info && (
-              <button
-                className="ml-2 text-white "
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSpaInfo(option.info);
-                }}
-              >
-                ⓘ
-              </button>
-            )}</p> 
-            
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
             </div>
           </div>
-        ))}
+        )}
       </div>
 
-      {spaInfo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
-        "
-          onClick={() => setSpaInfo(null)}
-        >
-          <div
-            className="bg-primary text-white p-4 rounded-md lg:w-1/2 "
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
-          </div>
-        </div>
-      )}
-
- {/* 1 hour modal----------------- */}
- {/* {showModal && modalType === "1hr" && (
+      {/* 1 hour modal */}
+      {showModal && modalType === "1hr" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md lg:w-1/2">
-            <h3 className="text-lg font-bold">Choose Extra 1 Hour</h3>
+            <h3 className="text-lg font-bold">Prolongez l’instant</h3>
             <div className="mt-4 space-y-2">
-              {additionalHourOptions.map((option) => (
+              {additionalHourOptions.map((option, index) => (
                 <button
                   key={option}
-                  className="block w-full p-2 bg-gray-200 rounded-md"
+                  className={`block w-full p-2 rounded-md ${
+                    selectedTimeSlot === option
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200"
+                  }`}
                   onClick={() => {
-                    setShowModal(false);
-                    setSelectedOptions((prev) => [...prev, "1hr"]);
+                    setSelectedTimeSlot(option);
+                    setSelectedAdditionalHourOption(index);
                   }}
                 >
                   {option}
                 </button>
               ))}
             </div>
+            <p className="my-3 text-center">
+              Sous réserve de disponibilité, avec confirmation au plus tard une
+              semaine à l’avance par mail. Vous serez immédiatement remboursé en
+              cas d&apos;indisponibilité
+            </p>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleModalClose}
+              >
+                Annuler
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={handleModalConfirm}
+                disabled={!selectedTimeSlot}
+              >
+               Confirmer
+              </button>
+            </div>
           </div>
         </div>
-      )} */}
+      )}
 
-      {/* massage modal---------------- */}
-      {showModal && modalType === "NightSpa4" && (
+      {/* Massage modal */}
+      {showModal && modalType === "massage" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
-            <h3 className="text-lg font-bold">Massages</h3>
+            <h3 className="text-lg font-bold">À partir de 50€</h3>
             <div className="mt-4">
-              <label>Nombre de personnes: </label>
+              <label>Nombre de personnes :</label>
               <div className="flex items-center space-x-2 mt-2">
                 <button
-                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() =>
                     handleMassageChange(
                       "numPeople",
@@ -310,7 +626,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
                 </button>
                 <span>{massageDetails.numPeople}</span>
                 <button
-                  className="px-3 py-1 bg-gray-300 rounded-md"
+                  className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() =>
                     handleMassageChange(
                       "numPeople",
@@ -323,7 +639,7 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
               </div>
             </div>
             <div className="mt-4">
-              <label>Durée: </label>
+              <label>Durée (minutes) :</label>
               <div className="flex items-center space-x-2 mt-2">
                 {[20, 30, 60].map((duration) => (
                   <button
@@ -335,89 +651,172 @@ const NightStep2 = ({ bookingDetails, setMoreDetails, onNext, onBack }) => {
                     }`}
                     onClick={() => handleMassageChange("duration", duration)}
                   >
-                    {duration} min
+                    {duration} min -{" "}
+                    {duration === 20 ? "50€" : duration === 30 ? "60€" : "90€"}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="mt-4 text-right">
+            <div className="mt-4 text-right space-x-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleMassageCancel}
+              >
+                Annuler
+              </button>
               <button
                 className="px-4 py-2 bg-green-500 text-white rounded-md"
                 onClick={() => setShowModal(false)}
               >
-                Confirm
+                Confirmer
               </button>
             </div>
           </div>
         </div>
       )}
 
-     
-
-      {/* =================Choose Catering Section start================= */}
-    <div className="py-10 ">
-    <h3 className="text-lg font-bold">Choisissez vos options restauration :</h3>
-      <div className="grid lg:grid-cols-5 gap-4 my-5">
-        {cateringOptions.map((option) => (
-          <div
-            key={option.id}
-            className={`flex items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
-              selectedCateringOptions.includes(option.id)
-                ? "bg-green-500 text-white"
-                : "bg-primary text-white"
-            }`}
-            onClick={() => handleCateringSelect(option.id)}
-          >
-            <div className="flex flex-col items-center justify-center">
-            <span className="my-2 text-4xl">{option.icon}</span>
-            <span className="font-bold">{option.name}</span>
-            <span className="text-sm">{option.price}€<span className="text-sm">{option.extra}</span>{option.info && (
-              <button
-                className="ml-2 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCateringInfo(option.info);
-                }}
-              >
-                ⓘ
-              </button>
-            )}</span>
-            
+      {/* Generic modal for spa/catering options */}
+      {showModal &&
+        modalActiveOption &&
+        modalType !== "1hr" &&
+        modalType !== "massage" && (
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+            <div className="bg-white p-4 rounded-md ">
+              <h3 className="text-lg font-bold">
+                Sélectionnez le nombre de personnes
+              </h3>
+              <div className="mt-4 flex items-center space-x-2">
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() => {
+                    const newCount =
+                      modalActiveOption === "vip"
+                        ? Math.max(2, modalCount - 1)
+                        : Math.max(1, modalCount - 1);
+                    setModalCount(newCount);
+                  }}
+                >
+                  -
+                </button>
+                <span>{modalCount}</span>
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() => setModalCount(modalCount + 1)}
+                >
+                  +
+                </button>
+              </div>
+              {/* Added VIP minimum notice */}
+              {modalActiveOption === "vip" && (
+                <p className="text-sm text-red-500 mt-2">
+                  Minimum 2 personnes requis pour cette option
+                </p>
+              )}
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  className="px-4 py-2 bg-gray-300 rounded-md"
+                  onClick={handleGenericModalCancel}
+                >
+                  Annuler
+                </button>
+                <button
+                  className="px-4 py-2 bg-green-500 text-white rounded-md"
+                  onClick={handleGenericModalConfirm}
+                  disabled={modalActiveOption === "vip" && modalCount < 2}
+                >
+                  Confirmer
+                </button>
+              </div>
             </div>
           </div>
-        ))}
+        )}
+
+      {/* =================Choose Catering section start============ */}
+      <div className="py-10">
+        <h3 className="text-lg font-bold my-5">
+          Choisissez vos options restauration :
+        </h3>
+        <div className="grid lg:grid-cols-5 gap-4">
+          {cateringOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                selectedCateringOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleCateringSelect(option.id)}
+            >
+              <div className="flex flex-col text-center items-center justify-center">
+                <Image
+                  src={option.icon}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
+                <span className="text-sm">{option.name}</span>
+                <span className="text-sm">
+                  {option.price}€{" "}
+                  <span className="text-xs"> {option.extra}</span>
+                  {option.info && (
+                    <button
+                      className="ml-2 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCateringInfo(option.info);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+                  )}
+                </span>
+                {selectedCateringOptions.includes(option.id) &&
+                  option.id !== "cateringNone" &&
+                  option.id !== "service" && (
+                    <p className="text-xs mt-2">
+                      Nombre de personnes: {cateringPeople[option.id] || 1}
+                    </p>
+                  )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cateringInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
+            onClick={() => setCateringInfo(null)}
+          >
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {cateringInfo && (
-        <div
-          className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
-        "
-          onClick={() => setCateringInfo(null)}
-        >
-          <div
-            className="bg-primary text-white p-4 rounded-md lg:w-1/2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
-          </div>
-        </div>
-      )}
-    </div>
-
-    <div className="mt-6 text-right">
-        <h3 className="text-lg font-bold">Votre expérience Lounge & Spa pour</h3>
+      <div className="mt-6 text-right">
+        <h3 className="text-xl font-bold">
+          Votre expérience Lounge & Spa pour
+        </h3>
         <p className="text-xl font-semibold">{calculateTotal()}€</p>
       </div>
 
       <div className="flex justify-between mt-6">
-        <button className="px-4 py-2 bg-primary text-white rounded-md" onClick={onBack}>
-        Précédent
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
+          Précédent
         </button>
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-md"
-          onClick={onNext}
+          onClick={handleNext}
         >
-         Suivant
+          Suivant
         </button>
       </div>
     </div>
