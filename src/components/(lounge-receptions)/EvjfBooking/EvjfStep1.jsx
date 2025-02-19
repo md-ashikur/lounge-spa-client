@@ -121,7 +121,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
           list: [
             "Privatisation du Spa pour votre groupe pendant 3h jusqu’à 7 personnes présentes et pendant 4 h à partir de 8 personnes.\n\n",
 
-            "un encas gourmand pour chaque participante (boissons soft + pâtisseries)\n\n",
+            "un Encas gourmand spécial EVJF pour chaque participante (boissons soft + pâtisseries)\n\n",
           ],
         },
         "Possibilité d’adapter les encas en fonction des régimes, intolérances ou allergies, nous consulter.",
@@ -138,7 +138,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
 
             "1 massage de 20 minute pour la future mariée (possibilité d’ajouter des massages pour les autres participantes sur demande)\n\n",
 
-            "un encas gourmand pour chaque participante (boissons soft + pâtisseries)\n\n"
+            "un Encas gourmand spécial EVJF pour chaque participante (boissons soft + pâtisseries)\n\n"
           ],
         },
         "Possibilité d’adapter les encas en fonction des régimes, intolérances ou allergies, nous consulter.",

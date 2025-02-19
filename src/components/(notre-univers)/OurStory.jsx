@@ -7,6 +7,8 @@ export default function OurStory() {
       <h1 className='text-xl font-bold'>Notre univers</h1>
       <p>Notre histoire</p>
       </div>
+
+      {/* ================ */}
     </div>
   )
 }

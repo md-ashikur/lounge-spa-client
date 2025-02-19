@@ -28,7 +28,7 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const additionalOptions = [
     { id: "coAddiNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
-    { id: "SleepSpa", name: "Dormir au spa (3 places)*matelas accepté", price: 290, icon: "⏳", },
+    { id: "SleepSpa", name: "Dormir au spa (3 places) *matelas accepté", price: 290, icon: "⏳", },
     { id: "coAddi3", name: "Dormir au domaine des 2 étangs *À 5 min en voiture du spa", price: 60, icon: "⏳" },
     { id: "coAddi4", name: "Dormir au domaine des 2 étangs + navette *À 5 min en voiture du spa", price: 110, icon: "⏳" },
     
