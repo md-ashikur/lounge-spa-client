@@ -401,10 +401,7 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
         )}
-      </div>
-     </div>
-
-      {/* Next Button */}
+              {/* Next Button */}
       <div className="flex justify-end mt-6">
         <button
           className={`px-4 py-2 rounded-full ${
@@ -418,6 +415,12 @@ const EvjfStep1 = ({ onNext, setBookingDetails }) => {
           Suivant
         </button>
       </div>
+      </div>
+
+      
+     </div>
+
+
     </div>
   );
 };

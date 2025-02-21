@@ -11,6 +11,7 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
+    { id: "buffet", name: "Buffet EVJF", price: 23, icon: "⏳" },
     { id: "greed", name: "En cas gourmand", price: 20, icon: "⏳" },
     { id: "DinnerBoard", name: "Planche dînatoire", price: 30, icon: "⏳" },
     { id: "FlavorMenu", name: "Menu saveur", price: 30, icon: "⏳" },
@@ -207,7 +208,7 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      {/* Choisissez vos options logements :---------- */}
+      {/* Choisissez vos options logements :-----========----- */}
       <div>
         <h3 className="text-lg font-bold my-5">
         Choisissez vos options logements :
