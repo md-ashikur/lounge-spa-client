@@ -208,7 +208,7 @@ const EvjfStep2 = ({ bookingDetails, onBack, onNext }) => {
         </div>
       </div>
 
-      {/* Choisissez vos options logements :-----========----- */}
+      {/* Choisissez vos options logements :-----=====----- */}
       <div>
         <h3 className="text-lg font-bold my-5">
         Choisissez vos options logements :
