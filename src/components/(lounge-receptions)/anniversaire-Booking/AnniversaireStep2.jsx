@@ -76,28 +76,97 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       name: "Saveurs du monde Indiennnes",
       price: 30,
       icon: indian,
-      info: "Encas désaltérant + pâtisseries",
+      info: `Mets (Servi en cocktail dinatoire) :
+    • Raita de Concombre
+    • Plancha de Poulet tandoori et courgette marinées
+    • Empanadas petits-pois, oignons, curry
+    • Lassi au fruit de saison (mangue, ananas…)
+    • Crème brulée Pistache
+    
+    Rafraîchissements :
+    • Punch maison au Thé vert indien
+    • Eaux minérales
+    • Café et tisanerie
+    `,
     },
     {
       id: "annicat5",
       name: "Saveurs du monde Marocaines",
       price: 30,
       icon: marocaines,
-      info: "Encas désaltérant + pâtisseries",
+      info: `Mets (Servi en cocktail dinatoire) :
+      • Carotte à la Chermoula
+      • Plancha de Poulet au citron confit
+      • Semoule parfumée au caviar d’aubergine
+      • Pastilla au lait et amande
+      • Salade d’orange
+
+      Rafraîchissements :
+      • Punch maison au Thé vert indien
+      • Eaux minérales
+      • Café et tisanerie
+`,
     },
     {
       id: "annicat6",
       name: "Saveurs traditionnelles",
       price: 30,
       icon: traditional,
-      info: "Encas désaltérant + pâtisseries",
+      info: `
+    Mets (Servi en cocktail dinatoire) :
+      Entrées
+      • Tartare de saumon à l’ancienne en verrine
+      • Verrine de crudités en mille feuilles
+    
+      Plats
+      • Brochette de poulet tandoori ou curry/coco
+      • Muffin aux légumes de saison
+    
+      Desserts
+      • Panacotta fruits rouges
+      • Moelleux 2 chocolats sortis du four
+    
+    Rafraîchissements :
+    • Eaux minérales
+    • Vins rouge/blanc (Fil rouge/Valençay)
+    • Café et tisanerie
+    
+    Option(s) :
+    • Chantilly de foie gras et son crumble de pain d’épice (+2€ / pers)
+    • Macaron salé au saumon fumé et curry (+3€ / pers)
+    • Plateau de 3 fromages différents (+5€ / pers)
+    • Remplacement de la pannacotta + moelleux 2 chocolats par un gâteau pâtissier : Framboisier ou fraisier ou gâteau 3 chocolats (+4€ / pers)
+    `,
     },
     {
       id: "annicat7",
       name: "Saveurs traditionnelles VIP",
       price: 30,
       icon: traditionalVIP,
-      info: "Encas désaltérant + pâtisseries",
+      info: `Mets (Servi en cocktail dinatoire) :
+      Entrées
+      • Tartare de saumon à l’ancienne en verrine
+      • Verrine de crudités en mille feuilles
+    
+      Plats
+      • Suprême de poulet poché, farci aux cèpes et foie gras (automne et hiver) ou Suprême de poulet poché farci épinard, ricotta et parmesan (Printemps et été)
+      • Écrasé de pomme de terre
+    
+      Desserts
+      • Framboisier ou fraisier ou gâteau 3 chocolats
+    
+    Rafraîchissement :
+    • Eaux minérales
+    • Vins rouge/blanc (Fil rouge/Valençay)
+    • Café et tisanerie
+    
+    Option(s) :
+    • Plateau de 5 fromages différents (+5€ / pers)
+    • Trou normand avec ou sans alcool (Calvados) (+2€  / pers)
+    • Remplacement du gâteau pâtissier par une pièce montée (+5€ / pers)
+    • Remplacement par wedding cake (+6€ / pers)
+    • Champagne au dessert 1 verre / pers (+4€ / pers) (Adult only)
+    `,
     },
     {
       id: "annicat8",
@@ -419,12 +488,14 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
       {showSpaSection && (
         <div className="py-5">
-          <h3 className="text-lg font-bold my-5">Choisissez vos options Spa :</h3>
-          <div className="grid lg:grid-cols-2 gap-4">
+          <h3 className="text-lg font-bold my-5">
+            Choisissez vos options Spa :
+          </h3>
+          <div className="grid lg:grid-cols-5 gap-4">
             {spaOptions.map((option) => (
               <div
                 key={option.id}
-                className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+                className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-3xl shadow-md ${
                   selectedSpaOption === option.id
                     ? "bg-green-500 text-white"
                     : "bg-primary text-white"
@@ -479,7 +550,11 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                   {option.name}
                 </span>
                 <span className="text-lg">
-                  {option.id != "cateringNone" && <>{option.price}€{option.id !== "annicat10" && " / pers"}</>}
+                  {option.id != "cateringNone" && (
+                    <>
+                      {option.price}€{option.id !== "annicat10" && " / pers"}
+                    </>
+                  )}
                   {option.info && (
                     <button
                       className="ml-2 p-1 text-white"
@@ -506,15 +581,15 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
         {moreInfo && (
           <div
-            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50 mx-5
         "
             onClick={() => setMoreInfo(null)}
           >
             <div
-              className="bg-primary text-white  p-4 rounded-md lg:w-1/2"
+              className="bg-primary text-white text-sm p-4 rounded-md lg:w-1/2"
               onClick={(e) => e.stopPropagation()}
             >
-              <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
+              <p className="whitespace-pre-line">{moreInfo}</p>
             </div>
           </div>
         )}
@@ -523,7 +598,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* Entertainment & Memories Package---------- */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-          Choisissez vos options souvenirs : 
+          Choisissez vos options souvenirs :
         </h3>
         <div className="grid lg:grid-cols-6 gap-4">
           {memories.map((option) => (
@@ -548,7 +623,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               </span>
               <span className="text-lg">
                 {option.id != "mNone" && <>{option.price}€</>}
-              
               </span>
             </div>
           ))}
@@ -558,7 +632,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* Choose your activity options */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-          Choisissez vos options activités (préciser le nombre de participants) :
+          Choisissez vos options activités (préciser le nombre de participants)
+          :
         </h3>
         <div className="grid lg:grid-cols-5 gap-4">
           {activityOptions.map((option) => (
@@ -616,7 +691,9 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm  z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
-            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre de personnes</h3>
+            <h3 className="text-lg font-bold mb-4">
+              Sélectionnez le nombre de personnes
+            </h3>
             <div className="flex items-center space-x-2 mb-4">
               <button
                 className="px-4 py-2 bg-primary text-white rounded-lg"
@@ -637,7 +714,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               </button>
             </div>
             <div className="flex justify-end space-x-4 mt-4">
-            <button
+              <button
                 onClick={handleCancel}
                 className="px-4 py-2 bg-red-500 text-white rounded-md"
               >
@@ -649,7 +726,6 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               >
                 Confirmer
               </button>
-             
             </div>
           </div>
         </div>

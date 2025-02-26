@@ -1,90 +1,165 @@
+"use client";
+
 import React, { useState } from "react";
-
-
+import snack from "../../../../public/images/snack.png";
+import remove from "../../../../public/images/remove.png";
+import Image from "next/image";
 const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
-  const [numAdults, setNumAdults] = useState(1);
-  const [numChildren, setNumChildren] = useState(0);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
-  const [selectedAdditionalOptions, setSelectedAdditionalOptions] = useState([]);
-  const [selectedAccommodationOption, setSelectedAccommodationOption] = useState("accomNone");
+  const [numCatering, setNumCatering] = useState({});
+  const [isCateringModal, setIsCateringModal] = useState(false);
+
+  const [selectedMemories, setSelectedMemories] = useState([]);
+
+  const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
+  const [numActivities, setNumActivities] = useState({});
+
+  const [selectedAccommodationOption, setSelectedAccommodationOption] =
+    useState("accomNone");
   const [numAccommodations, setNumAccommodations] = useState(0);
 
-  const cateringOptions = [
-    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
-    { id: "DinnerBoard", name: "Vin d’honneur", price: 12, icon: "⏳" },
-    { id: "FlavorMenu", name: "Vin d’honneur + plancha", price: 17, icon: "⏳" },
-    { id: "TraditionalFlavors", name: "Brunch du lendemain ", price: 17, icon: "⏳" },
-    { id: "m5", name: "Saveurs du monde Indiennnes", price: 30, icon: "⏳" },
-    { id: "m6", name: "Saveurs du monde Marocaines", price: 30, icon: "⏳" },
-    { id: "m7", name: "Saveurs traditionnelles", price: 30, icon: "⏳" },
-    { id: "m8", name: "Saveurs traditionnelles VIP", price: 30, icon: "⏳" },
-    { id: "m9", name: "Saveurs Prestige VIP", price: 30, icon: "⏳" },
-  ];
+  const [showModal, setShowModal] = useState(false);
+  const [currentActivityId, setCurrentActivityId] = useState(null);
+  const [moreInfo, setMoreInfo] = useState(null);
+  const [currentOptionId, setCurrentOptionId] = useState(null);
 
-  const additionalOptions = [
-    { id: "coAddiNone", name: "Aucune salle seule", price: 0, icon: "🚫" },
-    { id: "coAddi2", name: "Molkky", price: 3, icon: "⏳", },
-    { id: "coAddi3", name: "Dégustation de vin", price: 30, icon: "⏳" },
-    { id: "coAddi4", name: "Accés intégral au spa", price: 30, icon: "⏳" },
-    { id: "coAddi5", name: "Conférence", price: 10, icon: "⏳", },
-    { id: "coAddi6", name: "Expérience animal contact", price: 20, icon: "⏳" },
-    { id: "coAddi7", name: "nécéssaire de toilettes (Serviettes, peignoir, gel douche...)", price: 30, icon: "⏳" },
-    { id: "coAddi8", name: "Nettoyage de fin de séjour & Vaisselle", price: 10, icon: "⏳" },
+  const cateringOptions = [
+    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove },
+    {
+      id: "annicat1",
+      name: "En-cas gourmand",
+      price: 20,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat2",
+      name: "Planche dînatoire",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat3",
+      name: "Menu saveur",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat4",
+      name: "Saveurs du monde Indiennnes",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat5",
+      name: "Saveurs du monde Marocaines",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat6",
+      name: "Saveurs traditionnelles",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat7",
+      name: "Saveurs traditionnelles VIP",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat8",
+      name: "Saveurs Prestige VIP",
+      price: 30,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat9",
+      name: "Vin d’honneur",
+      price: 15,
+      icon: snack,
+      info: `Mets :
+      • Mini-croissant pesto, tomates séchée & jambon cru
+      • Feuilletés saumon & aneth
+      • Wrap au blanc de poulet et crudités
+    
+    Rafraîchissements :
+    • Jus de fruits, sodas et eaux minérales comprises
+    • Punch maison au thé vert indien inclus
+    
+    Option(s) :
+    • Champagne à l’apéritif 1 verre / pers (+4€ / pers) (Adult only)
+    `,
+    },
+    {
+      id: "annicat10",
+      name: "Vin d’honneur + Plancha",
+      price: 19,
+      icon: snack,
+      info: `Mets :
+      • Mini-croissant pesto, tomates séchée & jambon cru
+      • Feuilletés saumon & aneth
+      • Wrap au blanc de poulet et crudités
+      • Animation plancha : assortiment de 3 petites brochettes
+    
+    Rafraîchissements :
+    • Jus de fruits, sodas et eaux minérales comprises
+    • Punch maison au thé vert indien inclus
+    
+    Option(s) :
+    • Champagne à l’apéritif 1 verre / pers (+4€ / pers) (Adult only)
+    `,
+    },
   ];
 
   const accommodationOptions = [
     { id: "accomNone", name: "Aucune", price: 0, icon: "🚫" },
-    { id: "accomChaletSelf", name: "Couchage en chalet (à 15min) en autonomie (1 chalet 5 pers)", price: 60, icon: "⏳" },
-    { id: "accomChaletShuttle", name: "Couchage en chalet (à 15min) + navettes (1 chalet 5 pers)", price: 110, icon: "⏳" },
-    { id: "accomspa", name: "Sleep at the spa (3 people) + mattress", price: 290, icon: "⏳" },
+    {
+      id: "accomChaletSelf",
+      name: "Dormir au spa (3 places) *matelas accepté",
+      price: 290,
+      icon: "⏳",
+    },
+    {
+      id: "accomChaletShuttle",
+      name: "Dormir au domaine des 2 étangs *À 5 min en voiture du spa",
+      price: 60,
+      icon: "⏳",
+    },
+    {
+      id: "accomspa",
+      name: "Dormir au domaine des 2 étangs + navette *À 5 min en voiture du spa",
+      price: 110,
+      icon: "⏳",
+    },
   ];
-
-  const handleCateringSelect = (option) => {
-    if (option === "cateringNone") {
-      setSelectedCateringOptions([option]);
-      return;
-    }
-
-    setSelectedCateringOptions((prev) => {
-      if (prev.includes("cateringNone")) {
-        return [option];
+  const handleCateringSelect = (optionId) => {
+    if (optionId === "cateringNone") {
+      setSelectedCateringOptions([optionId]);
+    } else {
+      if (selectedCateringOptions.includes("cateringNone")) {
+        setSelectedCateringOptions([optionId]);
+      } else {
+        setSelectedCateringOptions((prev) =>
+          prev.includes(optionId)
+            ? prev.filter((id) => id !== optionId)
+            : [...prev, optionId]
+        );
       }
-      return prev.includes(option)
-        ? prev.filter((opt) => opt !== option)
-        : [...prev, option];
-    });
-  };
-
-  const handleAdditionalSelect = (option) => {
-    if (option === "coAddiNone") {
-      setSelectedAdditionalOptions([option]);
-
-      return;
-    }
-
-    setSelectedAdditionalOptions((prev) => {
-      if (prev.includes("coAddiNone")) {
-        return [option];
-      }
-      return prev.includes(option)
-        ? prev.filter((opt) => opt !== option)
-        : [...prev, option];
-    });
-    
-  };
-
-  const handleAccommodationSelect = (option) => {
-    setSelectedAccommodationOption(option);
-    
-    if (option === "accomNone") {
-      setNumAccommodations(0);
-      
     }
   };
 
   const calculateTotal = () => {
-    const totalPeople = numAdults + numChildren;
-    let total = 0;
+    const totalPeople = bookingDetails.totalPeople;
+    let total = bookingDetails.price;
 
     selectedCateringOptions.forEach((optionId) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
@@ -93,10 +168,14 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
       }
     });
 
-    selectedAdditionalOptions.forEach((optionId) => {
-      const option = additionalOptions.find((opt) => opt.id === optionId);
-      if (option) {
-        total += option.price * totalPeople;
+    selectedActivityOptions.forEach((optionId) => {
+      const activity = activityOptions.find((opt) => opt.id === optionId);
+      if (
+        activity &&
+        numActivities[optionId] > 0 &&
+        optionId !== "anniActivity0"
+      ) {
+        total += activity.price * numActivities[optionId];
       }
     });
 
@@ -113,19 +192,18 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
   };
 
   const handleNext = () => {
-    const totalPeople = numAdults + numChildren;
+    const totalPeople = bookingDetails.adults + bookingDetails.children;
     const data = {
       ...bookingDetails,
-      numAdults,
-      numChildren,
       totalPeople,
       selectedCateringOptions,
-      selectedAdditionalOptions,
+      selectedActivityOptions,
       selectedAccommodationOption,
       numAccommodations,
+      numActivities,
       cateringOptions,
-      additionalOptions,
       accommodationOptions,
+      activityOptions,
       totalPrice: calculateTotal(),
     };
     onNext(data);
@@ -133,71 +211,83 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
-      <div className="text-center"> <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary"> Mariage et fiançailles</span></div>
+      <div className="text-center">
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+          Mariage et fiançailles
+        </span>
+      </div>
+
       <p>
         <b>Date sélectionné:</b> {bookingDetails.date.toDateString()}
       </p>
-
-      <div className="flex flex-col space-y-4">
-        <div className="flex items-center space-x-4">
-          <label className="font-bold">Adultes (13 ans et +) :</label>
-          <button
-            className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-            onClick={() => setNumAdults(Math.max(0, numAdults - 1))}
-          >
-            -
-          </button>
-          <span className="px-4">{numAdults}</span>
-          <button
-            className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-            onClick={() => setNumAdults(numAdults + 1)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-4">
-          <label className="font-bold">Enfants (-13 ans) :</label>
-          <button
-            className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-            onClick={() => setNumChildren(Math.max(0, numChildren - 1))}
-          >
-            -
-          </button>
-          <span className="px-4">{numChildren}</span>
-          <button
-            className="px-2 py-1 bg-primary rounded-2xl w-8 text-white"
-            onClick={() => setNumChildren(numChildren + 1)}
-          >
-            +
-          </button>
-        </div>
-      </div>
+      <p>
+        <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
+      </p>
+      <p>
+        <b>Adults:</b> {bookingDetails.adults} <b>children:</b>{" "}
+        {bookingDetails.children}
+      </p>
+      <p>
+        <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
+      </p>
 
       {/* catering options------------------ */}
       <div className="py-5">
-        <h3 className="text-lg font-bold my-5">
-        Choisissez vos options :
-        </h3>
-        <div className="grid lg:grid-cols-5 gap-4">
+        <h3 className="text-lg font-bold my-5">Choisissez vos options :</h3>
+        <div className="grid lg:grid-cols-6 gap-4">
           {cateringOptions.map((option) => (
             <div
               key={option.id}
-              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-2xl shadow-md ${
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
                 selectedCateringOptions.includes(option.id)
                   ? "bg-green-500 text-white"
                   : "bg-primary text-white"
               }`}
               onClick={() => handleCateringSelect(option.id)}
             >
-              <span className="font-bold text-4xl my-2">{option.icon}</span>
-              <span className="font-bold text-sm">{option.name}</span>
-              <span className="text-lg">{option.price}€ / pers</span>
+              <Image
+                src={option.icon}
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-md mb-3"
+              />
+              <span className="font-bold text-sm text-center">
+                {option.name}
+              </span>
+              <span className="text-lg">
+                {option.price}€ / pers{" "}
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMoreInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </span>
             </div>
           ))}
         </div>
-      </div>
 
-      
+        {moreInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+        "
+            onClick={() => setMoreInfo(null)}
+          >
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className="mt-6">
         <h3 className="text-lg font-bold">Coût Total</h3>

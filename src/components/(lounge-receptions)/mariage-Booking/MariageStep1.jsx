@@ -57,6 +57,22 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
     return date < today;
   };
 
+  const increment = (type) => {
+    if (type === "adult") {
+      setNumAdults(numAdults + 1);
+    } else if (type === "child") {
+      setNumChildren(numChildren + 1);
+    }
+  };
+
+  const decrement = (type) => {
+    if (type === "adult" && numAdults > 0) {
+      setNumAdults(numAdults - 1);
+    } else if (type === "child" && numChildren > 0) {
+      setNumChildren(numChildren - 1);
+    }
+  };
+
   return (
     <div className="lg:px-16 space-y-6 my-10">
       <div className="text-center">
@@ -207,7 +223,7 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          <p className="mt-6">
+          <p className="mt-6 font-bold text-primary-800">
             Personnalisez votre évènement à la prochaine page.
           </p>
         </div>
@@ -216,26 +232,54 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
-          <div className="flex gap-4">
-            <div className="flex items-center space-x-4">
-              <label className="font-bold">Adultes (13 ans et +) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center"
-                value={numAdults}
-                min={0}
-                onChange={(e) => handlePeopleChange("adult", +e.target.value)}
-              />
+          <div className="flex gap-8">
+            <div className=" text-primary-800">
+              <label className="font-bold text-sm">Adultes (13 ans et +) :</label>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => decrement("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="px-3 py-1 border rounded-lg w-16 text-center outline-0"
+                  value={numAdults}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("adult", +e.target.value)}
+                />
+                <button
+                  onClick={() => increment("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  +
+                </button>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <label className="font-bold">Enfants (-13 ans) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center"
-                value={numChildren}
-                min={0}
-                onChange={(e) => handlePeopleChange("child", +e.target.value)}
-              />
+            <div className=" text-primary-800">
+              <label className="font-bold text-sm">Enfants (-13 ans) :</label>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => decrement("child")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="px-3 py-1 border rounded-lg w-16 text-center outline-0"
+                  value={numChildren}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("child", +e.target.value)}
+                />
+                <button
+                  onClick={() => increment("child")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
@@ -273,30 +317,43 @@ const MariageStep1 = ({ onNext, setBookingDetails }) => {
                       }`}
                       onClick={() => handleSlotClick(slot)}
                     >
-                      {slot.time} - {slot.price}€
+                      {slot.time}
                     </button>
                   ))}
                 </div>
               </div>
             )}
           </div>
+
+            {/* Price Display and Next Button */}
+     <div className="mt-6">
+            {selectedSlot && (
+              <div className=" text-right text-primary">
+              <h3 className="mt-8 text-lg font-bold">
+                Votre expérience Lounge & Spa pour
+              </h3>
+              <p className="text-xl font-bold">{selectedSlot.price}€</p>
+            </div>
+            
+            )}
+            <div className="flex justify-end mt-2">
+              <button
+                className={`px-4 py-2 rounded-full ${
+                  numAdults >= 1 && selectedDate && selectedSlot
+                    ? "bg-green-500 text-white"
+                    : "bg-primary-500 text-white cursor-not-allowed"
+                }`}
+                onClick={handleNext}
+                disabled={numAdults < 1 || !selectedDate || !selectedSlot}
+              >
+                Suivant
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Next Button */}
-      <div className="flex justify-end mt-6">
-        <button
-          className={`px-4 py-2 rounded-full ${
-            numAdults >= 1 && selectedDate && selectedSlot
-              ? "bg-green-500 text-white"
-              : "bg-primary-500 text-white cursor-not-allowed"
-          }`}
-          onClick={handleNext}
-          disabled={numAdults < 1 || !selectedDate || !selectedSlot}
-        >
-          Suivant
-        </button>
-      </div>
+   
     </div>
   );
 };
