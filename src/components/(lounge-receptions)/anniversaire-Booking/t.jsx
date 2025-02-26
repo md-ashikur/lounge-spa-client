@@ -1,343 +1,688 @@
 "use client";
 
 import React, { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import palace from "../../../../public/images/royal-palace.png";
-import spa from "../../../../public/images/jacuzzi.png";
-import cleaning from "../../../../public/images/cleaning.png";
-import chair from "../../../../public/images/chair.png";
-import sound from "../../../../public/images/sound-system.png";
-import terraces from "../../../../public/images/terrace.png";
+import snack from "../../../../public/images/icons/beverage.png";
+import dinner from "../../../../public/images/icons/dinner-table.png";
+import serving from "../../../../public/images/icons/serving-dish.png";
+import indian from "../../../../public/images/icons/claypot-rice.png";
+import marocaines from "../../../../public/images/icons/harira.png";
+import traditional from "../../../../public/images/icons/chicken.png";
+import traditionalVIP from "../../../../public/images/icons/dinner (1).png";
+import prestige from "../../../../public/images/icons/flavoring.png";
+import remove from "../../../../public/images/remove.png";
+
+import Photographe from "../../../../public/images/icons/photographer.png";
+
+import shooting from "../../../../public/images/icons/photo.png";
+import makeup from "../../../../public/images/icons/makeover.png";
+import Molkky from "../../../../public/images/icons/wooden-object.png";
+import wineTest from "../../../../public/images/icons/wine-tasting.png";
+import cake from "../../../../public/images/icons/birthday-cake.png";
+
 import Image from "next/image";
+const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
+  const [selectedCateringOptions, setSelectedCateringOptions] = useState([]);
+  const [numCatering, setNumCatering] = useState({});
+  const [isCateringModal, setIsCateringModal] = useState(false);
 
-import mattress from "../../../../public/images/air-mattress.png";
-import chalet from "../../../../public/images/chalet.png";
-import shuttles from "../../../../public/images/shuttle-van.png";
+  const [selectedMemories, setSelectedMemories] = useState([]);
 
-const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
-  const [numAdults, setNumAdults] = useState(0);
-  const [numChildren, setNumChildren] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedActivityOptions, setSelectedActivityOptions] = useState([]);
+  const [numActivities, setNumActivities] = useState({});
 
-  const timeSlots = [
-    { time: "11h – 18h", price: 590 },
-    { time: "14h30 – 1h", price: 990 },
-    { time: "18h30 – 1h", price: 690 },
+  const [selectedAccommodationOption, setSelectedAccommodationOption] =
+    useState("accomNone");
+  const [numAccommodations, setNumAccommodations] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentActivityId, setCurrentActivityId] = useState(null);
+  const [moreInfo, setMoreInfo] = useState(null);
+  const [currentOptionId, setCurrentOptionId] = useState(null);
+  const cateringOptions = [
+    { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove },
+    {
+      id: "annicat1",
+      name: "En-cas gourmand",
+      price: 20,
+      icon: snack,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat2",
+      name: "Planche dînatoire",
+      price: 30,
+      icon: dinner,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat3",
+      name: "Menu saveur",
+      price: 30,
+      icon: serving,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat4",
+      name: "Saveurs du monde Indiennnes",
+      price: 30,
+      icon: indian,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat5",
+      name: "Saveurs du monde Marocaines",
+      price: 30,
+      icon: marocaines,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat6",
+      name: "Saveurs traditionnelles",
+      price: 30,
+      icon: traditional,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat7",
+      name: "Saveurs traditionnelles VIP",
+      price: 30,
+      icon: traditionalVIP,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat8",
+      name: "Saveurs Prestige VIP",
+      price: 30,
+      icon: prestige,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat9",
+      name: "Brunch",
+      price: 20,
+      icon: prestige,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat10",
+      name: "Personnel de service",
+      price: 240,
+      icon: prestige,
+      info: "Encas désaltérant + pâtisseries",
+    },
   ];
 
-  const handlePeopleChange = (type, value) => {
-    const sanitizedValue = Math.max(0, value); // Prevent negative values
-    if (type === "adult") {
-      setNumAdults(sanitizedValue);
-    } else if (type === "child") {
-      setNumChildren(sanitizedValue);
+  const memories = [
+    { id: "mNone", name: "Aucune salle seule", price: 0, icon: remove },
+    {
+      id: "memo2",
+      name: "Photographe",
+      price: 1200,
+      icon: Photographe,
+      info: "test ",
+    },
+  ];
+
+  const activityOptions = [
+    { id: "anniActivity0", name: "Aucune", price: 0, icon: remove },
+    {
+      id: "anniActivity1",
+      name: "Shooting photo",
+      price: 30,
+      icon: shooting,
+      info: "test ",
+    },
+    {
+      id: "anniActivity2",
+      name: "Séance maquillage",
+      price: 40,
+      icon: makeup,
+      info: "test ",
+    },
+    {
+      id: "anniActivity3",
+      name: "Molkky",
+      price: 3,
+      icon: Molkky,
+      info: "test ",
+    },
+    {
+      id: "anniActivity4",
+      name: "Dégustation de vin",
+      price: 30,
+      icon: wineTest,
+      info: "test ",
+    },
+    {
+      id: "anniActivity6",
+      name: "Gateaux d'anniversaires ",
+      price: 15,
+      extra: 6,
+      icon: cake,
+      info: "test ",
+    },
+  ];
+
+  const accommodationOptions = [
+    { id: "accomNone", name: "Aucune", price: 0, icon: "🚫" },
+    {
+      id: "accomChaletSelf",
+      name: "Dormir au spa (3 places) *matelas accepté",
+      price: 290,
+      icon: "⏳",
+    },
+    {
+      id: "accomChaletShuttle",
+      name: "Dormir au domaine des 2 étangs *À 5 min en voiture du spa",
+      price: 60,
+      icon: "⏳",
+    },
+    {
+      id: "accomspa",
+      name: "Dormir au domaine des 2 étangs + navette *À 5 min en voiture du spa",
+      price: 110,
+      icon: "⏳",
+    },
+  ];
+
+  const handleActivitySelect = (optionId) => {
+    if (optionId === "anniActivity0") {
+      setSelectedActivityOptions([optionId]);
+      setNumActivities({});
+      return;
+    } else {
+      setSelectedActivityOptions((prev) => {
+        if (prev.includes("anniActivity0")) {
+          return [optionId];
+        }
+        if (prev.includes(optionId)) {
+          return prev.filter((id) => id !== optionId);
+        } else {
+          return [...prev, optionId];
+        }
+      });
+
+      if (!selectedActivityOptions.includes(optionId)) {
+        setCurrentActivityId(optionId);
+        setShowModal(true);
+      }
     }
-    setSelectedDate(null); // Reset date and time slot on people change
-    setSelectedSlot(null);
   };
 
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot);
+  // catering------------
+  const handleOptionSelect = (optionId, isCatering = false) => {
+    const selectedOptions = isCatering
+      ? selectedCateringOptions
+      : selectedActivityOptions;
+    const setSelectedOptions = isCatering
+      ? setSelectedCateringOptions
+      : setSelectedActivityOptions;
+    const setNumOptions = isCatering ? setNumCatering : setNumActivities;
+
+    if (optionId === (isCatering ? "cateringNone" : "anniActivity0")) {
+      setSelectedOptions([optionId]);
+      setNumOptions({});
+      return;
+    }
+
+    setSelectedOptions((prev) => {
+      if (prev.includes(isCatering ? "cateringNone" : "anniActivity0")) {
+        return [optionId];
+      }
+      if (prev.includes(optionId)) {
+        return prev.filter((id) => id !== optionId);
+      } else {
+        return [...prev, optionId];
+      }
+    });
+
+    if (!selectedOptions.includes(optionId)) {
+      setCurrentOptionId(optionId);
+      setIsCateringModal(isCatering);
+      setShowModal(true);
+    }
+  };
+
+  const handleMemories = (optionId) => {
+    if (optionId === "mNone") {
+      setSelectedMemories([optionId]);
+    } else {
+      if (selectedMemories.includes("mNone")) {
+        setSelectedMemories([optionId]);
+      } else {
+        setSelectedMemories((prev) =>
+          prev.includes(optionId)
+            ? prev.filter((id) => id !== optionId)
+            : [...prev, optionId]
+        );
+      }
+    }
+  };
+
+  const handleNumActivityChange = (delta) => {
+    setNumActivities((prev) => {
+      const currentCount = prev[currentActivityId] || 0;
+      const newCount = Math.max(0, currentCount + delta);
+      const updatedNumActivities = { ...prev, [currentActivityId]: newCount };
+
+      if (newCount === 0) {
+        setSelectedActivityOptions((prevOptions) =>
+          prevOptions.filter((id) => id !== currentActivityId)
+        );
+      }
+
+      return updatedNumActivities;
+    });
+  };
+
+  const handleAccommodationSelect = (option) => {
+    setSelectedAccommodationOption(option);
+
+    if (option === "accomNone") {
+      setNumAccommodations(0);
+    }
+  };
+
+  const handleNumChange = (delta) => {
+    const numOptions = isCateringModal ? numCatering : numActivities;
+    const setNumOptions = isCateringModal ? setNumCatering : setNumActivities;
+
+    setNumOptions((prev) => {
+      const currentCount = prev[currentOptionId] || 0;
+      const newCount = Math.max(0, currentCount + delta);
+      const updatedNumOptions = { ...prev, [currentOptionId]: newCount };
+
+      if (newCount === 0) {
+        const setSelectedOptions = isCateringModal
+          ? setSelectedCateringOptions
+          : setSelectedActivityOptions;
+        setSelectedOptions((prevOptions) =>
+          prevOptions.filter((id) => id !== currentOptionId)
+        );
+      }
+
+      return updatedNumOptions;
+    });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setCurrentOptionId(null);
+  };
+
+  const calculateTotal = () => {
+    const totalPeople = bookingDetails.totalPeople;
+    let total = bookingDetails.price;
+
+    selectedCateringOptions.forEach((optionId) => {
+      const option = cateringOptions.find((opt) => opt.id === optionId);
+      if (option && numCatering[optionId] > 0 && optionId !== "cateringNone") {
+        total += option.price * numCatering[optionId];
+      }
+    });
+
+    selectedMemories.forEach((optionId) => {
+      const option = memories.find((opt) => opt.id === optionId);
+      if (option) {
+        total += option.price;
+      }
+    });
+
+    selectedActivityOptions.forEach((optionId) => {
+      const option = activityOptions.find((opt) => opt.id === optionId);
+      if (
+        option &&
+        numActivities[optionId] > 0 &&
+        optionId !== "anniActivity0"
+      ) {
+        total += option.price * numActivities[optionId];
+      }
+    });
+
+    if (selectedAccommodationOption) {
+      const accommodation = accommodationOptions.find(
+        (opt) => opt.id === selectedAccommodationOption
+      );
+      if (accommodation) {
+        total += accommodation.price * numAccommodations;
+      }
+    }
+
+    return total;
   };
 
   const handleNext = () => {
-    if (numAdults >= 1 && selectedDate && selectedSlot) {
-      const totalPeople = numAdults + numChildren;
-      setBookingDetails({
-        totalPeople,
-        adults: numAdults,
-        children: numChildren,
-        date: selectedDate,
-        slot: selectedSlot.time,
-        price: selectedSlot.price, // Include price for Step2
-      });
-      onNext();
-    }
-  };
-
-  const tileDisabled = ({ date }) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Only compare dates
-    return date < today;
+    const totalPeople = bookingDetails.adults + bookingDetails.children;
+    const data = {
+      ...bookingDetails,
+      totalPeople,
+      selectedCateringOptions,
+      cateringOptions,
+      selectedMemories,
+      memories,
+      selectedActivityOptions,
+      activityOptions,
+      numActivities,
+      selectedAccommodationOption,
+      accommodationOptions,
+      numAccommodations,
+      totalPrice: calculateTotal(),
+    };
+    onNext(data);
   };
 
   return (
-    <div className="lg:px-16 space-y-6 my-10">
+    <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
       <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
           Anniversaires
         </span>
-        <h2 className="text-xl font-bold my-5 text-primary-800">
-          Description de l’offre :
-        </h2>
-        <p className="text-primary">
-          Célébrez votre anniversaire dans un lieu d&apos;exception, où chaque
-          détail est pensé pour donner vie à l’événement de vos rêves. Réservez
-          directement ou réalisez votre devis personnalisé, et venez échanger
-          avec notre équipe pour une expérience inoubliable.
-        </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* left side  */}
-        <div>
-          <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
-          <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={palace} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>Espace de 300m² </p>
-                </div>
-              </div>
+      <p>
+        <b>Date sélectionné: </b>
+        {bookingDetails.date
+          ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
+              weekday: "long", // Full name of the day (e.g., "Mercredi")
+              day: "numeric", // Numeric day of the month (e.g., "29")
+              month: "long", // Full name of the month (e.g., "janvier")
+              year: "numeric", // Full year (e.g., "2025")
+            })
+          : "Non disponible"}
+      </p>
+      <p>
+        <b>Plage horaire:</b> {bookingDetails.slot} : {bookingDetails.price}€
+      </p>
+      <p>
+        <b>Adults:</b> {bookingDetails.adults} <b>children:</b>{" "}
+        {bookingDetails.children}
+      </p>
+      <p>
+        <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
+      </p>
 
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={spa} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>Accés spa (régelementé)</p>
-                </div>
-              </div>
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">Choisissez vos options Spa :</h3>
+      </div>
 
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={cleaning} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>Nettoyage de fin de séjour & Vaisselle</p>
-                </div>
-              </div>
+      {/* catering options------------------ */}
+
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">Choisissez vos options :</h3>
+        <div className="grid lg:grid-cols-6 gap-4">
+          {cateringOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                selectedCateringOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleOptionSelect(option.id, true)}
+            >
+              <Image
+                src={option.icon}
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-md mb-3"
+              />
+              <span className="font-bold text-sm text-center">
+                {option.name}
+              </span>
+              <span className="text-lg">
+                {option.id != "cateringNone" && <>{option.price}€ / pers</>}
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMoreInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </span>
+              {selectedCateringOptions.includes(option.id) &&
+                option.id !== "anniActivity0" && (
+                  <div className="text-sm mt-2">
+                    Quantité: {numCatering[option.id] || 0}
+                  </div>
+                )}
             </div>
-
-            <div className="space-y-5">
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={chair} alt="" />
-                </div>
-                <div className="col-span-3">
-                  <p>Mobilier nécessaires (chaises, tables, nappes...)</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={sound} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>
-                    Sound system, vidéoprojecteur, wifi, cuisine équipée et
-                    chambre froide
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={terraces} alt="" />
-                </div>
-                <div className="col-span-3 flex items-center">
-                  <p>Terrasses, pergola, jardins & parking privatifs </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-                  {/* logements-------------- */}
-                        <div className="font-light">
-                               <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
-                               <div className="grid grid-cols-1 gap-3">
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={mattress} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
-                                   </div>
-                                 </div>
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={chalet} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
-                                   </div>
-                                 </div>
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={shuttles} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
-                                   </div>
-                                 </div>
-                               </div>
-                             </div>
-
-          {/* Tarifs================*/}
-          <h3 className="mt-8 mb-4 text-primary-800">
-            <b>Tarifs </b>
-            <span className="text-sm"> (Accueil jusqu’a 5h possible)</span>
-          </h3>
-
-          <div className="text-primary">
-            <div className="font-light text-sm space-y-4">
-              {/* Weekdays Section */}
-              <div className="grid grid-cols-4">
-                  <h2 className="font-bold ">Semaine (LMMJ): </h2>
-                <div className="space-x-3 col-span-3 flex items-center">
-                  <p>
-                    <span className="font-bold">8h - 14h: </span>350€
-                  </p>
-                  <p>
-                    <span className="font-bold">11h - 18h: </span>450€
-                  </p>
-                  <p>
-                    <span className="font-bold">18h30 - 1H: </span>490€
-                  </p>
-                </div>
-              </div>
-              {/* Friday and Saturday Section */}
-              <div className="grid grid-cols-4">
-                  <h2 className="font-bold ">Vendredi et Samedi: </h2>
-                <div className="space-x-3 col-span-3 flex items-center">
-                  <p>
-                    <span className="font-bold">11h - 18h: </span>590€
-                  </p>
-                  <p>
-                    <span className="font-bold"> 14h30 - 1H: </span>990€
-                  </p>
-                  <p>
-                    <span className="font-bold">18h30 - 1H: </span>690€
-                  </p>
-                </div>
-              </div>
-
-              {/* Sunday Section */}
-              <div className="grid grid-cols-4">
-                  <h2 className="font-bold">Dimanche: </h2>
-                <div className="space-x-3 col-span-3 flex items-center">
-                  <p>
-                    <span className="font-bold">11h - 18h: </span>490€
-                  </p>
-                  <p>
-                    <span className="font-bold">12h30 - 18h: </span>350€
-                  </p>
-                  <p>
-                    <span className="font-bold">18h30 - 1H: </span>590€
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <p className="mt-6 font-bold">
-            Personnalisez votre évènement à la prochaine page.
-          </p>
+          ))}
         </div>
- 
-        {/* Right Side========== */}
-        <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
-          {/* Number of People */}
-          <h3 className="font-bold text-primary-800">
-            Indiquer le nombre de personnes :
-          </h3>
-          <div className="flex gap-4">
-            <div className="flex items-center space-x-4 text-primary-800">
-              <label className="font-bold">Adultes (13 ans et +) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
-                value={numAdults}
-                min={0}
-                onChange={(e) => handlePeopleChange("adult", +e.target.value)}
-              />
-            </div>
-            <div className="flex items-center space-x-4 text-primary-800">
-              <label className="font-bold">Enfants (-13 ans) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
-                value={numChildren}
-                min={0}
-                onChange={(e) => handlePeopleChange("child", +e.target.value)}
-              />
-            </div>
-          </div>
 
-          {/* Calendar and Time Slots ==========*/}
-          <div>
-            <div>
-              <h3 className="font-bold text-primary-800">
-                Choisissez une date :
-              </h3>
-              <Calendar
-                onChange={setSelectedDate}
-                value={selectedDate}
-                tileDisabled={tileDisabled}
-                minDate={new Date()}
-                className={`react-calendar my-5 ${
-                  numAdults < 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={numAdults < 1}
-              />
+        {moreInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5
+        "
+            onClick={() => setMoreInfo(null)}
+          >
+            <div
+              className="bg-primary text-white  p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{moreInfo}</p>
             </div>
-
-            {selectedDate && (
-              <div>
-                <h3 className="font-bold text-primary-800 mt-4">
-                  Sélectionnez un créneau horaire :
-                </h3>
-                <div className="flex gap-2 flex-wrap mt-2">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot.time}
-                      className={`py-2 px-3 rounded-full text-sm ${
-                        selectedSlot?.time === slot.time
-                          ? "bg-green-500 text-white"
-                          : "bg-primary text-white"
-                      }`}
-                      onClick={() => handleSlotClick(slot)}
-                    >
-                      {slot.time}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-              {/* Price Display and Next Button */}
-      <div className="mt-6">
-        {selectedSlot && (
-          <div className="text-right text-lg font-bold text-primary-800">
-            Prix: {selectedSlot.price}€
           </div>
         )}
-        <div className="flex justify-end mt-2">
-          <button
-            className={`px-4 py-2 rounded-full ${
-              numAdults >= 1 && selectedDate && selectedSlot
-                ? "bg-green-500 text-white"
-                : "bg-primary-500 text-white cursor-not-allowed"
-            }`}
-            onClick={handleNext}
-            disabled={numAdults < 1 || !selectedDate || !selectedSlot}
-          >
-            Suivant
-          </button>
-        </div>
       </div>
+
+      {/* Entertainment & Memories Package---------- */}
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">
+        Choisissez vos options souvenirs : 
+        </h3>
+        <div className="grid lg:grid-cols-6 gap-4">
+          {memories.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                selectedMemories.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleMemories(option.id)}
+            >
+              <Image
+                src={option.icon}
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-md mb-3"
+              />
+              <span className="font-bold text-sm text-center">
+                {option.name}
+              </span>
+              <span className="text-lg">
+                {option.id != "mNone" && <>{option.price}€</>}
+
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMoreInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-  
+      {/* Choose your activity options */}
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">
+          Choisissez vos options activités (préciser le nombre de participants)
+          :
+        </h3>
+        <div className="grid lg:grid-cols-5 gap-4">
+          {activityOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+                selectedActivityOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleOptionSelect(option.id)}
+            >
+              <Image
+                src={option.icon}
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-md mb-3"
+              />
+              <span className="font-bold text-sm text-center">
+                {option.name}
+              </span>
+              <span className="text-lg">
+                {option.id != "anniActivity0" && (
+                  <>
+                    {option.price}€ / {option.extra} per
+                  </>
+                )}
+
+                {option.info && (
+                  <button
+                    className="ml-2 p-1 text-white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMoreInfo(option.info);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+                )}
+              </span>
+              {/* Show quantity below the price if option is selected and not "Aucune" */}
+              {selectedActivityOptions.includes(option.id) &&
+                option.id !== "anniActivity0" && (
+                  <div className="text-sm mt-2">
+                    Quantité: {numActivities[option.id] || 0}
+                  </div>
+                )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Modal for Increment/Decrement */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
+            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre</h3>
+            <div className="flex items-center space-x-2 mb-4">
+              <button
+                className="px-4 py-2 bg-primary text-white rounded-lg"
+                onClick={() => handleNumChange(-1)}
+              >
+                -
+              </button>
+              <span>
+                {(isCateringModal ? numCatering : numActivities)[
+                  currentOptionId
+                ] || 0}
+              </span>
+              <button
+                className="px-4 py-2 bg-primary text-white rounded-lg"
+                onClick={() => handleNumChange(1)}
+              >
+                +
+              </button>
+            </div>
+            <div className="flex justify-between">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+              >
+                Confirmer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* House for sleep------------------- */}
+      <div className="py-5">
+        <h3 className="text-lg font-bold my-5">
+          Choisissez vos options logements :
+        </h3>
+        <div className="grid lg:grid-cols-4 gap-4">
+          {accommodationOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+                selectedAccommodationOption === option.id
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleAccommodationSelect(option.id)}
+            >
+              <span className="font-bold text-4xl my-2">{option.icon}</span>
+              <span className="font-bold text-sm text-center">
+                {option.name}
+              </span>
+              <span className="text-lg">
+                {option.id != "accomNone" && <>{option.price}€</>}
+              </span>
+              {option.id !== "accomNone" &&
+                selectedAccommodationOption === option.id && (
+                  <div className="flex items-center space-x-2 mt-2">
+                    <button
+                      className="px-2 py-1 bg-primary rounded-2xl w-8"
+                      onClick={() =>
+                        setNumAccommodations(Math.max(0, numAccommodations - 1))
+                      }
+                    >
+                      -
+                    </button>
+                    <span>{numAccommodations}</span>
+                    <button
+                      className="px-2 py-1 bg-primary rounded-2xl w-8"
+                      onClick={() =>
+                        setNumAccommodations(numAccommodations + 1)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-6 text-right">
+        <h3 className="text-lg font-bold">
+          Votre expérience Lounge & Spa pour
+        </h3>
+        <p className="text-xl font-semibold">{calculateTotal()}€</p>
+      </div>
+
+      <div className="flex justify-between mt-6">
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
+          Précédent
+        </button>
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded-md"
+          onClick={handleNext}
+        >
+          Suivant
+        </button>
+      </div>
     </div>
   );
 };
 
-export default AnniversaireStep1;
+export default AnniversaireStep2;

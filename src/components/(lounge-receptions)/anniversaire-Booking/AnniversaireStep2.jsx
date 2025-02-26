@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import snack from "../../../../public/images/icons/beverage.png";
 import dinner from "../../../../public/images/icons/dinner-table.png";
 import serving from "../../../../public/images/icons/serving-dish.png";
@@ -38,6 +38,16 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
   const [currentActivityId, setCurrentActivityId] = useState(null);
   const [moreInfo, setMoreInfo] = useState(null);
   const [currentOptionId, setCurrentOptionId] = useState(null);
+
+  const [showSpaSection, setShowSpaSection] = useState(false);
+  const [selectedSpaOption, setSelectedSpaOption] = useState(null);
+
+  useEffect(() => {
+    const selectedDate = new Date(bookingDetails.date);
+    const isSunday = selectedDate.getDay() === 0;
+    setShowSpaSection(isSunday);
+  }, [bookingDetails.date]);
+
   const cateringOptions = [
     { id: "cateringNone", name: "Aucune salle seule", price: 0, icon: remove },
     {
@@ -102,6 +112,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       price: 20,
       icon: prestige,
       info: "Encas désaltérant + pâtisseries",
+      requiredSpaOption: "spaExtend",
     },
     {
       id: "annicat10",
@@ -185,31 +196,15 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     },
   ];
 
-  const handleActivitySelect = (optionId) => {
-    if (optionId === "anniActivity0") {
-      setSelectedActivityOptions([optionId]);
-      setNumActivities({});
-      return;
-    } else {
-      setSelectedActivityOptions((prev) => {
-        if (prev.includes("anniActivity0")) {
-          return [optionId];
-        }
-        if (prev.includes(optionId)) {
-          return prev.filter((id) => id !== optionId);
-        } else {
-          return [...prev, optionId];
-        }
-      });
+  const spaOptions = [
+    {
+      id: "spaExtend",
+      name: "Prolongez l'instant : retrouvez vos proches le dimanche",
+      price: 350,
+      timeSlot: "10h – 18h",
+    },
+  ];
 
-      if (!selectedActivityOptions.includes(optionId)) {
-        setCurrentActivityId(optionId);
-        setShowModal(true);
-      }
-    }
-  };
-
-  // catering------------
   const handleOptionSelect = (optionId, isCatering = false) => {
     const selectedOptions = isCatering
       ? selectedCateringOptions
@@ -236,6 +231,10 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       }
     });
 
+    if (optionId === "annicat10") {
+      return; // Skip modal for Personnel de service
+    }
+
     if (!selectedOptions.includes(optionId)) {
       setCurrentOptionId(optionId);
       setIsCateringModal(isCatering);
@@ -259,36 +258,12 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     }
   };
 
-  const handleNumActivityChange = (delta) => {
-    setNumActivities((prev) => {
-      const currentCount = prev[currentActivityId] || 0;
-      const newCount = Math.max(0, currentCount + delta);
-      const updatedNumActivities = { ...prev, [currentActivityId]: newCount };
-
-      if (newCount === 0) {
-        setSelectedActivityOptions((prevOptions) =>
-          prevOptions.filter((id) => id !== currentActivityId)
-        );
-      }
-
-      return updatedNumActivities;
-    });
-  };
-
-  const handleAccommodationSelect = (option) => {
-    setSelectedAccommodationOption(option);
-
-    if (option === "accomNone") {
-      setNumAccommodations(0);
-    }
-  };
-
   const handleNumChange = (delta) => {
     const numOptions = isCateringModal ? numCatering : numActivities;
     const setNumOptions = isCateringModal ? setNumCatering : setNumActivities;
 
     setNumOptions((prev) => {
-      const currentCount = prev[currentOptionId] || 0;
+      const currentCount = prev[currentOptionId] || 1;
       const newCount = Math.max(0, currentCount + delta);
       const updatedNumOptions = { ...prev, [currentOptionId]: newCount };
 
@@ -310,6 +285,36 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     setCurrentOptionId(null);
   };
 
+  const handleCancel = () => {
+    const setSelectedOptions = isCateringModal
+      ? setSelectedCateringOptions
+      : setSelectedActivityOptions;
+    setSelectedOptions((prevOptions) =>
+      prevOptions.filter((id) => id !== currentOptionId)
+    );
+    closeModal();
+  };
+
+  const handleSpaOptionSelect = (optionId) => {
+    if (selectedSpaOption === optionId) {
+      setSelectedSpaOption(null);
+      bookingDetails.slot = bookingDetails.originalSlot; // Reset to original slot
+    } else {
+      setSelectedSpaOption(optionId);
+      bookingDetails.slot = spaOptions.find(
+        (option) => option.id === optionId
+      ).timeSlot;
+    }
+  };
+
+  const handleAccommodationSelect = (option) => {
+    setSelectedAccommodationOption(option);
+
+    if (option === "accomNone") {
+      setNumAccommodations(0);
+    }
+  };
+
   const calculateTotal = () => {
     const totalPeople = bookingDetails.totalPeople;
     let total = bookingDetails.price;
@@ -318,6 +323,8 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       const option = cateringOptions.find((opt) => opt.id === optionId);
       if (option && numCatering[optionId] > 0 && optionId !== "cateringNone") {
         total += option.price * numCatering[optionId];
+      } else if (optionId === "annicat10") {
+        total += option.price;
       }
     });
 
@@ -348,6 +355,13 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       }
     }
 
+    if (selectedSpaOption) {
+      const spaOption = spaOptions.find((opt) => opt.id === selectedSpaOption);
+      if (spaOption) {
+        total += spaOption.price;
+      }
+    }
+
     return total;
   };
 
@@ -366,13 +380,15 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       selectedAccommodationOption,
       accommodationOptions,
       numAccommodations,
+      selectedSpaOption,
+      spaOptions,
       totalPrice: calculateTotal(),
     };
     onNext(data);
   };
 
   return (
-    <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
+    <div className="lg:px-20 px-5  text-primary my-10">
       <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
           Anniversaires
@@ -401,53 +417,91 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
         <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
       </p>
 
-      {/* catering options------------------ */}
+      {showSpaSection && (
+        <div className="py-5">
+          <h3 className="text-lg font-bold my-5">Choisissez vos options Spa :</h3>
+          <div className="grid lg:grid-cols-2 gap-4">
+            {spaOptions.map((option) => (
+              <div
+                key={option.id}
+                className={`flex flex-col items-center justify-center space-y-2 p-3 rounded-2xl shadow-md ${
+                  selectedSpaOption === option.id
+                    ? "bg-green-500 text-white"
+                    : "bg-primary text-white"
+                }`}
+                onClick={() => handleSpaOptionSelect(option.id)}
+              >
+                <span className="font-bold text-sm text-center">
+                  {option.name}
+                </span>
+                <span className="text-lg">{option.price}€</span>
+                {selectedSpaOption === option.id && (
+                  <span className="text-lg">{option.timeSlot}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
+      {/* catering options------------------ */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">Choisissez vos options :</h3>
         <div className="grid lg:grid-cols-6 gap-4">
-          {cateringOptions.map((option) => (
-            <div
-              key={option.id}
-              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
-                selectedCateringOptions.includes(option.id)
-                  ? "bg-green-500 text-white"
-                  : "bg-primary text-white"
-              }`}
-              onClick={() => handleOptionSelect(option.id, true)}
-            >
-              <Image
-                src={option.icon}
-                alt=""
-                width={60}
-                height={60}
-                className="rounded-md mb-3"
-              />
-              <span className="font-bold text-sm text-center">
-                {option.name}
-              </span>
-              <span className="text-lg">
-                {option.id != "cateringNone" && <>{option.price}€ / pers</>}
-                {option.info && (
-                  <button
-                    className="ml-2 p-1 text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMoreInfo(option.info);
-                    }}
-                  >
-                    ⓘ
-                  </button>
-                )}
-              </span>
-              {selectedCateringOptions.includes(option.id) &&
-                option.id !== "anniActivity0" && (
-                  <div className="text-sm mt-2">
-                    Quantité: {numCatering[option.id] || 0}
-                  </div>
-                )}
-            </div>
-          ))}
+          {cateringOptions.map((option) => {
+            const isOptionDisabled =
+              option.requiredSpaOption &&
+              option.requiredSpaOption !== selectedSpaOption;
+            return (
+              <div
+                key={option.id}
+                className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                  selectedCateringOptions.includes(option.id)
+                    ? "bg-green-500 text-white"
+                    : isOptionDisabled
+                    ? "bg-gray-300 text-gray-500"
+                    : "bg-primary text-white"
+                }`}
+                onClick={
+                  isOptionDisabled
+                    ? undefined
+                    : () => handleOptionSelect(option.id, true)
+                }
+              >
+                <Image
+                  src={option.icon}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
+                <span className="font-bold text-sm text-center">
+                  {option.name}
+                </span>
+                <span className="text-lg">
+                  {option.id != "cateringNone" && <>{option.price}€{option.id !== "annicat10" && " / pers"}</>}
+                  {option.info && (
+                    <button
+                      className="ml-2 p-1 text-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setMoreInfo(option.info);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+                  )}
+                </span>
+                {selectedCateringOptions.includes(option.id) &&
+                  option.id !== "anniActivity0" &&
+                  option.id !== "annicat10" && (
+                    <div className="text-sm mt-2">
+                      Quantité: {numCatering[option.id] || 0}
+                    </div>
+                  )}
+              </div>
+            );
+          })}
         </div>
 
         {moreInfo && (
@@ -469,7 +523,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* Entertainment & Memories Package---------- */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-        Choisissez vos options souvenirs : 
+          Choisissez vos options souvenirs : 
         </h3>
         <div className="grid lg:grid-cols-6 gap-4">
           {memories.map((option) => (
@@ -494,18 +548,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               </span>
               <span className="text-lg">
                 {option.id != "mNone" && <>{option.price}€</>}
-
-                {option.info && (
-                  <button
-                    className="ml-2 p-1 text-white"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setMoreInfo(option.info);
-                    }}
-                  >
-                    ⓘ
-                  </button>
-                )}
+              
               </span>
             </div>
           ))}
@@ -515,8 +558,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* Choose your activity options */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-          Choisissez vos options activités (préciser le nombre de participants)
-          :
+          Choisissez vos options activités (préciser le nombre de participants) :
         </h3>
         <div className="grid lg:grid-cols-5 gap-4">
           {activityOptions.map((option) => (
@@ -572,9 +614,9 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
 
       {/* Modal for Increment/Decrement */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm  z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg mx-5">
-            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre</h3>
+            <h3 className="text-lg font-bold mb-4">Sélectionnez le nombre de personnes</h3>
             <div className="flex items-center space-x-2 mb-4">
               <button
                 className="px-4 py-2 bg-primary text-white rounded-lg"
@@ -585,7 +627,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
               <span>
                 {(isCateringModal ? numCatering : numActivities)[
                   currentOptionId
-                ] || 0}
+                ] || 1}
               </span>
               <button
                 className="px-4 py-2 bg-primary text-white rounded-lg"
@@ -594,13 +636,20 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
                 +
               </button>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-end space-x-4 mt-4">
+            <button
+                onClick={handleCancel}
+                className="px-4 py-2 bg-red-500 text-white rounded-md"
+              >
+                Annuler
+              </button>
               <button
                 onClick={closeModal}
                 className="px-4 py-2 bg-green-500 text-white rounded-md"
               >
                 Confirmer
               </button>
+             
             </div>
           </div>
         </div>

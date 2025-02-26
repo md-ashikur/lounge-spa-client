@@ -680,8 +680,8 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
         modalActiveOption &&
         modalType !== "1hr" &&
         modalType !== "massage" && (
-          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
-            <div className="bg-white p-4 rounded-md ">
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10">
+            <div className="bg-white p-4 rounded-md shadow-lg">
               <h3 className="text-lg font-bold">
                 Sélectionnez le nombre de personnes
               </h3>
@@ -714,7 +714,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
               )}
               <div className="flex justify-end space-x-4 mt-4">
                 <button
-                  className="px-4 py-2 bg-gray-300 rounded-md"
+                  className="px-4 py-2 bg-red-500 text-white rounded-md"
                   onClick={handleGenericModalCancel}
                 >
                   Annuler

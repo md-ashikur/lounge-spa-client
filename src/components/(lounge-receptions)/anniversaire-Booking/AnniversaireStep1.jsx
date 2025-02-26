@@ -357,8 +357,8 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
           {/* Price Display and Next Button */}
           <div className="mt-6">
             {selectedSlot && (
-              <div className="mt-6 text-right text-primary">
-              <h3 className="text-lg font-bold">
+              <div className=" text-right text-primary">
+              <h3 className="mt-8 text-lg font-bold">
                 Votre expérience Lounge & Spa pour
               </h3>
               <p className="text-xl font-bold">{selectedSlot.price}€</p>
