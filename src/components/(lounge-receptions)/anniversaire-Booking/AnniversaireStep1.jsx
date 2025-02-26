@@ -63,6 +63,22 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
     return date < today;
   };
 
+  const increment = (type) => {
+    if (type === "adult") {
+      setNumAdults(numAdults + 1);
+    } else if (type === "child") {
+      setNumChildren(numChildren + 1);
+    }
+  };
+
+  const decrement = (type) => {
+    if (type === "adult" && numAdults > 0) {
+      setNumAdults(numAdults - 1);
+    } else if (type === "child" && numChildren > 0) {
+      setNumChildren(numChildren - 1);
+    }
+  };
+
   return (
     <div className="lg:px-16 space-y-6 my-10">
       <div className="text-center">
@@ -130,8 +146,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
                 </div>
                 <div className="col-span-3 flex items-center">
                   <p>
-                    Sound system, vidéoprojecteur, wifi, cuisine équipée et
-                    chambre froide
+                    Sound system, vidéoprojecteur, wifi, cuisine équipée et chambre froide
                   </p>
                 </div>
               </div>
@@ -147,48 +162,48 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-                  {/* logements-------------- */}
-                        <div className="font-light">
-                               <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
-                               <div className="grid grid-cols-1 gap-3">
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={mattress} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
-                                   </div>
-                                 </div>
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={chalet} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
-                                   </div>
-                                 </div>
-                                 <div className="grid grid-cols-9 gap-2">
-                                 <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                                     <Image src={shuttles} alt="" /> 
-                                   </div>
-                                   <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
-                                     <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
-                                   </div>
-                                 </div>
-                               </div>
-                             </div>
+          {/* logements-------------- */}
+          <div className="font-light">
+            <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={mattress} alt="" />
+                </div>
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                  <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={chalet} alt="" />
+                </div>
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                  <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-9 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={shuttles} alt="" />
+                </div>
+                <div className="col-span-8 text-xs lg:ml-0 ml-5 flex items-center">
+                  <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Tarifs================*/}
-          <h3 className="font-bold mt-8 mb-4 text-primary-800">
-            Tarifs
-            <span className="text-sm">(Accueil jusqu’a 3h ou 5h possible)</span>
+          <h3 className="mt-8 mb-4 text-primary-800">
+            <b>Tarifs </b>
+            <span className="text-sm"> (Accueil jusqu’a 5h possible)</span>
           </h3>
 
           <div className="text-primary">
             <div className="font-light text-sm space-y-4">
               {/* Weekdays Section */}
               <div className="grid grid-cols-4">
-                  <h2 className="font-bold ">Semaine (LMMJ): </h2>
+                <h2 className="font-bold ">Semaine (LMMJ): </h2>
                 <div className="space-x-3 col-span-3 flex items-center">
                   <p>
                     <span className="font-bold">8h - 14h: </span>350€
@@ -203,7 +218,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               {/* Friday and Saturday Section */}
               <div className="grid grid-cols-4">
-                  <h2 className="font-bold ">Vendredi et Samedi: </h2>
+                <h2 className="font-bold ">Vendredi et Samedi: </h2>
                 <div className="space-x-3 col-span-3 flex items-center">
                   <p>
                     <span className="font-bold">11h - 18h: </span>590€
@@ -219,7 +234,7 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
 
               {/* Sunday Section */}
               <div className="grid grid-cols-4">
-                  <h2 className="font-bold">Dimanche: </h2>
+                <h2 className="font-bold">Dimanche: </h2>
                 <div className="space-x-3 col-span-3 flex items-center">
                   <p>
                     <span className="font-bold">11h - 18h: </span>490€
@@ -235,37 +250,65 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-          <p className="mt-6">
+          <p className="mt-6 font-bold">
             Personnalisez votre évènement à la prochaine page.
           </p>
         </div>
- 
+
         {/* Right Side========== */}
         <div className="space-y-6 lg:border-l-2 border-primary lg:px-5">
           {/* Number of People */}
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
-          <div className="flex gap-4">
-            <div className="flex items-center space-x-4 text-primary-800">
-              <label className="font-bold">Adultes (13 ans et +) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
-                value={numAdults}
-                min={0}
-                onChange={(e) => handlePeopleChange("adult", +e.target.value)}
-              />
+          <div className="flex gap-8">
+            <div className=" text-primary-800">
+              <label className="font-bold text-sm">Adultes (13 ans et +) :</label>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => decrement("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="px-3 py-1 border rounded-lg w-16 text-center outline-0"
+                  value={numAdults}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("adult", +e.target.value)}
+                />
+                <button
+                  onClick={() => increment("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  +
+                </button>
+              </div>
             </div>
-            <div className="flex items-center space-x-4 text-primary-800">
-              <label className="font-bold">Enfants (-13 ans) :</label>
-              <input
-                type="number"
-                className="px-4 py-2 border rounded-lg w-20 text-center outline-0"
-                value={numChildren}
-                min={0}
-                onChange={(e) => handlePeopleChange("child", +e.target.value)}
-              />
+            <div className=" text-primary-800">
+              <label className="font-bold text-sm">Enfants (-13 ans) :</label>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => decrement("child")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="px-3 py-1 border rounded-lg w-16 text-center outline-0"
+                  value={numChildren}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("child", +e.target.value)}
+                />
+                <button
+                  onClick={() => increment("child")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
 
@@ -310,28 +353,32 @@ const AnniversaireStep1 = ({ onNext, setBookingDetails }) => {
               </div>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Price Display and Next Button */}
-      <div className="mt-6">
-        {selectedSlot && (
-          <div className="text-right text-lg font-bold text-primary-800">
-            Prix: {selectedSlot.price}€
+          {/* Price Display and Next Button */}
+          <div className="mt-6">
+            {selectedSlot && (
+              <div className="mt-6 text-right text-primary">
+              <h3 className="text-lg font-bold">
+                Votre expérience Lounge & Spa pour
+              </h3>
+              <p className="text-xl font-bold">{selectedSlot.price}€</p>
+            </div>
+            
+            )}
+            <div className="flex justify-end mt-2">
+              <button
+                className={`px-4 py-2 rounded-full ${
+                  numAdults >= 1 && selectedDate && selectedSlot
+                    ? "bg-green-500 text-white"
+                    : "bg-primary-500 text-white cursor-not-allowed"
+                }`}
+                onClick={handleNext}
+                disabled={numAdults < 1 || !selectedDate || !selectedSlot}
+              >
+                Suivant
+              </button>
+            </div>
           </div>
-        )}
-        <div className="flex justify-end mt-2">
-          <button
-            className={`px-4 py-2 rounded-full ${
-              numAdults >= 1 && selectedDate && selectedSlot
-                ? "bg-green-500 text-white"
-                : "bg-primary-500 text-white cursor-not-allowed"
-            }`}
-            onClick={handleNext}
-            disabled={numAdults < 1 || !selectedDate || !selectedSlot}
-          >
-            Suivant
-          </button>
         </div>
       </div>
     </div>

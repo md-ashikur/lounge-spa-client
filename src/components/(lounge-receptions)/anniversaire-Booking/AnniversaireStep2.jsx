@@ -96,6 +96,20 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       icon: prestige,
       info: "Encas désaltérant + pâtisseries",
     },
+    {
+      id: "annicat9",
+      name: "Brunch",
+      price: 20,
+      icon: prestige,
+      info: "Encas désaltérant + pâtisseries",
+    },
+    {
+      id: "annicat10",
+      name: "Personnel de service",
+      price: 240,
+      icon: prestige,
+      info: "Encas désaltérant + pâtisseries",
+    },
   ];
 
   const memories = [
@@ -455,7 +469,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
       {/* Entertainment & Memories Package---------- */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">
-          Forfait Divertissement & Souvenirs :
+        Choisissez vos options souvenirs : 
         </h3>
         <div className="grid lg:grid-cols-6 gap-4">
           {memories.map((option) => (
