@@ -110,7 +110,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     {
       id: "annicat6",
       name: "Saveurs traditionnelles",
-      price: 30,
+      price: 35,
       icon: traditional,
       info: `
     Mets (Servi en cocktail dinatoire) :
@@ -141,7 +141,7 @@ const AnniversaireStep2 = ({ bookingDetails, onBack, onNext }) => {
     {
       id: "annicat7",
       name: "Saveurs traditionnelles VIP",
-      price: 30,
+      price: 40,
       icon: traditionalVIP,
       info: `Mets (Servi en cocktail dinatoire) :
       Entrées

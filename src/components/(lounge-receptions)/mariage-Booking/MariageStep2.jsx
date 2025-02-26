@@ -11,13 +11,7 @@ import traditionalVIP from "../../../../public/images/icons/dinner (1).png";
 import prestige from "../../../../public/images/icons/flavoring.png";
 import remove from "../../../../public/images/remove.png";
 
-import Photographe from "../../../../public/images/icons/photographer.png";
 
-import shooting from "../../../../public/images/icons/photo.png";
-import makeup from "../../../../public/images/icons/makeover.png";
-import Molkky from "../../../../public/images/icons/wooden-object.png";
-import wineTest from "../../../../public/images/icons/wine-tasting.png";
-import cake from "../../../../public/images/icons/birthday-cake.png";
 
 import Image from "next/image";
 const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
@@ -169,7 +163,7 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
        info: "Encas désaltérant + pâtisseries",
      },
      {
-       id: "annicat9",
+       id: "annicat10",
        name: "Personnel de service",
        price: 240,
        icon: prestige,
@@ -194,7 +188,7 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
          `,
          },
          {
-           id: "annicat10",
+           id: "annicat11",
            name: "Vin d’honneur + Plancha",
            price: 19,
            icon: snack,
@@ -259,7 +253,7 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
     const setNumOptions = isCateringModal ? setNumCatering : setNumActivities;
 
     setNumOptions((prev) => {
-      const currentCount = prev[currentOptionId] || 1;
+      const currentCount = prev[currentOptionId] || 0;
       const newCount = Math.max(0, currentCount + delta);
       const updatedNumOptions = { ...prev, [currentOptionId]: newCount };
 

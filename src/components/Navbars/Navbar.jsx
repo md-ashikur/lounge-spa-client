@@ -252,7 +252,7 @@ const Navbar = () => {
                         "bg-secondary w-full rounded  text-primary px-1 py-2"
                       }`}
                     >
-                      Week-end entre amis : all inclusive
+                      Week-end entre amis
                     </Link>
                   </motion.span>
                   <motion.span
@@ -605,7 +605,7 @@ const Navbar = () => {
                               }`}
                               onClick={() => setIsMenuOpen(!isMenuOpen)}
                             >
-                              Week-end entre amis : all inclusive
+                              Week-end entre amis
                             </Link>
                           </motion.span>
                           <motion.span

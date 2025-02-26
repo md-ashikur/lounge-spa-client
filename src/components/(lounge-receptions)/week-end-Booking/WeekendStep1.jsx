@@ -40,15 +40,19 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
     <div className="lg:px-10 space-y-6 my-10">
       <div className="text-center">
         <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-          Week-end entre amis : all inclusive
+          Week-end entre amis
         </span>
         <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary">
-          Découvrez un univers d&apos;exception et une expérience exclusive et
-          mémorable dans notre spa privé, où détente et convivialité sont au
-          rendez-vous. Week-end sur mesure, rien que pour vous !
+          Profitez de nos installations haut de gamme, accessibles en toute
+          autonomie tout au long du week-end, et savourez chaque moment dans une
+          atmosphère de détente absolue. Composez vous-même votre séjour en
+          sélectionnant les services qui vous conviennent : des repas exquis
+          préparés en amont par notre cheffe, que ce soit pour un repas unique
+          ou pour chaque moment de votre week-end, ainsi que des activités sur
+          mesure pensées pour votre bien-être et votre plaisir.
         </p>
       </div>
 
@@ -68,7 +72,7 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={jacuzzi} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -77,7 +81,16 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={jacuzzi} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Boissons chaudes & quelques soft offerts</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={cleaning} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -88,7 +101,7 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
 
             <div className="space-y-5">
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={toiletries} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -100,7 +113,7 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
                   <Image src={sound} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
@@ -109,8 +122,17 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
               </div>
 
               <div className="grid grid-cols-4 gap-2">
-              <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                  <Image src={terraces} alt="" /> 
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={sound} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Petit déjeuner autonome</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={terraces} alt="" />
                 </div>
                 <div className="col-span-3 flex items-center">
                   <p>Terrasses, jardins & parking privatifs</p>
@@ -119,40 +141,57 @@ const WeekendStep1 = ({ onNext, setBookingDetails }) => {
             </div>
           </div>
 
-       {/* logements-------------- */}
-       <div className="font-light">
-                      <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
-                      <div className="grid grid-cols-1 gap-3">
-                        <div className="flex gap-2">
-                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                            <Image src={mattress} alt="" /> 
-                          </div>
-                          <div className="col-span-3 text-xs ml-2 flex items-center">
-                            <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                            <Image src={chalet} alt="" /> 
-                          </div>
-                          <div className="col-span-3 text-xs ml-2 flex items-center">
-                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en autonomie</p>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                        <div className="bg-primary p-2 rounded-xl w-12 h-12">
-                            <Image src={shuttles} alt="" /> 
-                          </div>
-                          <div className="col-span-3 text-xs ml-2 flex items-center">
-                            <p>Couchage en chalet : “Au domaine des 2 étangs” (à 15min) + Navette aller / retour </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          {/* logements-------------- */}
+          <div className="font-light">
+            <h3 className="font-bold mt-8 mb-4 text-primary-800">Logements</h3>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="flex gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={mattress} alt="" />
+                </div>
+                <div className="col-span-3 text-xs ml-2 flex items-center">
+                  <p>Couchage au spa (3 places) + Matelas (non fournis) </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={chalet} alt="" />
+                </div>
+                <div className="col-span-3 text-xs ml-2 flex items-center">
+                  <p>
+                    Couchage en chalet : “Au domaine des 2 étangs” (à 15min) en
+                    autonomie
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="bg-primary p-2 rounded-xl w-12 h-12">
+                  <Image src={shuttles} alt="" />
+                </div>
+                <div className="col-span-3 text-xs ml-2 flex items-center">
+                  <p>
+                    Couchage en chalet : “Au domaine des 2 étangs” (à 15min) +
+                    Navette aller / retour{" "}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Tarifs */}
-          <h3 className="font-bold mt-8 mb-4 text-primary-800">Tarifs</h3>
+          <h3 className=" mt-8 mb-4 text-primary-800">
+            <span className="font-bold">Tarifs</span> (valable uniquement le
+            week-end : vendredi et samedi soir)
+          </h3>
 
-          <p className="my-2 font-light">tarif par pers/nuit :</p>
+         <div className="text-primary-800">
+         <p className="my-2 font-light ">
+            Price for 1 night : 1500€ (from 15H to D+1 14H “15h à J+1 14h”)
+          </p>
+          <p className="my-2 font-light">Price for 2 night : 2000€ (from 19H to D+2 18H “19h à J+1 18h”)</p>
+          <p>Attention, seulement 3 couchages sont possibles, prévoyez des matelas.</p>
+         </div>
+
+         <p className="mt-6 text-primary-800 font-bold">Personnalisez votre évènement à la prochaine page.</p>
         </div>
 
         {/* Right Side */}
