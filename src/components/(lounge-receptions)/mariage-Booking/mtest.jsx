@@ -231,7 +231,7 @@ const MariageStep2 = ({ bookingDetails, onBack, onNext }) => {
         <b>Nombre total de personnes:</b> {bookingDetails.totalPeople}
       </p>
 
-      {/* catering options------------------ */}
+      {/* catering options-----================------------ */}
       <div className="py-5">
         <h3 className="text-lg font-bold my-5">Choisissez vos options :</h3>
         <div className="grid lg:grid-cols-6 gap-4">
