@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { createRef } from "react";
 import HTMLFlipBook from "react-pageflip";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import pic1 from "../../../public/images/3.jpg";
 import pic2 from "../../../public/images/10.jpg";
 
@@ -356,47 +357,51 @@ class DemoBook extends React.Component {
             </NotrePage>
           </HTMLFlipBook>
         </div>
-        <div className="flex justify-between mt-5">
-          <button
-            onClick={this.prevButtonClick}
-            className="bg-primary text-white px-4 py-2 rounded-full"
-          >
-            Précédent
-          </button>
-          <button
-            onClick={this.nextButtonClick}
-            className="bg-primary text-white px-4 py-2 rounded-full"
-          >
-            Suivant
-          </button>
-        </div>
 
         <div className="container mt-5">
           <div className="flex justify-center items-center space-x-2">
             <button type="button" onClick={this.prevButtonClick}>
-              Previous NotrePage
+              <FaArrowLeft className="text-primary"/>
             </button>
-            [<span>{this.state.NotrePage}</span> of <span>{this.state.totalNotrePage}</span>]
+            <div className="space-x-1">
+              {Array.from({ length: 16 }).map((_, index) => (
+                <span key={index} className={`inline-block w-2 h-2 rounded-full ${index === this.state.NotrePage ? 'bg-primary' : 'bg-secondary border border-primary'}`}></span>
+              ))}
+            </div>
             <button type="button" onClick={this.nextButtonClick}>
-              Next NotrePage
+              <FaArrowRight className="text-primary"/>
             </button>
           </div>
+        </div>
+
+        <div className="flex justify-end mt-5">
+          <button
+            onClick={this.props.onNext}
+            className="bg-primary text-white px-4 py-2 rounded-full"
+          >
+            Suivant
+          </button>
         </div>
       </div>
     );
   }
 }
 
-export default function UniverseStep1() {
+export default function UniverseStep1({ onNext }) {
+  
+  const handleNext = () => {
+    onNext();
+  };
+
   return (
-    <div className="bg-secondary px-5 py-10 md:px-20">
+    <div className="bg-secondary px-5  md:px-20">
       <div className="flex justify-center">
-        <div className="bg-primary text-white px-8 py-2 my-5 text-center rounded-full">
+        <div className="bg-primary text-white px-12 py-1 my-5 text-center rounded-full">
           <h1 className="text-xl font-bold">Notre univers</h1>
-          <p>Notre histoire</p>
+          <p className="font-light">Notre histoire</p>
         </div>
       </div>
-      <DemoBook />
+      <DemoBook onNext={handleNext} />
     </div>
   );
 }
