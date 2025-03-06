@@ -18,9 +18,9 @@ export default function UniverseStep2({ onBack, onNext }) {
       </div>
 
       {/* cards----------------- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  my-5">
         {/* card 1-------------- */}
-        <div className="relative text-center group overflow-hidden rounded-lg shadow-lg">
+        <div className="relative text-center group overflow-hidden  shadow-lg">
           <Image
             src={pic1}
             alt="Philosophy 1"
@@ -38,7 +38,7 @@ export default function UniverseStep2({ onBack, onNext }) {
           </div>
         </div>
 {/* card 2------------- */}
-        <div className="relative text-center group overflow-hidden rounded-lg shadow-lg">
+        <div className="relative text-center group overflow-hidden  shadow-lg">
           <Image
             src={pic2}
             alt="Philosophy 2"
@@ -57,7 +57,7 @@ export default function UniverseStep2({ onBack, onNext }) {
           </div>
         </div>
 {/* card 3-------------- */}
-        <div className="relative text-center group overflow-hidden rounded-lg shadow-lg">
+        <div className="relative text-center group overflow-hidden  shadow-lg">
           <Image
             src={pic1}
             alt="Philosophy 3"
@@ -76,7 +76,7 @@ export default function UniverseStep2({ onBack, onNext }) {
           </div>
         </div>
 {/* card 4---------------- */}
-        <div className="relative text-center group overflow-hidden rounded-lg shadow-lg">
+        <div className="relative text-center group overflow-hidden  shadow-lg">
           <Image
             src={pic2}
             alt="Philosophy 4"
