@@ -272,7 +272,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
               </div>
               <label>Green Deal</label>
             </div> */}
-            <div className="flex items-center space-x-2">
+            {/* <div className="flex items-center space-x-2">
               <div
                 className={`toggle-button ${
                   lastMinute ? "bg-green-500" : "bg-gray-300"
@@ -289,7 +289,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
                 />
               </div>
               <label>Last Minute</label>
-            </div>
+            </div> */}
           </div>
 
           {selectedDate && (
