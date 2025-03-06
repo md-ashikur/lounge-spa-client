@@ -20,7 +20,7 @@ export default function UniverseStep2({ onBack, onNext }) {
       {/* cards----------------- */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  my-5">
         {/* card 1-------------- */}
-        <div className="relative text-center group overflow-hidden  shadow-lg">
+        <div className="relative text-center group overflow-hidden shadow-lg">
           <Image
             src={pic1}
             alt="Philosophy 1"

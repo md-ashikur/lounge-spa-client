@@ -39,6 +39,9 @@ const Step4 = ({ onBack, onSubmit }) => {
       alert("Failed to send user data to Brevo");
       return;
     }
+    else{
+      alert("User data Sent to Brevo successfully");
+    }
 
     // Proceed with Stripe Checkout
     const stripe = await stripePromise;
@@ -174,18 +177,18 @@ const Step4 = ({ onBack, onSubmit }) => {
 
           <div>
             <input
-              type="tel" 
+              type="tel"
               {...register("phone", {
                 required: "Numéro de téléphone est requis",
                 pattern: {
-                  value: /^[0-9()+\s-]*$/, 
+                  value: /^[0-9()+\s-]*$/,
                   message: "Invalid phone number format",
                 },
               })}
               placeholder="Numéro de téléphone"
               className="block w-full p-2 border rounded outline-none"
               onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^0-9()+\s-]/g, ""); 
+                e.target.value = e.target.value.replace(/[^0-9()+\s-]/g, "");
               }}
             />
             {errors.phone && (
@@ -195,23 +198,22 @@ const Step4 = ({ onBack, onSubmit }) => {
         </div>
 
         <div>
-            <textarea
-              type="text"
-              {...register("note", {
-                required: "Commentaires ou requêtes est requis",
-              })}
-              placeholder="Commentaires ou requêtes"
-              className="block w-full p-2 border rounded outline-none"
-            />
-            {errors.note && (
-              <p className="text-red-500">{errors.note.message}</p>
-            )}
-          </div>
+          <textarea
+            type="text"
+            {...register("note")}
+            placeholder="Commentaires ou requêtes"
+            className="block w-full p-2 border rounded outline-none"
+          />
+          {errors.note && <p className="text-red-500">{errors.note.message}</p>}
+        </div>
 
         <div className="flex justify-between">
-        <button onClick={onBack} className="px-4 py-2 bg-primary text-white rounded-md">
-      Précédent
-      </button>
+          <button
+            onClick={onBack}
+            className="px-4 py-2 bg-primary text-white rounded-md"
+          >
+            Précédent
+          </button>
           <button
             type="submit"
             className="bg-primary text-white py-2 px-4 rounded outline-none"
@@ -221,8 +223,6 @@ const Step4 = ({ onBack, onSubmit }) => {
           </button>
         </div>
       </form>
-
-     
     </div>
   );
 };

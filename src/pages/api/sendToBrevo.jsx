@@ -1,32 +1,48 @@
-import SibApiV3Sdk from "sib-api-v3-sdk";
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    // Only allow POST requests
+    res.status(405).json({ message: 'Method Not Allowed' });
+    return;
   }
 
-  const { name, phone, address, postalCode, email } = req.body;
+  const { name, sureName, country, postalCode, laneNumber, address, email, phone, note } = req.body;
 
-  let defaultClient = SibApiV3Sdk.ApiClient.instance;
-  let apiKey = defaultClient.authentications["api-key"];
-  apiKey.apiKey = "your-brevo-api-key";
-
-  let apiInstance = new SibApiV3Sdk.ContactsApi();
-
-  let contact = new SibApiV3Sdk.CreateContact();
-  contact.email = email;
-  contact.attributes = {
-    NAME: name,
-    PHONE: phone,
-    ADDRESS: address,
-    POSTAL_CODE: postalCode,
-  };
-  contact.listIds = [your_list_id]; // Replace with your Brevo list ID
+  // Validate the required fields
+  if (!name || !sureName || !country || !postalCode || !laneNumber || !address || !email || !phone) {
+    res.status(400).json({ message: 'Missing required fields' });
+    return;
+  }
 
   try {
-    await apiInstance.createContact(contact);
-    res.status(200).json({ success: true });
+    // Send data to Brevo
+    const response = await fetch('https://api.brevo.com/v3/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': process.env.NEXT_PUBLIC_BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        email,
+        attributes: {
+          FIRSTNAME: name,
+          LASTNAME: sureName,
+          COUNTRY: country,
+          POSTALCODE: postalCode,
+          LANENUMBER: laneNumber,
+          ADDRESS: address,
+          PHONE: phone,
+          NOTE: note,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to send data to Brevo');
+    }
+
+    res.status(200).json({ message: 'Data sent to Brevo successfully' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error sending data to Brevo:', error);
+    res.status(500).json({ message: 'Failed to send data to Brevo' });
   }
 }
