@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import snack from "../../../../public/images/snack.png";
 import remove from "../../../../public/images/remove.png";
 import massage from "../../../../public/images/lithotherapie.png";
 import extraHour from "../../../../public/images/icons/extra-time.png";

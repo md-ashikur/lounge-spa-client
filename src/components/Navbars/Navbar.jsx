@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 
 // import { useRouter } from "next/router";
 
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null);
