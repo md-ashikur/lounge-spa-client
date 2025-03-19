@@ -21,6 +21,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
   const [lastMinute, setLastMinute] = useState(false);
   const [showModal, setShowModal] = useState({ type: null, open: false });
   const [price, setPrice] = useState(0);
+  const [numAdults, setNumAdults] = useState(2);
 
   const defaultSlots = useMemo(
     () => ["11h – 14h", "15h – 18h", "19h – 22h"],
@@ -122,15 +123,34 @@ const Step1 = ({ onNext, setBookingDetails }) => {
   };
 
   const handleNext = () => {
-    if ((selectedDate && selectedSlot) || (selectedDate && lastMinute)) {
+    if ((selectedDate && selectedSlot && numAdults > 0) || (selectedDate && lastMinute && numAdults > 0)) {
       setBookingDetails({
         date: selectedDate,
         slot: selectedSlot,
         greenDeal,
         lastMinute,
         price,
+        numAdults
       });
       onNext();
+    }
+  };
+
+  const increment = (type) => {
+    if (type === "adult") {
+      setNumAdults((prev) => prev + 1);
+    }
+  };
+
+  const decrement = (type) => {
+    if (type === "adult") {
+      setNumAdults((prev) => (prev > 0 ? prev - 1 : 0));
+    }
+  };
+
+  const handlePeopleChange = (type, value) => {
+    if (type === "adult") {
+      setNumAdults(value);
     }
   };
 
@@ -233,7 +253,38 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         </div>
 
         {/* Right Side */}
-        <div >
+        <div>
+
+          {/* Number of People */}
+          <h3 className="font-bold text-primary-800">
+            Indiquer le nombre de personnes :
+          </h3>
+          <div className="flex gap-8">
+            <div className=" text-primary-800">
+              <label className="font-bold text-sm">Adultes (13 ans et +) :</label>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => decrement("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="px-3 py-1 border rounded-lg w-16 text-center outline-0"
+                  value={numAdults}
+                  min={0}
+                  onChange={(e) => handlePeopleChange("adult", +e.target.value)}
+                />
+                <button
+                  onClick={() => increment("adult")}
+                  className="px-3 py-1 bg-primary text-white rounded-lg"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
           <h3 className="font-bold text-primary-800">
             Choisissez votre créneau horaire :
           </h3>
@@ -242,7 +293,10 @@ const Step1 = ({ onNext, setBookingDetails }) => {
             value={selectedDate}
             tileDisabled={tileDisabled}
             minDate={new Date()}
-            className="react-calendar my-5"
+            className={`react-calendar my-5 ${
+              numAdults < 2 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={numAdults < 1}
           />
 
           <div className="flex items-center mt-4 space-x-4">
@@ -381,12 +435,12 @@ const Step1 = ({ onNext, setBookingDetails }) => {
         </div>
         <button
           className={`px-4 py-2 rounded-full ${
-            (selectedDate && lastMinute) || (selectedDate && selectedSlot)
+            (selectedDate && lastMinute && numAdults > 0) || (selectedDate && selectedSlot && numAdults > 0)
               ? "bg-green-500 text-white"
               : "bg-primary-500 text-white cursor-not-allowed"
           }`}
           onClick={handleNext}
-          disabled={!lastMinute && !(selectedDate && selectedSlot)}
+          disabled={!lastMinute && !(selectedDate && selectedSlot && numAdults > 0)}
         >
           Suivant
         </button>
