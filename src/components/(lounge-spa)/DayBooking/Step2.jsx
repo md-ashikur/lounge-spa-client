@@ -56,6 +56,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       id: "massage",
       name: "Modelages type californien aux huiles chaudes",
       extra: "(+10€ soir et dimanche)",
+      extraPrice: 10,
       price: 50,
       durationPrices: {
         20: 50,
@@ -396,6 +397,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       ...bookingDetails,
       totalPeople,
       selectedOptions,
+      selectedTimeSlot,
       selectedCateringOptions,
       spaOptions,
       cateringOptions,

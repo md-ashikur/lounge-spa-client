@@ -28,17 +28,15 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
-       <div className="flex justify-center">
-      <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+      <div className="flex justify-center">
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
           Journée
         </span>
       </div>
 
       {/* Booking Details */}
       <div>
-        <h3 className="font-bold my-5 text-xl">
-          Récapitulatif de votre réservation{" "}
-        </h3>
+        <h3 className="font-bold my-5 text-xl">Récapitulatif de votre réservation </h3>
         <p>
           <b>Date :</b>
           {bookingDetails.date
@@ -60,58 +58,118 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         </p>
       </div>
 
-      {/* spa Options */}
+      {/* Spa Options Summary Table */}
       <div>
         <h3 className="font-bold">Options de spa sélectionnées :</h3>
-        {bookingDetails?.selectedOptions?.length > 0 ? (
-          <ul>
-            {bookingDetails.selectedOptions.map((optionId) => {
-              const option = bookingDetails?.spaOptions?.find(
-                (opt) => opt.id === optionId
-              );
-              return option ? (
-                <li key={option.id}>
-                  {option.name} - {option.price}€ / pers
-                </li>
-              ) : (
-                <li key={optionId} className="text-red-500">
-                  Option non trouvée (ID: {optionId})
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-gray-500">
-            Aucune option de restauration sélectionnée.
-          </p>
-        )}
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b">Option</th>
+              <th className="py-2 px-4 border-b">Quantité</th>
+              <th className="py-2 px-4 border-b">Prix de base</th>
+              <th className="py-2 px-4 border-b">Supplément</th>
+              <th className="py-2 px-4 border-b">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookingDetails.selectedOptions.length > 0 ? (
+              bookingDetails.selectedOptions.map((optionId) => {
+                const option = bookingDetails.spaOptions.find(
+                  (opt) => opt.id === optionId
+                );
+                if (!option) return null;
+
+                const quantity = bookingDetails.optionPeople[optionId] || 1;
+                const basePrice = option.price;
+                const extra = option.extra ? option.extra.replace("/pers", "") : 0;
+                const total = basePrice * quantity;
+
+                if (optionId === "1hr") {
+                  return (
+                    <tr key={option.id}>
+                      <td className="py-2 px-4 border-b">{option.name}</td>
+                      <td className="py-2 px-4 border-b" colSpan="4">{bookingDetails.selectedTimeSlot}</td>
+        
+                    </tr>
+                  );
+                }
+
+                {optionId === "massage" && bookingDetails.massageDetails && (
+                  <tr key={option.id}>
+                    <td className="py-2 px-4 border-b">{option.name}</td>
+                    <td className="py-2 px-4 border-b">{bookingDetails.massageDetails.numPeople}</td>
+                    <td className="py-2 px-4 border-b">{option.durationPrices[bookingDetails.massageDetails.duration]}€</td>
+                    <td className="py-2 px-4 border-b">
+                      {option.durationPrices[bookingDetails.massageDetails.duration] + (isWeekend ? 10 : 0)}€
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      {(option.durationPrices[bookingDetails.massageDetails.duration] + (isWeekend ? 10 : 0)) * bookingDetails.massageDetails.numPeople}€
+                    </td>
+                  </tr>
+                )}
+
+                return (
+                  <tr key={option.id}>
+                    <td className="py-2 px-4 border-b">{option.name}</td>
+                    <td className="py-2 px-4 border-b">{quantity}</td>
+                    <td className="py-2 px-4 border-b">{basePrice}€</td>
+                    <td className="py-2 px-4 border-b">{extra}€</td>
+                    <td className="py-2 px-4 border-b">{total}€</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="py-2 px-4 border-b" colSpan="5">Aucune option de spa sélectionnée.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* Catering Options */}
+      {/* Catering Options Summary Table */}
       <div>
         <h3 className="font-bold">Options de restauration sélectionnées :</h3>
-        {bookingDetails?.selectedCateringOptions?.length > 0 ? (
-          <ul>
-            {bookingDetails.selectedCateringOptions.map((optionId) => {
-              const option = bookingDetails?.cateringOptions?.find(
-                (opt) => opt.id === optionId
-              );
-              return option ? (
-                <li key={option.id}>
-                  {option.name} - {option.price}€ / pers
-                </li>
-              ) : (
-                <li key={optionId} className="text-red-500">
-                  Option non trouvée (ID: {optionId})
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p className="text-gray-500">
-            Aucune option de restauration sélectionnée.
-          </p>
-        )}
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b">Option</th>
+              <th className="py-2 px-4 border-b">Quantité</th>
+              <th className="py-2 px-4 border-b">Prix de base</th>
+              <th className="py-2 px-4 border-b">Supplément</th>
+              <th className="py-2 px-4 border-b">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookingDetails.selectedCateringOptions.length > 0 ? (
+              bookingDetails.selectedCateringOptions.map((optionId) => {
+                const option = bookingDetails.cateringOptions.find(
+                  (opt) => opt.id === optionId
+                );
+                if (!option) return null;
+
+                const quantity = bookingDetails.cateringPeople[optionId] || 1;
+                const basePrice = option.price;
+                const extra = option.extra ? option.extra.replace("/pers", "") : 0;
+                const total = basePrice * quantity;
+
+                return (
+                  <tr key={option.id}>
+                    <td className="py-2 px-4 border-b">{option.name}</td>
+                    <td className="py-2 px-4 border-b">{quantity}</td>
+                    <td className="py-2 px-4 border-b">{basePrice}€</td>
+                    <td className="py-2 px-4 border-b">{extra}€</td>
+                    <td className="py-2 px-4 border-b">{total}€</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="py-2 px-4 border-b" colSpan="5">Aucune option de restauration sélectionnée.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Apply Coupon */}
@@ -134,9 +192,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         </div>
         {couponError && <p className="text-red-500">{couponError}</p>}
         {discount > 0 && (
-          <p className="text-green-500">
-            Coupon appliqué : {discount}% de réduction
-          </p>
+          <p className="text-green-500">Coupon appliqué : {discount}% de réduction</p>
         )}
       </div>
 
