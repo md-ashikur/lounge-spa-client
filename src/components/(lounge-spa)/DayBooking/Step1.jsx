@@ -259,9 +259,9 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
-          <div className="flex gap-8">
+          <div className="my-5">
             <div className=" text-primary-800">
-              <label className="font-bold text-sm">Adultes (13 ans et +) :</label>
+              {/* <label className="font-bold text-sm">Adultes (13 ans et +) :</label> */}
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => decrement("adult")}

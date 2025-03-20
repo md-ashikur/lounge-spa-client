@@ -45,12 +45,23 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
   const spaOptions = [
     { id: "None", name: "Aucune", price: 0, icon: remove },
-    { id: "1hr", name: "1h supplémentaire", price: 50, weekendPrice: 60, icon: extraHour },
+    {
+      id: "1hr",
+      name: "1h supplémentaire",
+      price: 50,
+      weekendPrice: 60,
+      icon: extraHour,
+    },
     {
       id: "massage",
       name: "Modelages type californien aux huiles chaudes",
       extra: "(+10€ soir et dimanche)",
       price: 50,
+      durationPrices: {
+        20: 50,
+        30: 60,
+        60: 90,
+      },
       weekendPrice: 60,
       icon: massage,
       info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
@@ -68,7 +79,6 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       price: 35,
       weekendPrice: 50,
       weekdayPrice: 45,
-      minPeople: 2,
       extra: "/pers",
       icon: vip,
       info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
@@ -130,15 +140,15 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     // if clicking on "robe" while VIP is selected, show message
     if (optionId === "robe" && selectedOptions.includes("vip")) {
       toast(
-        "Si vous avez choisi l'option VIP, vous ne pouvez pas sélectionner la Location de peignoir."
-        , {
+        "Si vous avez choisi l'option VIP, vous ne pouvez pas sélectionner la Location de peignoir.",
+        {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: false,
           pauseOnHover: true,
-          
-          });
+        }
+      );
       return;
     }
 
@@ -201,6 +211,25 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       return;
     }
 
+    // Ensure "Service à table par notre cheffe" can't be selected alone
+    if (
+      optionId === "service" &&
+      selectedCateringOptions.length === 1 &&
+      selectedCateringOptions.includes("cateringNone")
+    ) {
+      toast(
+        "Vous devez choisir une autre option de restauration avant de sélectionner le Service à table par notre cheffe.",
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+        }
+      );
+      return;
+    }
+
     // Handle service option separately
     if (optionId === "service") {
       if (selectedCateringOptions.includes("service")) {
@@ -256,17 +285,16 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     }));
   };
 
-
   const bookingDate = new Date(bookingDetails.date);
-  const isWeekend = bookingDate.getDay() === 5 || bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
+  // bookingDate.getDay() === 5 ||
+  // bookingDate.getDay() === 6 ||
+  const isWeekend = bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
   const isEvening =
-    bookingDetails.slot.includes("18h") ||
-    bookingDetails.slot.includes("19h");
-
+    bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
 
   const calculateTotal = () => {
     let total = bookingDetails.price; // Base price per person multiplied by the number of people
-   
+
     selectedOptions.forEach((optionId) => {
       const option = spaOptions.find((opt) => opt.id === optionId);
       if (!option) return;
@@ -284,7 +312,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
           massagePrice += 10;
         }
         total += massagePrice * massageDetails.numPeople;
-      } else if (optionId !== "1hr") {
+      } else if (optionId !== "1hr" && optionId !== "vip") {
         // use the specific count chosen (defaulting to 1 if not set)
         const count = optionPeople[optionId] || 1;
         total += option.price * count;
@@ -305,21 +333,23 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       selectedOptions.includes("1hr") &&
       selectedAdditionalHourOption !== null
     ) {
-      let additionalHourPrice = isWeekend ? spaOptions.find(opt => opt.id === "1hr").weekendPrice : spaOptions.find(opt => opt.id === "1hr").price;
+      let additionalHourPrice = isWeekend
+        ? spaOptions.find((opt) => opt.id === "1hr").weekendPrice
+        : spaOptions.find((opt) => opt.id === "1hr").price;
       if (selectedAdditionalHourOption === 2) {
         additionalHourPrice *= 2; // price for both before and after options
       }
       total += additionalHourPrice;
     }
-
     if (selectedOptions.includes("vip")) {
-      const vipOption = spaOptions.find(opt => opt.id === "vip");
+      const vipOption = spaOptions.find((opt) => opt.id === "vip");
       const count = optionPeople["vip"] || 2; // Minimum 2 people
-      if (count > 2) {
-        total += (isWeekend ? vipOption.weekendPrice : vipOption.weekdayPrice) * count;
-      } else {
-        total += vipOption.price * count;
-      }
+      const vipPricePerPerson = isWeekend
+        ? vipOption.weekendPrice
+        : count > 2
+        ? vipOption.weekdayPrice
+        : vipOption.price;
+      total += vipPricePerPerson * count;
     }
 
     return total;
@@ -418,8 +448,6 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     setShowModal(false);
   };
 
- 
-
   return (
     <div className="lg:px-20 px-5 space-y-6 text-primary my-10">
       <div className="flex justify-center">
@@ -428,9 +456,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
         </span>
       </div>
 
-
       <div>
-        
         <b>Date sélectionné: </b>
         {bookingDetails.date
           ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
@@ -469,9 +495,10 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       )}
 
       {/* Number of People */}
- 
-       <p><b>Nombre total de personnes:</b> {bookingDetails.numAdults}</p>
 
+      <p>
+        <b>Nombre total de personnes:</b> {bookingDetails.numAdults}
+      </p>
 
       {/* =================Choose Spa section start============ */}
       <div>
@@ -496,335 +523,355 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
                   className="rounded-md mb-3"
                 />
                 <span className=" text-sm">{option.name}</span>
-                <p className="text-sm">
-                  {option.id === "massage"
-                    ? `${
-                        massageDetails.duration === 20
-                          ? 50
-                          : massageDetails.duration === 30
-                          ? 60
-                          : 90
+
+                {option.id !== "None" && (
+                  <p className="text-sm">
+                    {option.id === "massage"
+                      ? `${
+                          option.durationPrices[massageDetails.duration]
                         }€/pers`
-                        : `${isWeekend ? option.weekendPrice : option.price}€`}
-                      <span className="text-xs"> {option.extra}</span>
-                      {option.info && (
-                        <button
-                          className="ml-2 p-1 text-white"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSpaInfo(option.info);
-                          }}
-                        >
-                          ⓘ
-                        </button>
-                      )}
-                    </p>
-                   
-                    {option.id === "massage" &&
-                      selectedOptions.includes("massage") && (
-                        <p className="text-xs mt-2">
-                          Durée sélectionnée: {massageDetails.duration} min
-                        </p>
-                      )}
-                    {option.id === "1hr" &&
-                      selectedOptions.includes("1hr") &&
-                      selectedTimeSlot && (
-                        <p className="text-xs mt-2">
-                          Plage horaire: {selectedTimeSlot}
-                        </p>
-                      )}
-                    {selectedOptions.includes(option.id) &&
-                      option.id !== "None" &&
-                      option.id !== "1hr" &&
-                      option.id !== "massage" && (
-                        <p className="text-xs mt-2">
-                          Nombre de personnes: {optionPeople[option.id] || 1}
-                        </p>
-                      )}
-                  </div>
-                </div>
-              ))}
-            </div>
-    
-            {spaInfo && (
-              <div
-                className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
-                onClick={() => setSpaInfo(null)}
-              >
-                <div
-                  className="bg-primary text-white p-4 rounded-md lg:w-1/2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
-                </div>
-              </div>
-            )}
-          </div>
-    
-          {/* 1 hour modal */}
-          {showModal && modalType === "1hr" && (
-            <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
-              <div className="bg-white p-4 rounded-md lg:w-1/2">
-                <h3 className="text-lg font-bold">Prolongez l’instant</h3>
-                <div className="mt-4 space-y-2">
-                  {additionalHourOptions.map((option, index) => (
-                    <button
-                      key={option}
-                      className={`block w-full p-2 rounded-md ${
-                        selectedTimeSlot === option
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-200"
-                      }`}
-                      onClick={() => {
-                        setSelectedTimeSlot(option);
-                        setSelectedAdditionalHourOption(index);
-                      }}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-                <p className="my-3 text-center">
-                  Sous réserve de disponibilité, avec confirmation au plus tard une
-                  semaine à l’avance par mail. Vous serez immédiatement remboursé en
-                  cas d&apos;indisponibilité
-                </p>
-                <div className="flex justify-end space-x-4 mt-4">
-                  <button
-                    className="px-4 py-2 bg-gray-300 rounded-md"
-                    onClick={handleModalClose}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-green-500 text-white rounded-md"
-                    onClick={handleModalConfirm}
-                    disabled={!selectedTimeSlot}
-                  >
-                    Confirmer
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-    
-          {/* Massage modal */}
-          {showModal && modalType === "massage" && (
-            <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
-              <div className="bg-white p-4 rounded-sm lg:w-1/2">
-                <h3 className="text-lg font-bold">À partir de 50€</h3>
-                <div className="mt-4">
-                  <label>Nombre de personnes :</label>
-                  <div className="flex items-center space-x-2 mt-2">
-                    <button
-                      className="px-3 py-1 bg-primary text-white rounded-md"
-                      onClick={() =>
-                        handleMassageChange(
-                          "numPeople",
-                          Math.max(1, massageDetails.numPeople - 1)
-                        )
-                      }
-                    >
-                      -
-                    </button>
-                    <span>{massageDetails.numPeople}</span>
-                    <button
-                      className="px-3 py-1 bg-primary text-white rounded-md"
-                      onClick={() =>
-                        handleMassageChange(
-                          "numPeople",
-                          Math.min(bookingDetails.numAdults, massageDetails.numPeople + 1)
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <label>Durée (minutes) :</label>
-                  <div className="flex items-center space-x-2 mt-2">
-                    {[20, 30, 60].map((duration) => (
+                      : option.id === "vip"
+                      ? `${
+                          isWeekend
+                            ? option.weekendPrice
+                            : optionPeople["vip"] && optionPeople["vip"] > 2
+                            ? option.weekdayPrice
+                            : option.price
+                        }€`
+                      : option.id === "robe"
+                      ? `${option.price}€`
+                      : `${isWeekend ? option.weekendPrice : option.price}€`}
+                    <span className="text-xs"> {option.extra}</span>
+                    {option.info && (
                       <button
-                        key={duration}
-                        className={`px-4 py-2 rounded-md ${
-                          massageDetails.duration === duration
-                            ? "bg-green-500 text-white"
-                            : "bg-gray-200"
-                        }`}
-                        onClick={() => handleMassageChange("duration", duration)}
+                        className="ml-2 p-1 text-white"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSpaInfo(option.info);
+                        }}
                       >
-                        {duration} min -{" "}
-                        {duration === 20 ? "50€" : duration === 30 ? "60€" : "90€"}
+                        ⓘ
                       </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4 text-right space-x-4">
-                  <button
-                    className="px-4 py-2 bg-gray-300 rounded-md"
-                    onClick={handleMassageCancel}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-green-500 text-white rounded-md"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Confirmer
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-    
-          {/* Generic modal for spa/catering options */}
-          {showModal &&
-            modalActiveOption &&
-            modalType !== "1hr" &&
-            modalType !== "massage" && (
-              <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10">
-                <div className="bg-white p-4 rounded-md shadow-lg">
-                  <h3 className="text-lg font-bold">
-                    Sélectionnez le nombre de personnes
-                  </h3>
-                  <div className="mt-4 flex items-center space-x-2">
-                    <button
-                      className="px-3 py-1 bg-primary text-white rounded-md"
-                      onClick={() => {
-                        const newCount =
-                          modalActiveOption === "vip"
-                            ? Math.max(2, modalCount - 1)
-                            : Math.max(1, modalCount - 1);
-                        setModalCount(newCount);
-                      }}
-                    >
-                      -
-                    </button>
-                    <span>{modalCount}</span>
-                    <button
-                      className="px-3 py-1 bg-primary text-white rounded-md"
-                      onClick={() => setModalCount(modalCount + 1)}
-                      disabled={modalActiveOption === "vip" && modalCount >= bookingDetails.numAdults}
-                    >
-                      +
-                    </button>
-                  </div>
-                  {/* Added VIP minimum notice */}
-                  {modalActiveOption === "vip" && (
-                    <p className="text-sm text-red-500 mt-2">
-                      Minimum 2 personnes requis pour cette option
+                    )}
+                  </p>
+                )}
+                {option.id === "massage" &&
+                  selectedOptions.includes("massage") && (
+                    <p className="text-xs mt-2">
+                      Durée sélectionnée: {massageDetails.duration} min
                     </p>
                   )}
-                  <div className="flex justify-end space-x-4 mt-4">
-                    <button
-                      className="px-4 py-2 bg-red-500 text-white rounded-md"
-                      onClick={handleGenericModalCancel}
-                    >
-                      Annuler
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-green-500 text-white rounded-md"
-                      onClick={handleGenericModalConfirm}
-                      disabled={modalActiveOption === "vip" && modalCount < 2}
-                    >
-                      Confirmer
-                    </button>
-                  </div>
-                </div>
+                {option.id === "1hr" &&
+                  selectedOptions.includes("1hr") &&
+                  selectedTimeSlot && (
+                    <p className="text-xs mt-2">
+                      Plage horaire: {selectedTimeSlot}
+                    </p>
+                  )}
+                {selectedOptions.includes(option.id) &&
+                  option.id !== "None" &&
+                  option.id !== "1hr" &&
+                  option.id !== "massage" && (
+                    <p className="text-xs mt-2">
+                      Nombre de personnes: {optionPeople[option.id] || 1}
+                    </p>
+                  )}
               </div>
-            )}
-    
-          {/* =================Choose Catering section start============ */}
-          <div className="py-10">
-            <h3 className="text-lg font-bold my-5">
-              Choisissez vos options restauration :
-            </h3>
-            <div className="grid lg:grid-cols-5 gap-4">
-              {cateringOptions.map((option) => (
-                <div
-                  key={option.id}
-                  className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
-                    selectedCateringOptions.includes(option.id)
+            </div>
+          ))}
+        </div>
+
+        {spaInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
+            onClick={() => setSpaInfo(null)}
+          >
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{spaInfo}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 1 hour modal */}
+      {showModal && modalType === "1hr" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+          <div className="bg-white p-4 rounded-md lg:w-1/2">
+            <h3 className="text-lg font-bold">Prolongez l’instant</h3>
+            <div className="mt-4 space-y-2">
+              {additionalHourOptions.map((option, index) => (
+                <button
+                  key={option}
+                  className={`block w-full p-2 rounded-md ${
+                    selectedTimeSlot === option
                       ? "bg-green-500 text-white"
-                      : "bg-primary text-white"
+                      : "bg-gray-200"
                   }`}
-                  onClick={() => handleCateringSelect(option.id)}
+                  onClick={() => {
+                    setSelectedTimeSlot(option);
+                    setSelectedAdditionalHourOption(index);
+                  }}
                 >
-                  <div className="flex flex-col text-center items-center justify-center">
-                    <Image
-                      src={option.icon}
-                      alt=""
-                      width={60}
-                      height={60}
-                      className="rounded-md mb-3"
-                    />
-                    <span className="text-sm">{option.name}</span>
-                    <span className="text-sm">
-                      {option.price}€{" "}
-                      <span className="text-xs"> {option.extra}</span>
-                      {option.info && (
-                        <button
-                          className="ml-2 text-white"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCateringInfo(option.info);
-                          }}
-                        >
-                          ⓘ
-                        </button>
-                      )}
-                    </span>
-                    {selectedCateringOptions.includes(option.id) &&
-                      option.id !== "cateringNone" &&
-                      option.id !== "service" && (
-                        <p className="text-xs mt-2">
-                          Nombre de personnes: {cateringPeople[option.id] || 1}
-                        </p>
-                      )}
-                  </div>
-                </div>
+                  {option}
+                </button>
               ))}
             </div>
-    
-            {cateringInfo && (
-              <div
-                className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
-                onClick={() => setCateringInfo(null)}
+            <p className="my-3 text-center">
+              Sous réserve de disponibilité, avec confirmation au plus tard une
+              semaine à l’avance par mail. Vous serez immédiatement remboursé en
+              cas d&apos;indisponibilité
+            </p>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleModalClose}
               >
-                <div
-                  className="bg-primary text-white p-4 rounded-md lg:w-1/2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
-                </div>
-              </div>
-            )}
-          </div>
-    
-          <div className="mt-6 text-right">
-            <h3 className="text-xl font-bold">
-              Votre expérience Lounge & Spa pour
-            </h3>
-            <p className="text-xl font-semibold">{calculateTotal()}€</p>
-          </div>
-    
-          <div className="flex justify-between mt-6">
-            <button
-              className="px-4 py-2 bg-primary text-white rounded-md"
-              onClick={onBack}
-            >
-              Précédent
-            </button>
-            <button
-              className="px-4 py-2 bg-green-500 text-white rounded-md"
-              onClick={handleNext}
-            >
-              Suivant
-            </button>
+                Annuler
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={handleModalConfirm}
+                disabled={!selectedTimeSlot}
+              >
+                Confirmer
+              </button>
+            </div>
           </div>
         </div>
-      );
-    };
-    
-    export default Step2;
+      )}
+
+      {/* Massage modal */}
+      {showModal && modalType === "massage" && (
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
+          <div className="bg-white p-4 rounded-sm lg:w-1/2">
+            <h3 className="text-lg font-bold">À partir de 50€</h3>
+            <div className="mt-4">
+              <label>Nombre de personnes :</label>
+              <div className="flex items-center space-x-2 mt-2">
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.max(1, massageDetails.numPeople - 1)
+                    )
+                  }
+                >
+                  -
+                </button>
+                <span>{massageDetails.numPeople}</span>
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() =>
+                    handleMassageChange(
+                      "numPeople",
+                      Math.min(
+                        bookingDetails.numAdults,
+                        massageDetails.numPeople + 1
+                      )
+                    )
+                  }
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="mt-4">
+              <label>Durée (minutes) :</label>
+              <div className="flex items-center space-x-2 mt-2">
+                {[20, 30, 60].map((duration) => (
+                  <button
+                    key={duration}
+                    className={`px-4 py-2 rounded-md ${
+                      massageDetails.duration === duration
+                        ? "bg-green-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                    onClick={() => handleMassageChange("duration", duration)}
+                  >
+                    {duration} min -{" "}
+                    {duration === 20 ? "50€" : duration === 30 ? "60€" : "90€"}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 text-right space-x-4">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-md"
+                onClick={handleMassageCancel}
+              >
+                Annuler
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-md"
+                onClick={() => setShowModal(false)}
+              >
+                Confirmer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Generic modal for spa/catering options */}
+      {showModal &&
+        modalActiveOption &&
+        modalType !== "1hr" &&
+        modalType !== "massage" && (
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10">
+            <div className="bg-white p-4 rounded-md shadow-lg">
+              <h3 className="text-lg font-bold">
+                Sélectionnez le nombre de personnes
+              </h3>
+              <div className="mt-4 flex items-center space-x-2">
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() => {
+                    const newCount =
+                      modalActiveOption === "vip" ||
+                      modalActiveOption === "robe"
+                        ? Math.max(2, modalCount - 1)
+                        : Math.max(1, modalCount - 1);
+                    setModalCount(newCount);
+                  }}
+                >
+                  -
+                </button>
+                <span>{modalCount}</span>
+                <button
+                  className="px-3 py-1 bg-primary text-white rounded-md"
+                  onClick={() => setModalCount(modalCount + 1)}
+                  disabled={
+                    (modalActiveOption === "vip" &&
+                      modalCount >= bookingDetails.numAdults) ||
+                    (modalActiveOption === "robe" &&
+                      modalCount >= bookingDetails.numAdults)
+                  }
+                >
+                  +
+                </button>
+              </div>
+              {/* Added VIP minimum notice */}
+              {modalActiveOption === "vip" && (
+                <p className="text-sm text-red-500 mt-2">
+                  Minimum 2 personnes requis pour cette option
+                </p>
+              )}
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  className="px-4 py-2 bg-red-500 text-white rounded-md"
+                  onClick={handleGenericModalCancel}
+                >
+                  Annuler
+                </button>
+                <button
+                  className="px-4 py-2 bg-green-500 text-white rounded-md"
+                  onClick={handleGenericModalConfirm}
+                  disabled={modalActiveOption === "vip" && modalCount < 2}
+                >
+                  Confirmer
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      {/* =================Choose Catering section start============ */}
+      <div className="py-10">
+        <h3 className="text-lg font-bold my-5">
+          Choisissez vos options restauration :
+        </h3>
+        <div className="grid lg:grid-cols-5 gap-4">
+          {cateringOptions.map((option) => (
+            <div
+              key={option.id}
+              className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
+                selectedCateringOptions.includes(option.id)
+                  ? "bg-green-500 text-white"
+                  : "bg-primary text-white"
+              }`}
+              onClick={() => handleCateringSelect(option.id)}
+            >
+              <div className="flex flex-col text-center items-center justify-center">
+                <Image
+                  src={option.icon}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
+                <span className="text-sm">{option.name}</span>
+                {option.id !== "cateringNone" && (
+                  <span className="text-sm">
+                    {option.price}€
+                    <span className="text-xs"> {option.extra}</span>
+                    {option.info && (
+                      <button
+                        className="ml-2 text-white"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCateringInfo(option.info);
+                        }}
+                      >
+                        ⓘ
+                      </button>
+                    )}
+                  </span>
+                )}
+
+                {selectedCateringOptions.includes(option.id) &&
+                  option.id !== "cateringNone" &&
+                  option.id !== "service" && (
+                    <p className="text-xs mt-2">
+                      Quantité: {cateringPeople[option.id] || 1}
+                    </p>
+                  )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {cateringInfo && (
+          <div
+            className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10 mx-5"
+            onClick={() => setCateringInfo(null)}
+          >
+            <div
+              className="bg-primary text-white p-4 rounded-md lg:w-1/2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="mt-4 whitespace-pre-line">{cateringInfo}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-6 text-right">
+        <h3 className="text-xl font-bold">
+          Votre expérience Lounge & Spa pour
+        </h3>
+        <p className="text-xl font-semibold">{calculateTotal()}€</p>
+      </div>
+
+      <div className="flex justify-between mt-6">
+        <button
+          className="px-4 py-2 bg-primary text-white rounded-md"
+          onClick={onBack}
+        >
+          Précédent
+        </button>
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded-md"
+          onClick={handleNext}
+        >
+          Suivant
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Step2;
