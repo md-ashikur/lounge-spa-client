@@ -287,74 +287,72 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
   };
 
   const bookingDate = new Date(bookingDetails.date);
-  
-  const isWeekend = bookingDate.getDay() === 5 ||
-  bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
-  const isEvening =
-    bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
 
-  const calculateTotal = () => {
-    let total = bookingDetails.price; // Base price per person multiplied by the number of people
+// isWeekend for all other options
+const isWeekend = bookingDate.getDay() === 5 || bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
 
-    selectedOptions.forEach((optionId) => {
-      const option = spaOptions.find((opt) => opt.id === optionId);
-      if (!option) return;
+// isWeekend for 1hr option (only Saturday and Sunday)
+const isWeekendFor1hr = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Saturday is 6, Sunday is 0
+const isEvening =
+bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
 
-      if (optionId === "massage") {
-        let massagePrice = 0;
-        if (massageDetails.duration === 20) {
-          massagePrice = 50;
-        } else if (massageDetails.duration === 30) {
-          massagePrice = 60;
-        } else if (massageDetails.duration === 60) {
-          massagePrice = 90;
-        }
-        if (isEvening || isWeekend) {
-          massagePrice += 10;
-        }
-        total += massagePrice * massageDetails.numPeople;
-      } else if (optionId !== "1hr" && optionId !== "vip") {
-        // use the specific count chosen (defaulting to 1 if not set)
-        const count = optionPeople[optionId] || 1;
-        total += option.price * count;
+const calculateTotal = () => {
+  let total = bookingDetails.price; // Base price per person multiplied by the number of people
+
+  selectedOptions.forEach((optionId) => {
+    const option = spaOptions.find((opt) => opt.id === optionId);
+    if (!option) return;
+
+    if (optionId === "massage") {
+      let massagePrice = option.durationPrices[massageDetails.duration];
+      if (isEvening || isWeekend) {
+        massagePrice += option.extraPrice;
       }
-    });
-
-    selectedCateringOptions.forEach((optionId) => {
-      const option = cateringOptions.find((opt) => opt.id === optionId);
-      if (!option) return;
-      if (optionId !== "cateringNone") {
-        const count = cateringPeople[optionId] || 1;
-        total += option.price * count;
-      }
-    });
-
-    // Add the fixed price for additional hour options
-    if (
-      selectedOptions.includes("1hr") &&
-      selectedAdditionalHourOption !== null
-    ) {
-      let additionalHourPrice = isWeekend
-        ? spaOptions.find((opt) => opt.id === "1hr").weekendPrice
-        : spaOptions.find((opt) => opt.id === "1hr").price;
-      if (selectedAdditionalHourOption === 2) {
-        additionalHourPrice *= 2; // price for both before and after options
-      }
-      total += additionalHourPrice;
+      total += massagePrice * massageDetails.numPeople;
+    } else if (optionId !== "1hr" && optionId !== "vip") {
+      // use the specific count chosen (defaulting to 1 if not set)
+      const count = optionPeople[optionId] || 1;
+      total += option.price * count;
     }
-    if (selectedOptions.includes("vip")) {
-      const vipOption = spaOptions.find((opt) => opt.id === "vip");
-      const count = optionPeople["vip"] || 2; // Minimum 2 people
-      const vipPricePerPerson = isWeekend
-        ? vipOption.weekendPrice
-        : count > 2
-        ? vipOption.weekdayPrice
-        : vipOption.price;
-      total += vipPricePerPerson * count;
-    }
+  });
 
-    return total;
-  };
+  selectedCateringOptions.forEach((optionId) => {
+    const option = cateringOptions.find((opt) => opt.id === optionId);
+    if (!option) return;
+    if (optionId !== "cateringNone") {
+      const count = cateringPeople[optionId] || 1;
+      total += option.price * count;
+    }
+  });
+
+  // Add the fixed price for additional hour options
+  if (
+    selectedOptions.includes("1hr") &&
+    selectedAdditionalHourOption !== null
+  ) {
+    let additionalHourPrice = isWeekendFor1hr
+      ? spaOptions.find((opt) => opt.id === "1hr").weekendPrice
+      : spaOptions.find((opt) => opt.id === "1hr").price;
+    if (selectedAdditionalHourOption === 2) {
+      additionalHourPrice *= 2; // price for both before and after options
+    }
+    total += additionalHourPrice;
+  }
+
+  // Calculate VIP option pricing
+  if (selectedOptions.includes("vip")) {
+    const vipOption = spaOptions.find((opt) => opt.id === "vip");
+    const count = optionPeople["vip"] || 2; // Minimum 2 people
+    const vipPricePerPerson = isWeekend
+      ? vipOption.weekendPrice
+      : count > 2
+      ? vipOption.weekdayPrice
+      : vipOption.price;
+    total += vipPricePerPerson * count;
+  }
+
+  return total;
+};
 
   // Generic modal cancel for spa/catering options========
   const handleGenericModalCancel = () => {
@@ -527,36 +525,36 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
                 <span className=" text-sm">{option.name}</span>
 
                 {option.id !== "None" && (
-                  <p className="text-sm">
-                    {option.id === "massage"
-                      ? `${
-                          option.durationPrices[massageDetails.duration]
-                        }€/pers`
-                      : option.id === "vip"
-                      ? `${
-                          isWeekend
-                            ? option.weekendPrice
-                            : optionPeople["vip"] && optionPeople["vip"] > 2
-                            ? option.weekdayPrice
-                            : option.price
-                        }€`
-                      : option.id === "robe"
-                      ? `${option.price}€`
-                      : `${isWeekend ? option.weekendPrice : option.price}€`}
-                    <span className="text-xs"> {option.extra}</span>
-                    {option.info && (
-                      <button
-                        className="ml-2 p-1 text-white"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSpaInfo(option.info);
-                        }}
-                      >
-                        ⓘ
-                      </button>
-                    )}
-                  </p>
-                )}
+  <p className="text-sm">
+    {option.id === "massage"
+      ? `${option.durationPrices[massageDetails.duration]}€/pers`
+      : option.id === "vip"
+      ? `${
+          isWeekend
+            ? option.weekendPrice
+            : optionPeople["vip"] && optionPeople["vip"] > 2
+            ? option.weekdayPrice
+            : option.price
+        }€`
+      : option.id === "robe"
+      ? `${option.price}€`
+      : option.id === "1hr"
+      ? `${isWeekendFor1hr ? option.weekendPrice : option.price}€`
+      : `${isWeekend ? option.weekendPrice : option.price}€`}
+    <span className="text-xs"> {option.extra}</span>
+    {option.info && (
+      <button
+        className="ml-2 p-1 text-white"
+        onClick={(e) => {
+          e.stopPropagation();
+          setSpaInfo(option.info);
+        }}
+      >
+        ⓘ
+      </button>
+    )}
+  </p>
+)}
                 {option.id === "massage" &&
                   selectedOptions.includes("massage") && (
                     <p className="text-xs mt-2">
