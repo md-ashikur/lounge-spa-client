@@ -154,6 +154,20 @@ const Step1 = ({ onNext, setBookingDetails }) => {
     }
   };
 
+  const isSlotDisabled = (slot) => {
+    const today = new Date();
+    if (selectedDate) {
+      const isToday =
+        selectedDate.toISOString().split("T")[0] ===
+        today.toISOString().split("T")[0];
+      if (isToday) {
+        const [startHour] = slot.split("h");
+        return today.getHours() >= parseInt(startHour, 10);
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="lg:px-10 space-y-6 my-10 ">
       <div className="text-center">
@@ -254,14 +268,12 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
         {/* Right Side */}
         <div>
-
           {/* Number of People */}
           <h3 className="font-bold text-primary-800">
             Indiquer le nombre de personnes :
           </h3>
           <div className="my-5">
             <div className=" text-primary-800">
-              {/* <label className="font-bold text-sm">Adultes (13 ans et +) :</label> */}
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => decrement("adult")}
@@ -363,6 +375,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                             : "bg-primary"
                         }`}
                         onClick={() => handleSlotClick(slot)}
+                        disabled={isSlotDisabled(slot)}
                       >
                         {slot}
                       </button>
@@ -384,16 +397,18 @@ const Step1 = ({ onNext, setBookingDetails }) => {
                       className={`py-2 px-3 rounded-full text-white text-center text-sm ${
                         bookedSlots[
                           selectedDate?.toISOString().split("T")[0]
-                        ]?.includes(slot)
-                          ? "bg-red-500 text-white cursor-not-allowed"
+                        ]?.includes(slot) || isSlotDisabled(slot)
+                          ? "bg-primary opacity-50 text-white cursor-not-allowed"
                           : selectedSlot === slot
                           ? "bg-green-500 text-white"
                           : "bg-primary"
                       }`}
                       onClick={() => handleSlotClick(slot)}
-                      disabled={bookedSlots[
-                        selectedDate?.toISOString().split("T")[0]
-                      ]?.includes(slot)}
+                      disabled={
+                        bookedSlots[
+                          selectedDate?.toISOString().split("T")[0]
+                        ]?.includes(slot) || isSlotDisabled(slot)
+                      }
                     >
                       {slot}
                     </button>

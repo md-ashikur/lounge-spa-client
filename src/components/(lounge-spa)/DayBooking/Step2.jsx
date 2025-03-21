@@ -124,7 +124,7 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     {
       id: "service",
       name: "Service à table par notre cheffe",
-      price: 35,
+      price: 45,
       icon: service,
     },
   ];
@@ -292,9 +292,9 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
 const isWeekend = bookingDate.getDay() === 5 || bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
 
 // isWeekend for 1hr option (only Saturday and Sunday)
-const isWeekendFor1hr = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Saturday is 6, Sunday is 0
-const isEvening =
-bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
+const isWeekendFor1hr = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; 
+const isWeekendForMassage = bookingDate.getDay() === 0;   // Sunday is 0
+const isEvening = bookingDetails.slot.includes("19h");
 
 const calculateTotal = () => {
   let total = bookingDetails.price; // Base price per person multiplied by the number of people
@@ -525,7 +525,7 @@ const calculateTotal = () => {
                 <span className=" text-sm">{option.name}</span>
 
                 {option.id !== "None" && (
-  <p className="text-sm">
+  <div className="text-sm">
     {option.id === "massage"
       ? `${option.durationPrices[massageDetails.duration]}€/pers`
       : option.id === "vip"
@@ -553,7 +553,7 @@ const calculateTotal = () => {
         ⓘ
       </button>
     )}
-  </p>
+  </div>
 )}
                 {option.id === "massage" &&
                   selectedOptions.includes("massage") && (
@@ -692,8 +692,7 @@ const calculateTotal = () => {
                     }`}
                     onClick={() => handleMassageChange("duration", duration)}
                   >
-                    {duration} min -{" "}
-                    {duration === 20 ? "50€" : duration === 30 ? "60€" : "90€"}
+                    {duration} min - {spaOptions.find(opt => opt.id === "massage").durationPrices[duration]}€
                   </button>
                 ))}
               </div>
@@ -756,7 +755,7 @@ const calculateTotal = () => {
               </div>
               {/* Added VIP minimum notice */}
               {modalActiveOption === "vip" && (
-                <p className="text-sm text-red-500 mt-2">
+                <p className="text-sm text-primary mt-2">
                   Minimum 2 personnes requis pour cette option
                 </p>
               )}
