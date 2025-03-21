@@ -287,9 +287,9 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
   };
 
   const bookingDate = new Date(bookingDetails.date);
-  // bookingDate.getDay() === 5 ||
-  // bookingDate.getDay() === 6 ||
-  const isWeekend = bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
+  
+  const isWeekend = bookingDate.getDay() === 5 ||
+  bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
   const isEvening =
     bookingDetails.slot.includes("18h") || bookingDetails.slot.includes("19h");
 
