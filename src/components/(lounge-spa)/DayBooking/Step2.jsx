@@ -107,7 +107,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     {
       id: "FlavorMenu",
       name: "Menu saveur",
-      price: 30,
+      price: 45,
       extra: "/pers",
       icon: menuSaveur,
       info: `Préparé par notre cheffe de cuisine (fait maison)
@@ -124,12 +124,12 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
     {
       id: "service",
       name: "Service à table par notre cheffe",
-      price: 45,
+      price: 35,
       icon: service,
     },
   ];
 
-  // SPA OPTION CLICK
+  // SPA OPTION 
   const handleOptionSelect = (optionId) => {
     // if selecting 'None', clear others
     if (optionId === "None") {
