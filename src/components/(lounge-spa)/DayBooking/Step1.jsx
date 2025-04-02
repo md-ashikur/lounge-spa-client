@@ -40,6 +40,11 @@ const Step1 = ({ onNext, setBookingDetails }) => {
     []
   );
 
+  const regularPrices = {
+    week: { base: 60, additional: 45 },
+    weekend: { base: 70, additional: 50 },
+  };
+  
   const calculatePrice = () => {
     if (greenDeal) {
       setPrice(80); // Fixed price for Green Deal
@@ -48,7 +53,15 @@ const Step1 = ({ onNext, setBookingDetails }) => {
       setPrice(day >= 1 && day <= 4 ? 85 : 100); // Mon-Thu: 85€, Fri-Sun: 100€
     } else if (selectedDate && selectedSlot) {
       const day = selectedDate.getDay();
-      setPrice(day >= 1 && day <= 4 ? 120 : 140); // Mon-Thu: 120€, Fri-Sun: 140€
+      const isWeekend = day === 5 || day === 6 || day === 0; // Fri-Sun
+      const prices = isWeekend ? regularPrices.weekend : regularPrices.week;
+      const basePrice = prices.base;
+      const additionalPrice = prices.additional;
+      if (numAdults > 2) {
+        setPrice(numAdults * additionalPrice);
+      } else {
+        setPrice(basePrice * numAdults);
+      }
     } else {
       setPrice(0); // Default price when no selection
     }
@@ -56,7 +69,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
 
   useEffect(() => {
     calculatePrice();
-  }, [greenDeal, lastMinute, selectedDate, selectedSlot]);
+  }, [greenDeal, lastMinute, selectedDate, selectedSlot, numAdults]);
 
   useEffect(() => {
     if (lastMinute) {

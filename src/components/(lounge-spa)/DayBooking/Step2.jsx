@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import snack from "../../../../public/images/snack.png";
-import remove from "../../../../public/images/remove.png";
-import massage from "../../../../public/images/lithotherapie.png";
-import extraHour from "../../../../public/images/icons/extra-time.png";
-import robe from "../../../../public/images/icons/spa/robe.png";
-import vip from "../../../../public/images/icons/spa/red-carpet.png";
-import gourmetSnack from "../../../../public/images/icons/beverage.png";
-import dinnerboard from "../../../../public/images/icons/dinner-table.png";
-import menuSaveur from "../../../../public/images/icons/serving-dish.png";
-import service from "../../../../public/images/icons/catering.png";
+// import snack from "/images/snack.png";
+// import remove from "/images/remove.png";
+// import massage from "/images/lithotherapie.png";
+// import extraHour from "/images/icons/extra-time.png";
+// import robe from "/images/icons/spa/robe.png";
+// import vip from "/images/icons/spa/red-carpet.png";
+// // import gourmetSnack from "/images/icons/beverage.png";
+// import dinnerboard from "/images/icons/dinner-table.png";
+// import menuSaveur from "/images/icons/serving-dish.png";
+// import service from "/images/icons/catering.png";
 import { toast } from "react-toastify";
 
 const Step2 = ({ bookingDetails, onBack, onNext }) => {
   // main states
   const [numPeople, setNumPeople] = useState(2);
-  const [selectedOptions, setSelectedOptions] = useState(["None"]);
+  const [selectedOptions, setSelectedOptions] = useState(["d0"]);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([
     "cateringNone",
   ]);
@@ -43,103 +43,48 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [spaInfo, setSpaInfo] = useState(null);
   const [cateringInfo, setCateringInfo] = useState(null);
 
-  const spaOptions = [
-    { id: "None", name: "Aucune", price: 0, icon: remove },
-    {
-      id: "1hr",
-      name: "1h supplémentaire",
-      price: 50,
-      weekendPrice: 60,
-      icon: extraHour,
-    },
-    {
-      id: "massage",
-      name: "Modelages type californien aux huiles chaudes",
-      extra: "(+10€ soir et dimanche)",
-      extraPrice: 10,
-      price: 50,
-      durationPrices: {
-        20: 50,
-        30: 60,
-        60: 90,
-      },
-      weekendPrice: 60,
-      icon: massage,
-      info: "Le modelage californien est une technique de massage qui vise à détendre le corps et l'esprit en utilisant des mouvements fluides et enveloppants. Inspiré par les paysages et le style de vie décontracté de la Californie, ce massage est caractérisé par des gestes doux et harmonieux, visant à relâcher les tensions musculaires, favoriser la circulation sanguine et apaiser le mental. C'est une expérience de bien-être complète, offrant un moment de relaxation profonde et une sensation de légèreté.",
-    },
-    {
-      id: "robe",
-      name: "Location de peignoir",
-      price: 5,
-      extra: "/pers",
-      icon: robe,
-    },
-    {
-      id: "vip",
-      name: "Accueil VIP",
-      price: 35,
-      weekendPrice: 50,
-      weekdayPrice: 45,
-      extra: "/pers",
-      icon: vip,
-      info: "Cocktail de bienvenue + décoration exclusive + peignoirs + rituel sauna huiles essentielles + photo souvenir 30×20 cm",
-    },
-  ];
+  const [spaOptions, setSpaOptions] = useState([]);
+  const [cateringOptions, setCateringOptions] = useState([]);
 
-  const cateringOptions = [
-    { id: "cateringNone", name: "Aucune", price: 0, icon: remove },
-    {
-      id: "GourmetSnack",
-      name: "En-cas gourmand",
-      price: 20,
-      extra: "/pers",
-      icon: gourmetSnack,
-      info: "Encas désaltérant + pâtisseries",
-    },
-    {
-      id: "DinnerBoard",
-      name: "Planche dînatoire",
-      price: 30,
-      extra: "/pers",
-      icon: dinnerboard,
-      info: "Assortiment de charcuterie Ibérique\nSélection de fromages\nTapenade, Tartinade de tomate séchés\nDessert pâtissier",
-    },
-    {
-      id: "FlavorMenu",
-      name: "Menu saveur",
-      price: 45,
-      extra: "/pers",
-      icon: menuSaveur,
-      info: `Préparé par notre cheffe de cuisine (fait maison)
-Choix à faire quelques jours à l’avance sur propositions
+  useEffect(() => {
+    // Fetch spa options from API
+    const fetchSpaOptions = async () => {
+      try {
+        const response = await fetch("/api/dayOfferOptions/spa");
+        const data = await response.json();
+        setSpaOptions(data);
+      } catch (error) {
+        console.error("Error fetching spa options:", error);
+      }
+    };
 
-Entrées : Velouté de saison ou Tartare de saumon à l’ancienne ou Charcuterie Ibérique
-Plat principal : Parmentier de canard ou Papillote de poisson ou Gratin végétarien
-Trilogie de Dessert : Panacotta fruits rouge et moelleux chocolat et salade de fruits de saison
+    // Fetch catering options from API
+    const fetchCateringOptions = async () => {
+      try {
+        const response = await fetch("/api/dayOfferOptions/catering");
+        const data = await response.json();
+        setCateringOptions(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching catering options:", error);
+      }
+    };
 
-Propositions susceptibles d’être modifiées en fonction des saisons et des arrivages.
-Vous profiterez de votre repas en autonomie, tout sera préparé à l’avance et votre table sera dressée.
-Pour votre confort et votre tranquillité, des instructions claires et précises concernant le réchauffage des plats le nécessitant seront explicitement indiquée`,
-    },
-    {
-      id: "service",
-      name: "Service à table par notre cheffe",
-      price: 35,
-      icon: service,
-    },
-  ];
+    fetchSpaOptions();
+    fetchCateringOptions();
+  }, []);
 
   // SPA OPTION 
   const handleOptionSelect = (optionId) => {
     // if selecting 'None', clear others
-    if (optionId === "None") {
-      setSelectedOptions(["None"]);
+    if (optionId === "d0") {
+      setSelectedOptions(["d0"]);
       setOptionPeople({});
       return;
     }
 
-    // if clicking on "robe" while VIP is selected, show message
-    if (optionId === "robe" && selectedOptions.includes("vip")) {
+    // if clicking on "d3" while VIP is selected, show message
+    if (optionId === "d3" && selectedOptions.includes("d4")) {
       toast(
         "Si vous avez choisi l'option VIP, vous ne pouvez pas sélectionner la Location de peignoir.",
         {
@@ -153,14 +98,14 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
       return;
     }
 
-    // if selecting VIP and "robe" is currently selected, remove "robe"
-    if (optionId === "vip" && selectedOptions.includes("robe")) {
+    // if selecting VIP and "d3" is currently selected, remove "d3"
+    if (optionId === "d4" && selectedOptions.includes("d3")) {
       setSelectedOptions((prev) =>
-        prev.filter((id) => id !== "robe").concat(optionId)
+        prev.filter((id) => id !== "d3").concat(optionId)
       );
       setOptionPeople((prev) => {
         const newMap = { ...prev };
-        delete newMap["robe"];
+        delete newMap["d3"];
         return newMap;
       });
     } else {
@@ -175,26 +120,26 @@ Pour votre confort et votre tranquillité, des instructions claires et précises
         return;
       }
       let newSelection = [...selectedOptions];
-      if (newSelection.includes("None")) {
+      if (newSelection.includes("d0")) {
         newSelection = [];
       }
       newSelection.push(optionId);
       setSelectedOptions(newSelection);
     }
     // Modified modal count initialization for VIP
-    if (optionId === "vip") {
+    if (optionId === "d4") {
       setModalCount(2); // Start with minimum 2 people for VIP
     } else {
       setModalCount(1);
     }
 
     // For special options use their own modal
-    if (optionId === "1hr") {
+    if (optionId === "d1") {
       setAdditionalHourOptions(getAdditionalHourOptions(bookingDetails.slot));
-      setModalType("1hr");
+      setModalType("d1");
       setShowModal(true);
-    } else if (optionId === "massage") {
-      setModalType("massage");
+    } else if (optionId === "d2") {
+      setModalType("d2");
       setShowModal(true);
     } else {
       setModalActiveOption(optionId);
@@ -303,13 +248,13 @@ const calculateTotal = () => {
     const option = spaOptions.find((opt) => opt.id === optionId);
     if (!option) return;
 
-    if (optionId === "massage") {
+    if (optionId === "d2") {
       let massagePrice = option.durationPrices[massageDetails.duration];
       if (isEvening || isWeekend) {
         massagePrice += option.extraPrice;
       }
       total += massagePrice * massageDetails.numPeople;
-    } else if (optionId !== "1hr" && optionId !== "vip") {
+    } else if (optionId !== "d1" && optionId !== "d4") {
       // use the specific count chosen (defaulting to 1 if not set)
       const count = optionPeople[optionId] || 1;
       total += option.price * count;
@@ -327,12 +272,12 @@ const calculateTotal = () => {
 
   // Add the fixed price for additional hour options
   if (
-    selectedOptions.includes("1hr") &&
+    selectedOptions.includes("d1") &&
     selectedAdditionalHourOption !== null
   ) {
     let additionalHourPrice = isWeekendFor1hr
-      ? spaOptions.find((opt) => opt.id === "1hr").weekendPrice
-      : spaOptions.find((opt) => opt.id === "1hr").price;
+      ? spaOptions.find((opt) => opt.id === "d1").weekendPrice
+      : spaOptions.find((opt) => opt.id === "d1").price;
     if (selectedAdditionalHourOption === 2) {
       additionalHourPrice *= 2; // price for both before and after options
     }
@@ -340,9 +285,9 @@ const calculateTotal = () => {
   }
 
   // Calculate VIP option pricing
-  if (selectedOptions.includes("vip")) {
-    const vipOption = spaOptions.find((opt) => opt.id === "vip");
-    const count = optionPeople["vip"] || 2; // Minimum 2 people
+  if (selectedOptions.includes("d4")) {
+    const vipOption = spaOptions.find((opt) => opt.id === "d4");
+    const count = optionPeople["d4"] || 2; // Minimum 2 people
     const vipPricePerPerson = isWeekend
       ? vipOption.weekendPrice
       : count > 2
@@ -385,7 +330,7 @@ const calculateTotal = () => {
 
   // Special modal cancel for massage
   const handleMassageCancel = () => {
-    setSelectedOptions((prev) => prev.filter((opt) => opt !== "massage"));
+    setSelectedOptions((prev) => prev.filter((opt) => opt !== "d2"));
     setShowModal(false);
   };
 
@@ -434,11 +379,11 @@ const calculateTotal = () => {
   };
 
   const handleModalClose = () => {
-    if (modalType === "1hr") {
-      setSelectedOptions((prev) => prev.filter((opt) => opt !== "1hr"));
+    if (modalType === "d1") {
+      setSelectedOptions((prev) => prev.filter((opt) => opt !== "d1"));
       setShowModal(false);
-    } else if (modalType === "massage") {
-      setSelectedOptions((prev) => prev.filter((opt) => opt !== "massage"));
+    } else if (modalType === "d2") {
+      setSelectedOptions((prev) => prev.filter((opt) => opt !== "d2"));
       setShowModal(false);
     }
   };
@@ -515,30 +460,30 @@ const calculateTotal = () => {
               onClick={() => handleOptionSelect(option.id)}
             >
               <div className="text-center flex flex-col items-center">
-                <Image
+                {/* <Image
                   src={option.icon}
                   alt=""
                   width={60}
                   height={60}
                   className="rounded-md mb-3"
-                />
+                /> */}
                 <span className=" text-sm">{option.name}</span>
 
-                {option.id !== "None" && (
+                {option.id !== "d0" && (
   <div className="text-sm">
-    {option.id === "massage"
+    {option.id === "d2"
       ? `${option.durationPrices[massageDetails.duration]}€/pers`
-      : option.id === "vip"
+      : option.id === "d4"
       ? `${
           isWeekend
             ? option.weekendPrice
-            : optionPeople["vip"] && optionPeople["vip"] > 2
+            : optionPeople["d4"] && optionPeople["d4"] > 2
             ? option.weekdayPrice
             : option.price
         }€`
-      : option.id === "robe"
+      : option.id === "d3"
       ? `${option.price}€`
-      : option.id === "1hr"
+      : option.id === "d1"
       ? `${isWeekendFor1hr ? option.weekendPrice : option.price}€`
       : `${isWeekend ? option.weekendPrice : option.price}€`}
     <span className="text-xs"> {option.extra}</span>
@@ -555,23 +500,23 @@ const calculateTotal = () => {
     )}
   </div>
 )}
-                {option.id === "massage" &&
-                  selectedOptions.includes("massage") && (
+                {option.id === "d2" &&
+                  selectedOptions.includes("d2") && (
                     <p className="text-xs mt-2">
                       Durée sélectionnée: {massageDetails.duration} min
                     </p>
                   )}
-                {option.id === "1hr" &&
-                  selectedOptions.includes("1hr") &&
+                {option.id === "d1" &&
+                  selectedOptions.includes("d1") &&
                   selectedTimeSlot && (
                     <p className="text-xs mt-2">
                       Plage horaire: {selectedTimeSlot}
                     </p>
                   )}
                 {selectedOptions.includes(option.id) &&
-                  option.id !== "None" &&
-                  option.id !== "1hr" &&
-                  option.id !== "massage" && (
+                  option.id !== "d0" &&
+                  option.id !== "d1" &&
+                  option.id !== "d2" && (
                     <p className="text-xs mt-2">
                       Nombre de personnes: {optionPeople[option.id] || 1}
                     </p>
@@ -597,7 +542,7 @@ const calculateTotal = () => {
       </div>
 
       {/* 1 hour modal */}
-      {showModal && modalType === "1hr" && (
+      {showModal && modalType === "d1" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
           <div className="bg-white p-4 rounded-md lg:w-1/2">
             <h3 className="text-lg font-bold">Prolongez l’instant</h3>
@@ -644,7 +589,7 @@ const calculateTotal = () => {
       )}
 
       {/* Massage modal */}
-      {showModal && modalType === "massage" && (
+      {showModal && modalType === "d2" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
             <h3 className="text-lg font-bold">À partir de 50€</h3>
@@ -692,7 +637,7 @@ const calculateTotal = () => {
                     }`}
                     onClick={() => handleMassageChange("duration", duration)}
                   >
-                    {duration} min - {spaOptions.find(opt => opt.id === "massage").durationPrices[duration]}€
+                    {duration} min - {spaOptions.find(opt => opt.id === "d2").durationPrices[duration]}€
                   </button>
                 ))}
               </div>
@@ -718,8 +663,8 @@ const calculateTotal = () => {
       {/* Generic modal for spa/catering options */}
       {showModal &&
         modalActiveOption &&
-        modalType !== "1hr" &&
-        modalType !== "massage" && (
+        modalType !== "d1" &&
+        modalType !== "d2" && (
           <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-10">
             <div className="bg-white p-4 rounded-md shadow-lg">
               <h3 className="text-lg font-bold">
@@ -730,8 +675,8 @@ const calculateTotal = () => {
                   className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() => {
                     const newCount =
-                      modalActiveOption === "vip" ||
-                      modalActiveOption === "robe"
+                      modalActiveOption === "d4" ||
+                      modalActiveOption === "d3"
                         ? Math.max(2, modalCount - 1)
                         : Math.max(1, modalCount - 1);
                     setModalCount(newCount);
@@ -744,9 +689,9 @@ const calculateTotal = () => {
                   className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() => setModalCount(modalCount + 1)}
                   disabled={
-                    (modalActiveOption === "vip" &&
+                    (modalActiveOption === "d4" &&
                       modalCount >= bookingDetails.numAdults) ||
-                    (modalActiveOption === "robe" &&
+                    (modalActiveOption === "d3" &&
                       modalCount >= bookingDetails.numAdults)
                   }
                 >
@@ -754,7 +699,7 @@ const calculateTotal = () => {
                 </button>
               </div>
               {/* Added VIP minimum notice */}
-              {modalActiveOption === "vip" && (
+              {modalActiveOption === "d4" && (
                 <p className="text-sm text-primary mt-2">
                   Minimum 2 personnes requis pour cette option
                 </p>
@@ -769,7 +714,7 @@ const calculateTotal = () => {
                 <button
                   className="px-4 py-2 bg-green-500 text-white rounded-md"
                   onClick={handleGenericModalConfirm}
-                  disabled={modalActiveOption === "vip" && modalCount < 2}
+                  disabled={modalActiveOption === "d4" && modalCount < 2}
                 >
                   Confirmer
                 </button>
@@ -795,13 +740,13 @@ const calculateTotal = () => {
               onClick={() => handleCateringSelect(option.id)}
             >
               <div className="flex flex-col text-center items-center justify-center">
-                <Image
+                {/* <Image
                   src={option.icon}
                   alt=""
                   width={60}
                   height={60}
                   className="rounded-md mb-3"
-                />
+                /> */}
                 <span className="text-sm">{option.name}</span>
                 {option.id !== "cateringNone" && (
                   <span className="text-sm">
