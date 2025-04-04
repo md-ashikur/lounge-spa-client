@@ -39,7 +39,7 @@ export const POST = async (req) => {
     // Save file in the correct folder
     await writeFile(imagePath, imageBuffer);
 
-    // Store relative path in MySQL
+    // Store path in MySQL
     const dbPath = `/${folder}/${imageName}`;
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST,
