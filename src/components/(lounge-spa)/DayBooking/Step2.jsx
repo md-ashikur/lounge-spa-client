@@ -2,16 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-// import snack from "/images/snack.png";
-// import remove from "/images/remove.png";
-// import massage from "/images/lithotherapie.png";
-// import extraHour from "/images/icons/extra-time.png";
-// import robe from "/images/icons/spa/robe.png";
-// import vip from "/images/icons/spa/red-carpet.png";
-// // import gourmetSnack from "/images/icons/beverage.png";
-// import dinnerboard from "/images/icons/dinner-table.png";
-// import menuSaveur from "/images/icons/serving-dish.png";
-// import service from "/images/icons/catering.png";
 import { toast } from "react-toastify";
 
 const Step2 = ({ bookingDetails, onBack, onNext }) => {
@@ -45,9 +35,10 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
   const [spaOptions, setSpaOptions] = useState([]);
   const [cateringOptions, setCateringOptions] = useState([]);
+  const [durationPrices, setDurationPrices] = useState([]);
 
   useEffect(() => {
-    // Fetch spa options from API
+    // Fetch spa options and duration prices from API
     const fetchSpaOptions = async () => {
       try {
         const response = await fetch("/api/dayOfferOptions/spa");
@@ -55,6 +46,14 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         setSpaOptions(data);
       } catch (error) {
         console.error("Error fetching spa options:", error);
+      }
+
+      try {
+        const response = await fetch("/api/dayOfferOptions/durationPrices");
+        const data = await response.json();
+        setDurationPrices(data);
+      } catch (error) {
+        console.error("Error fetching duration prices:", error);
       }
     };
 
@@ -73,6 +72,22 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     fetchSpaOptions();
     fetchCateringOptions();
   }, []);
+
+  // Update massageDetails dynamically
+  useEffect(() => {
+    if (durationPrices.length > 0) {
+      const defaultDurationPrice = durationPrices.find(
+        (price) => price.service_id === "d2"
+      );
+      if (defaultDurationPrice) {
+        setMassageDetails({
+          numPeople: 1,
+          duration: defaultDurationPrice.duration,
+          price: defaultDurationPrice.price,
+        });
+      }
+    }
+  }, [durationPrices]);
 
   // SPA OPTION 
   const handleOptionSelect = (optionId) => {
@@ -228,6 +243,13 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     setMassageDetails((prev) => ({
       ...prev,
       [field]: value,
+      price:
+        field === "duration"
+          ? durationPrices.find(
+              (price) =>
+                price.service_id === "d2" && price.duration === value
+            ).price
+          : prev.price,
     }));
   };
 
@@ -249,8 +271,11 @@ const calculateTotal = () => {
     if (!option) return;
 
     if (optionId === "d2") {
-      let massagePrice = option.durationPrices[massageDetails.duration];
-      if (isEvening || isWeekend) {
+      const durationPrice = durationPrices.find(
+        (price) => price.service_id === "d2" && price.duration === massageDetails.duration
+      );
+      let massagePrice = durationPrice ? durationPrice.price : 0;
+      if (isEvening || isWeekendForMassage) {
         massagePrice += option.extraPrice;
       }
       total += massagePrice * massageDetails.numPeople;
@@ -288,18 +313,14 @@ const calculateTotal = () => {
   if (selectedOptions.includes("d4")) {
     const vipOption = spaOptions.find((opt) => opt.id === "d4");
     const count = optionPeople["d4"] || 2; // Minimum 2 people
-    const vipPricePerPerson = isWeekend
-      ? vipOption.weekendPrice
-      : count > 2
-      ? vipOption.weekdayPrice
-      : vipOption.price;
+    const vipPricePerPerson = vipOption.price;
     total += vipPricePerPerson * count;
   }
 
   return total;
 };
 
-  // Generic modal cancel for spa/catering options========
+  // Generic modal cancel for spa/catering options
   const handleGenericModalCancel = () => {
     setShowModal(false);
     if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
@@ -314,7 +335,7 @@ const calculateTotal = () => {
     setModalActiveOption(null);
   };
 
-  // Generic modal confirm for spa/catering options========
+  // Generic modal confirm for spa/catering options
   const handleGenericModalConfirm = () => {
     if (spaOptions.some((opt) => opt.id === modalActiveOption)) {
       setOptionPeople((prev) => ({ ...prev, [modalActiveOption]: modalCount }));
@@ -460,27 +481,12 @@ const calculateTotal = () => {
               onClick={() => handleOptionSelect(option.id)}
             >
               <div className="text-center flex flex-col items-center">
-                {/* <Image
-                  src={option.icon}
-                  alt=""
-                  width={60}
-                  height={60}
-                  className="rounded-md mb-3"
-                /> */}
                 <span className=" text-sm">{option.name}</span>
 
                 {option.id !== "d0" && (
   <div className="text-sm">
     {option.id === "d2"
-      ? `${option.durationPrices[massageDetails.duration]}€/pers`
-      : option.id === "d4"
-      ? `${
-          isWeekend
-            ? option.weekendPrice
-            : optionPeople["d4"] && optionPeople["d4"] > 2
-            ? option.weekdayPrice
-            : option.price
-        }€`
+      ? `${massageDetails.price}€/pers`
       : option.id === "d3"
       ? `${option.price}€`
       : option.id === "d1"
@@ -504,7 +510,7 @@ const calculateTotal = () => {
                   selectedOptions.includes("d2") && (
                     <p className="text-xs mt-2">
                       Durée sélectionnée: {massageDetails.duration} min
-                    </p>
+                      </p>
                   )}
                 {option.id === "d1" &&
                   selectedOptions.includes("d1") &&
@@ -592,7 +598,7 @@ const calculateTotal = () => {
       {showModal && modalType === "d2" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
-            <h3 className="text-lg font-bold">À partir de 50€</h3>
+            <h3 className="text-lg font-bold">À partir de {massageDetails.price}€</h3>
             <div className="mt-4">
               <label>Nombre de personnes :</label>
               <div className="flex items-center space-x-2 mt-2">
@@ -627,19 +633,21 @@ const calculateTotal = () => {
             <div className="mt-4">
               <label>Durée (minutes) :</label>
               <div className="flex items-center space-x-2 mt-2">
-                {[20, 30, 60].map((duration) => (
-                  <button
-                    key={duration}
-                    className={`px-4 py-2 rounded-md ${
-                      massageDetails.duration === duration
-                        ? "bg-green-500 text-white"
-                        : "bg-gray-200"
-                    }`}
-                    onClick={() => handleMassageChange("duration", duration)}
-                  >
-                    {duration} min - {spaOptions.find(opt => opt.id === "d2").durationPrices[duration]}€
-                  </button>
-                ))}
+                {durationPrices
+                  .filter((price) => price.service_id === "d2")
+                  .map(({ duration, price }) => (
+                    <button
+                      key={duration}
+                      className={`px-4 py-2 rounded-md ${
+                        massageDetails.duration === duration
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-200"
+                      }`}
+                      onClick={() => handleMassageChange("duration", duration)}
+                    >
+                      {duration} min - {price}€
+                    </button>
+                  ))}
               </div>
             </div>
             <div className="mt-4 text-right space-x-4">
@@ -740,13 +748,6 @@ const calculateTotal = () => {
               onClick={() => handleCateringSelect(option.id)}
             >
               <div className="flex flex-col text-center items-center justify-center">
-                {/* <Image
-                  src={option.icon}
-                  alt=""
-                  width={60}
-                  height={60}
-                  className="rounded-md mb-3"
-                /> */}
                 <span className="text-sm">{option.name}</span>
                 {option.id !== "cateringNone" && (
                   <span className="text-sm">
