@@ -38,7 +38,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
       <div>
         <h3 className="font-bold my-5 text-xl">Récapitulatif de votre réservation </h3>
         <p>
-          <b>Date :</b>
+          <b>Date : </b>
           {bookingDetails.date
             ? new Date(bookingDetails.date).toLocaleDateString("fr-FR", {
                 weekday: "long", // Full name of the day (e.g., "Mercredi")
@@ -84,17 +84,18 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                 const extra = option.extra ? option.extra.replace("/pers", "") : 0;
                 const total = basePrice * quantity;
 
-                if (optionId === "1hr") {
+                if (optionId === "d1") {
                   return (
                     <tr key={option.id}>
                       <td className="py-2 px-4 border-b">{option.name}</td>
                       <td className="py-2 px-4 border-b" colSpan="4">{bookingDetails.selectedTimeSlot}</td>
+                      <td className="py-2 px-4 border-b" colSpan="4">{basePrice}</td>
         
                     </tr>
                   );
                 }
 
-                {optionId === "massage" && bookingDetails.massageDetails && (
+                {optionId === "d2" && bookingDetails.massageDetails && (
                   <tr key={option.id}>
                     <td className="py-2 px-4 border-b">{option.name}</td>
                     <td className="py-2 px-4 border-b">{bookingDetails.massageDetails.numPeople}</td>
@@ -120,7 +121,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
               })
             ) : (
               <tr>
-                <td className="py-2 px-4 border-b" colSpan="5">Aucune option de spa sélectionnée.</td>
+                <td className="py-2 px-4 border-b" colSpan="5">Aucune</td>
               </tr>
             )}
           </tbody>

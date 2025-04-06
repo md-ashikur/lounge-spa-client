@@ -355,22 +355,7 @@ const calculateTotal = () => {
     setShowModal(false);
   };
 
-  const handleNext = () => {
-    const totalPeople = numPeople;
-    const data = {
-      ...bookingDetails,
-      totalPeople,
-      selectedOptions,
-      selectedTimeSlot,
-      selectedCateringOptions,
-      spaOptions,
-      cateringOptions,
-      optionPeople,
-      cateringPeople,
-      totalPrice: calculateTotal(),
-    };
-    onNext(data);
-  };
+
 
   const getAdditionalHourOptions = (slot) => {
     const [start, end] = slot.split(" – ");
@@ -412,6 +397,28 @@ const calculateTotal = () => {
   const handleModalConfirm = () => {
     // For special modals (1hr)
     setShowModal(false);
+  };
+
+
+
+  const handleNext = () => {
+    const totalPeople = numPeople;
+    const massageDuration = massageDetails.duration;
+    const data = {
+      ...bookingDetails,
+      totalPeople,
+      selectedOptions,
+      selectedTimeSlot,
+      massageDuration,
+      selectedCateringOptions,
+      spaOptions,
+      cateringOptions,
+      optionPeople,
+      cateringPeople,
+      isWeekend,
+      totalPrice: calculateTotal(),
+    };
+    onNext(data);
   };
 
   return (
