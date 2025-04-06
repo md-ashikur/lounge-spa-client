@@ -9,7 +9,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [numPeople, setNumPeople] = useState(2);
   const [selectedOptions, setSelectedOptions] = useState(["d0"]);
   const [selectedCateringOptions, setSelectedCateringOptions] = useState([
-    "cateringNone",
+    "dc0",
   ]);
   const [showModal, setShowModal] = useState(false);
   // modalType is used for special modals (1hr and massage) and for generic modal we use modalActiveOption
@@ -77,7 +77,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   useEffect(() => {
     if (durationPrices.length > 0) {
       const defaultDurationPrice = durationPrices.find(
-        (price) => price.service_id === "d2"
+        (price) => price.dc4_id === "d2"
       );
       if (defaultDurationPrice) {
         setMassageDetails({
@@ -165,21 +165,21 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
   // CATERING OPTION CLICK
   const handleCateringSelect = (optionId) => {
-    // if selecting "cateringNone", clear others
-    if (optionId === "cateringNone") {
-      setSelectedCateringOptions(["cateringNone"]);
+    // if selecting "dc0", clear others
+    if (optionId === "dc0") {
+      setSelectedCateringOptions(["dc0"]);
       setCateringPeople({});
       return;
     }
 
-    // Ensure "Service à table par notre cheffe" can't be selected alone
+    // Ensure "dc4 à table par notre cheffe" can't be selected alone
     if (
-      optionId === "service" &&
+      optionId === "dc4" &&
       selectedCateringOptions.length === 1 &&
-      selectedCateringOptions.includes("cateringNone")
+      selectedCateringOptions.includes("dc0")
     ) {
       toast(
-        "Vous devez choisir une autre option de restauration avant de sélectionner le Service à table par notre cheffe.",
+        "Vous devez choisir une autre option de restauration avant de sélectionner le dc4 à table par notre cheffe.",
         {
           position: "top-center",
           autoClose: 5000,
@@ -191,21 +191,21 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       return;
     }
 
-    // Handle service option separately
-    if (optionId === "service") {
-      if (selectedCateringOptions.includes("service")) {
+    // Handle dc4 option separately
+    if (optionId === "dc4") {
+      if (selectedCateringOptions.includes("dc4")) {
         setSelectedCateringOptions((prev) =>
-          prev.filter((id) => id !== "service")
+          prev.filter((id) => id !== "dc4")
         );
         setCateringPeople((prev) => {
           const newMap = { ...prev };
-          delete newMap["service"];
+          delete newMap["dc4"];
           return newMap;
         });
         return;
       }
 
-      const newSelection = selectedCateringOptions.includes("cateringNone")
+      const newSelection = selectedCateringOptions.includes("dc0")
         ? [optionId]
         : [...selectedCateringOptions, optionId];
 
@@ -227,7 +227,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       return;
     }
     let newSelection = [...selectedCateringOptions];
-    if (newSelection.includes("cateringNone")) {
+    if (newSelection.includes("dc0")) {
       newSelection = [];
     }
     newSelection.push(optionId);
@@ -247,7 +247,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         field === "duration"
           ? durationPrices.find(
               (price) =>
-                price.service_id === "d2" && price.duration === value
+                price.dc4_id === "d2" && price.duration === value
             ).price
           : prev.price,
     }));
@@ -272,7 +272,7 @@ const calculateTotal = () => {
 
     if (optionId === "d2") {
       const durationPrice = durationPrices.find(
-        (price) => price.service_id === "d2" && price.duration === massageDetails.duration
+        (price) => price.dc4_id === "d2" && price.duration === massageDetails.duration
       );
       let massagePrice = durationPrice ? durationPrice.price : 0;
       if (isEvening || isWeekendForMassage) {
@@ -289,7 +289,7 @@ const calculateTotal = () => {
   selectedCateringOptions.forEach((optionId) => {
     const option = cateringOptions.find((opt) => opt.id === optionId);
     if (!option) return;
-    if (optionId !== "cateringNone") {
+    if (optionId !== "dc0") {
       const count = cateringPeople[optionId] || 1;
       total += option.price * count;
     }
@@ -634,7 +634,7 @@ const calculateTotal = () => {
               <label>Durée (minutes) :</label>
               <div className="flex items-center space-x-2 mt-2">
                 {durationPrices
-                  .filter((price) => price.service_id === "d2")
+                  .filter((price) => price.dc4_id === "d2")
                   .map(({ duration, price }) => (
                     <button
                       key={duration}
@@ -749,7 +749,7 @@ const calculateTotal = () => {
             >
               <div className="flex flex-col text-center items-center justify-center">
                 <span className="text-sm">{option.name}</span>
-                {option.id !== "cateringNone" && (
+                {option.id !== "dc0" && (
                   <span className="text-sm">
                     {option.price}€
                     <span className="text-xs"> {option.extra}</span>
@@ -768,8 +768,8 @@ const calculateTotal = () => {
                 )}
 
                 {selectedCateringOptions.includes(option.id) &&
-                  option.id !== "cateringNone" &&
-                  option.id !== "service" && (
+                  option.id !== "dc0" &&
+                  option.id !== "dc4" && (
                     <p className="text-xs mt-2">
                       Quantité: {cateringPeople[option.id] || 1}
                     </p>
