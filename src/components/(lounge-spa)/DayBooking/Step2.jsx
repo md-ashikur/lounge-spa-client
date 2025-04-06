@@ -77,7 +77,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   useEffect(() => {
     if (durationPrices.length > 0) {
       const defaultDurationPrice = durationPrices.find(
-        (price) => price.dc4_id === "d2"
+        (price) => price.service_id === "d2"
       );
       if (defaultDurationPrice) {
         setMassageDetails({
@@ -247,7 +247,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
         field === "duration"
           ? durationPrices.find(
               (price) =>
-                price.dc4_id === "d2" && price.duration === value
+                price.service_id === "d2" && price.duration === value
             ).price
           : prev.price,
     }));
@@ -272,7 +272,7 @@ const calculateTotal = () => {
 
     if (optionId === "d2") {
       const durationPrice = durationPrices.find(
-        (price) => price.dc4_id === "d2" && price.duration === massageDetails.duration
+        (price) => price.service_id === "d2" && price.duration === massageDetails.duration
       );
       let massagePrice = durationPrice ? durationPrice.price : 0;
       if (isEvening || isWeekendForMassage) {
@@ -634,7 +634,7 @@ const calculateTotal = () => {
               <label>Durée (minutes) :</label>
               <div className="flex items-center space-x-2 mt-2">
                 {durationPrices
-                  .filter((price) => price.dc4_id === "d2")
+                  .filter((price) => price.service_id === "d2")
                   .map(({ duration, price }) => (
                     <button
                       key={duration}
