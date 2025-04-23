@@ -65,11 +65,11 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         <h3 className="font-bold">Options de spa sélectionnées :</h3>
         <table className="min-w-full bg-white border">
           <thead>
-            <tr className="text-center">
-              <th className="py-2 px-4 border">Option</th>
-              <th className="py-2 px-4 border">Quantité</th>
-              <th className="py-2 px-4 border">Prix de base</th>
-              <th className="py-2 px-4 border">Total</th>
+            <tr className="text-center lg:text-base text-xs">
+              <th className="py-2 px-2 border">Option</th>
+              <th className="py-2 px-2 border">Quantité</th>
+              <th className="py-2 px-2 border">Prix de base</th>
+              <th className="py-2 px-2 border">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -87,30 +87,30 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                  
 
                   return (
-                    <tr key={option.id} className="text-center">
-                      <td className="py-2 px-4 border">{option.name}</td>
-                      <td className="py-2 px-4 border">{quantity}</td>
-                      <td className="py-2 px-4 border">{basePrice}€</td>
-                      <td className="py-2 px-4 border">{total}€</td>
+                    <tr key={option.id} className="text-center lg:text-base text-xs">
+                      <td className="py-2 px-2 border text-left">{option.name}</td>
+                      <td className="py-2 px-2 border">{quantity}</td>
+                      <td className="py-2 px-2 border">{basePrice}€</td>
+                      <td className="py-2 px-2 border">{total}€</td>
                     </tr>
                   );
                 })}
 
                 {/* Extra Hour Option */}
                 {bookingDetails.selectedOptions.includes("d1") && (
-                  <tr className="text-center">
-                    <td className="py-2 px-4 border">
+                  <tr className="text-center lg:text-base text-xs">
+                    <td className="py-2 px-2  border text-left">
                       {
                         bookingDetails.spaOptions.find(
                           (opt) => opt.id === "d1"
-                        )?.name || "Prolongation (Heures supplémentaires)"
+                        )?.name || "1h supplémentaire"
                       }
                     </td>
-                    <td className="py-2 px-4 border">{bookingDetails.selectedTimeSlot || "-"}</td>
-                    <td className="py-2 px-4 border" >
+                    <td className="py-2 px-2 border">{bookingDetails.selectedTimeSlot || "-"}</td>
+                    <td className="py-2 px-2 border" >
                       {bookingDetails.extraHoursPrice}€
                     </td>
-                    <td className="py-2 px-4 border" >
+                    <td className="py-2 px-2 border" >
                       {bookingDetails.extraHoursPrice}€
                     </td>
                   </tr>
@@ -119,10 +119,10 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                 {/* Massage Option */}
                 {bookingDetails.selectedOptions.includes("d2") && (
                   <tr className="text-center">
-                    <td className="py-2 px-4 border"> {
+                    <td className="py-2 px-4 border text-left lg:text-base text-xs"> {
                         bookingDetails.spaOptions.find(
                           (opt) => opt.id === "d2"
-                        )?.name || "Prolongation (Heures supplémentaires)"
+                        )?.name || "Massage"
                       }</td>
                     <td className="py-2 px-4 border">{bookingDetails.messagePeople}</td>
                     <td className="py-2 px-4 border">{bookingDetails.massageDuration} min x {bookingDetails.massagePrice}€</td>
@@ -146,11 +146,11 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         <h3 className="font-bold">Options de restauration sélectionnées :</h3>
         <table className="min-w-full bg-white border">
           <thead>
-            <tr className="text-center">
-              <th className="py-2 px-4 border">Option</th>
-              <th className="py-2 px-4 border">Quantité</th>
-              <th className="py-2 px-4 border">Prix de base</th>
-              <th className="py-2 px-4 border">Total</th>
+            <tr className="text-center lg:text-base text-xs">
+              <th className="py-2 px-2 border">Option</th>
+              <th className="py-2 px-2 border">Quantité</th>
+              <th className="py-2 px-2 border">Prix de base</th>
+              <th className="py-2 px-2 border">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -166,17 +166,17 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                 const total = basePrice * quantity;
 
                 return (
-                  <tr key={option.id} className="text-center">
-                    <td className="py-2 px-4 border">{option.name}</td>
-                    <td className="py-2 px-4 border">{quantity}</td>
-                    <td className="py-2 px-4 border">{basePrice}€</td>
-                    <td className="py-2 px-4 border">{total}€</td>
+                  <tr key={option.id} className="lg:text-base text-xs text-center">
+                    <td className="py-2 px-2 border text-left">{option.name}</td>
+                    <td className="py-2 px-2 border">{quantity}</td>
+                    <td className="py-2 px-2 border">{basePrice}€</td>
+                    <td className="py-2 px-2 border">{total}€</td>
                   </tr>
                 );
               })
             ) : (
               <tr className="text-center">
-                <td className="py-2 px-4 border" colSpan="4">Aucune</td>
+                <td className="py-2 px-2 border" colSpan="4">Aucune</td>
               </tr>
             )}
           </tbody>
