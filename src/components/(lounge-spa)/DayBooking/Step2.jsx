@@ -36,7 +36,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [spaOptions, setSpaOptions] = useState([]);
   const [cateringOptions, setCateringOptions] = useState([]);
   const [durationPrices, setDurationPrices] = useState([]);
-  
+  const [extraHoursPrice, setExtraHoursPrice] = useState(0);
 
   useEffect(() => {
     // Fetch spa options and duration prices from API
@@ -261,10 +261,33 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
 
   // isWeekend for 1hr option (only Saturday and Sunday)
-  const isWeekendFor1hr =
-    bookingDate.getDay() === 6 || bookingDate.getDay() === 0;
+  const isWeekendFor1hr = bookingDate.getDay() === 6 || bookingDate.getDay() === 0;
   const isWeekendForMassage = bookingDate.getDay() === 0; // Sunday is 0
   const isEvening = bookingDetails.slot.includes("19h");
+
+
+  const calculateExtraHoursPrice = (optionIndex) => {
+    const basePrice = spaOptions.find((opt) => opt.id === "d1");
+    if (!basePrice) return 0;
+
+    const isWeekendhr = isWeekendFor1hr;
+    const price = optionIndex === 2 ? basePrice.price * 2 : basePrice.price;
+    const weekendPrice = optionIndex === 2 ? basePrice.weekendPrice * 2 : basePrice.weekendPrice;
+
+      return isWeekendhr ? weekendPrice : price;
+  };
+
+  useEffect(() => {
+    const basePrice = spaOptions.find((opt) => opt.id === "d1");
+    if (selectedOptions.includes("d1") && selectedAdditionalHourOption !== null) {
+      setExtraHoursPrice(calculateExtraHoursPrice(selectedAdditionalHourOption));
+    } else if (basePrice) {
+      // Set the base price by default if no extra hour option is selected
+      const defaultPrice = isWeekendFor1hr ? basePrice.weekendPrice : basePrice.price;
+      setExtraHoursPrice(defaultPrice);
+    }
+  }, [selectedOptions, selectedAdditionalHourOption, isWeekendFor1hr, spaOptions]);
+
 
   const calculateTotal = () => {
     let total = bookingDetails.price; // Base price per person multiplied by the number of people
@@ -300,20 +323,9 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       }
     });
 
-    // Add the fixed price for additional hour options
-    if (
-      selectedOptions.includes("d1") &&
-      selectedAdditionalHourOption !== null
-    ) {
-      let additionalHourPrice = isWeekendFor1hr
-        ? spaOptions.find((opt) => opt.id === "d1").weekendPrice
-        : spaOptions.find((opt) => opt.id === "d1").price;
-      if (selectedAdditionalHourOption === 2) {
-        additionalHourPrice *= 2; // price for both before and after options
-      }
-      total += additionalHourPrice;
+    if (selectedOptions.includes("d1") && selectedAdditionalHourOption !== null) {
+      total += extraHoursPrice;
     }
-
     // Calculate VIP option pricing
     if (selectedOptions.includes("d4")) {
       const vipOption = spaOptions.find((opt) => opt.id === "d4");
@@ -405,13 +417,18 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const handleNext = () => {
     const totalPeople = numPeople;
     const massageDuration = massageDetails.duration;
+    const messagePeople = massageDetails.numPeople;
+    const massagePrice = massageDetails.price;
     const data = {
       ...bookingDetails,
       totalPeople,
       selectedOptions,
       selectedTimeSlot,
       massageDuration,
+      messagePeople,
+      massagePrice,
       selectedCateringOptions,
+      extraHoursPrice,
       spaOptions,
       cateringOptions,
       optionPeople,
@@ -507,7 +524,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
                       ? `${option.price}€`
                       : option.id === "d1"
                       ? `${
-                          isWeekendFor1hr ? option.weekendPrice : option.price
+                         extraHoursPrice
                         }€`
                       : `${isWeekend ? option.weekendPrice : option.price}€`}
                     <span className="text-xs"> {option.extra}</span>
