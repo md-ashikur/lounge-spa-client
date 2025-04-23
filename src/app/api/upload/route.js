@@ -7,7 +7,7 @@ export const POST = async (req) => {
   try {
     const formData = await req.formData();
     const file = formData.get("image");
-    const category = formData.get("category"); // general, icon, or spa
+    const category = formData.get("category"); // Fetch the category from the form data
 
     if (!file || !category) {
       return NextResponse.json(
@@ -19,11 +19,11 @@ export const POST = async (req) => {
     // Define folder path based on category
     let folder = "images";
     if (category === "gallery") folder = "images/gallery";
-    if (category === "spa") folder = "images/icons/spa";
-    if (category === "catering") folder = "images/icons/catering";
-    if (category === "souvenirs") folder = "images/icons/Souvenirs";
-    if (category === "logements") folder = "images/icons/logements";
-    if (category === "activities") folder = "images/icons/activities";
+    else if (category === "spa") folder = "images/icons/spa";
+    else if (category === "catering") folder = "images/icons/catering";
+    else if (category === "souvenirs") folder = "images/icons/Souvenirs";
+    else if (category === "logements") folder = "images/icons/logements";
+    else if (category === "activities") folder = "images/icons/activities";
 
     // Resolve full path
     const uploadDir = path.join(process.cwd(), "public", folder);
@@ -48,6 +48,7 @@ export const POST = async (req) => {
       database: process.env.DB_NAME,
     });
 
+    // Insert data into the database with the correct category
     await connection.execute(
       "INSERT INTO images (category, image_name, image_path) VALUES (?, ?, ?)",
       [category, imageName, dbPath]
@@ -56,6 +57,7 @@ export const POST = async (req) => {
     const [rows] = await connection.execute("SELECT LAST_INSERT_ID() as id");
     const imageId = rows[0].id;
     await connection.end();
+
     return NextResponse.json({
       message: "Image uploaded!",
       path: dbPath,

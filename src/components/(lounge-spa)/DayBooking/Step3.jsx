@@ -99,13 +99,8 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                   <tr key={option.id}>
                     <td className="py-2 px-4 border-b">{option.name}</td>
                     <td className="py-2 px-4 border-b">{bookingDetails.massageDetails.numPeople}</td>
-                    <td className="py-2 px-4 border-b">{option.durationPrices[bookingDetails.massageDetails.duration]}€</td>
-                    <td className="py-2 px-4 border-b">
-                      {option.durationPrices[bookingDetails.massageDetails.duration] + (isWeekend ? 10 : 0)}€
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {(option.durationPrices[bookingDetails.massageDetails.duration] + (isWeekend ? 10 : 0)) * bookingDetails.massageDetails.numPeople}€
-                    </td>
+                    <td className="py-2 px-4 border-b">{bookingDetails.massageDuration}€</td>
+                   
                   </tr>
                 )}
 
@@ -166,7 +161,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
               })
             ) : (
               <tr>
-                <td className="py-2 px-4 border-b" colSpan="5">Aucune option de restauration sélectionnée.</td>
+                <td className="py-2 px-4 border-b" colSpan="5">Aucune</td>
               </tr>
             )}
           </tbody>

@@ -36,6 +36,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
   const [spaOptions, setSpaOptions] = useState([]);
   const [cateringOptions, setCateringOptions] = useState([]);
   const [durationPrices, setDurationPrices] = useState([]);
+  
 
   useEffect(() => {
     // Fetch spa options and duration prices from API
@@ -47,6 +48,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       } catch (error) {
         console.error("Error fetching spa options:", error);
       }
+     
 
       try {
         const response = await fetch("/api/dayOfferOptions/durationPrices");
@@ -89,7 +91,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     }
   }, [durationPrices]);
 
-  // SPA OPTION 
+  // SPA OPTION
   const handleOptionSelect = (optionId) => {
     // if selecting 'None', clear others
     if (optionId === "d0") {
@@ -194,9 +196,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
     // Handle dc4 option separately
     if (optionId === "dc4") {
       if (selectedCateringOptions.includes("dc4")) {
-        setSelectedCateringOptions((prev) =>
-          prev.filter((id) => id !== "dc4")
-        );
+        setSelectedCateringOptions((prev) => prev.filter((id) => id !== "dc4"));
         setCateringPeople((prev) => {
           const newMap = { ...prev };
           delete newMap["dc4"];
@@ -246,8 +246,7 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
       price:
         field === "duration"
           ? durationPrices.find(
-              (price) =>
-                price.service_id === "d2" && price.duration === value
+              (price) => price.service_id === "d2" && price.duration === value
             ).price
           : prev.price,
     }));
@@ -255,70 +254,76 @@ const Step2 = ({ bookingDetails, onBack, onNext }) => {
 
   const bookingDate = new Date(bookingDetails.date);
 
-// isWeekend for all other options
-const isWeekend = bookingDate.getDay() === 5 || bookingDate.getDay() === 6 || bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
+  // isWeekend for all other options
+  const isWeekend =
+    bookingDate.getDay() === 5 ||
+    bookingDate.getDay() === 6 ||
+    bookingDate.getDay() === 0; // Friday is 5, Saturday is 6, Sunday is 0
 
-// isWeekend for 1hr option (only Saturday and Sunday)
-const isWeekendFor1hr = bookingDate.getDay() === 6 || bookingDate.getDay() === 0; 
-const isWeekendForMassage = bookingDate.getDay() === 0;   // Sunday is 0
-const isEvening = bookingDetails.slot.includes("19h");
+  // isWeekend for 1hr option (only Saturday and Sunday)
+  const isWeekendFor1hr =
+    bookingDate.getDay() === 6 || bookingDate.getDay() === 0;
+  const isWeekendForMassage = bookingDate.getDay() === 0; // Sunday is 0
+  const isEvening = bookingDetails.slot.includes("19h");
 
-const calculateTotal = () => {
-  let total = bookingDetails.price; // Base price per person multiplied by the number of people
+  const calculateTotal = () => {
+    let total = bookingDetails.price; // Base price per person multiplied by the number of people
 
-  selectedOptions.forEach((optionId) => {
-    const option = spaOptions.find((opt) => opt.id === optionId);
-    if (!option) return;
+    selectedOptions.forEach((optionId) => {
+      const option = spaOptions.find((opt) => opt.id === optionId);
+      if (!option) return;
 
-    if (optionId === "d2") {
-      const durationPrice = durationPrices.find(
-        (price) => price.service_id === "d2" && price.duration === massageDetails.duration
-      );
-      let massagePrice = durationPrice ? durationPrice.price : 0;
-      if (isEvening || isWeekendForMassage) {
-        massagePrice += option.extraPrice;
+      if (optionId === "d2") {
+        const durationPrice = durationPrices.find(
+          (price) =>
+            price.service_id === "d2" &&
+            price.duration === massageDetails.duration
+        );
+        let massagePrice = durationPrice ? durationPrice.price : 0;
+        if (isEvening || isWeekendForMassage) {
+          massagePrice += option.extraPrice;
+        }
+        total += massagePrice * massageDetails.numPeople;
+      } else if (optionId !== "d1" && optionId !== "d4") {
+        // use the specific count chosen (defaulting to 1 if not set)
+        const count = optionPeople[optionId] || 1;
+        total += option.price * count;
       }
-      total += massagePrice * massageDetails.numPeople;
-    } else if (optionId !== "d1" && optionId !== "d4") {
-      // use the specific count chosen (defaulting to 1 if not set)
-      const count = optionPeople[optionId] || 1;
-      total += option.price * count;
+    });
+
+    selectedCateringOptions.forEach((optionId) => {
+      const option = cateringOptions.find((opt) => opt.id === optionId);
+      if (!option) return;
+      if (optionId !== "dc0") {
+        const count = cateringPeople[optionId] || 1;
+        total += option.price * count;
+      }
+    });
+
+    // Add the fixed price for additional hour options
+    if (
+      selectedOptions.includes("d1") &&
+      selectedAdditionalHourOption !== null
+    ) {
+      let additionalHourPrice = isWeekendFor1hr
+        ? spaOptions.find((opt) => opt.id === "d1").weekendPrice
+        : spaOptions.find((opt) => opt.id === "d1").price;
+      if (selectedAdditionalHourOption === 2) {
+        additionalHourPrice *= 2; // price for both before and after options
+      }
+      total += additionalHourPrice;
     }
-  });
 
-  selectedCateringOptions.forEach((optionId) => {
-    const option = cateringOptions.find((opt) => opt.id === optionId);
-    if (!option) return;
-    if (optionId !== "dc0") {
-      const count = cateringPeople[optionId] || 1;
-      total += option.price * count;
+    // Calculate VIP option pricing
+    if (selectedOptions.includes("d4")) {
+      const vipOption = spaOptions.find((opt) => opt.id === "d4");
+      const count = optionPeople["d4"] || 2; // Minimum 2 people
+      const vipPricePerPerson = vipOption.price;
+      total += vipPricePerPerson * count;
     }
-  });
 
-  // Add the fixed price for additional hour options
-  if (
-    selectedOptions.includes("d1") &&
-    selectedAdditionalHourOption !== null
-  ) {
-    let additionalHourPrice = isWeekendFor1hr
-      ? spaOptions.find((opt) => opt.id === "d1").weekendPrice
-      : spaOptions.find((opt) => opt.id === "d1").price;
-    if (selectedAdditionalHourOption === 2) {
-      additionalHourPrice *= 2; // price for both before and after options
-    }
-    total += additionalHourPrice;
-  }
-
-  // Calculate VIP option pricing
-  if (selectedOptions.includes("d4")) {
-    const vipOption = spaOptions.find((opt) => opt.id === "d4");
-    const count = optionPeople["d4"] || 2; // Minimum 2 people
-    const vipPricePerPerson = vipOption.price;
-    total += vipPricePerPerson * count;
-  }
-
-  return total;
-};
+    return total;
+  };
 
   // Generic modal cancel for spa/catering options
   const handleGenericModalCancel = () => {
@@ -354,8 +359,6 @@ const calculateTotal = () => {
     setSelectedOptions((prev) => prev.filter((opt) => opt !== "d2"));
     setShowModal(false);
   };
-
-
 
   const getAdditionalHourOptions = (slot) => {
     const [start, end] = slot.split(" – ");
@@ -398,8 +401,6 @@ const calculateTotal = () => {
     // For special modals (1hr)
     setShowModal(false);
   };
-
-
 
   const handleNext = () => {
     const totalPeople = numPeople;
@@ -478,6 +479,7 @@ const calculateTotal = () => {
         <h3 className="text-lg font-bold my-5">Choisissez vos options Spa :</h3>
         <div className="grid lg:grid-cols-5 gap-4 text-sm">
           {spaOptions.map((option) => (
+            
             <div
               key={option.id}
               className={`flex flex-col items-center justify-center space-x-2 p-3 rounded-3xl shadow-md ${
@@ -488,42 +490,50 @@ const calculateTotal = () => {
               onClick={() => handleOptionSelect(option.id)}
             >
               <div className="text-center flex flex-col items-center">
+                <Image
+                  src={option.iconImage}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
                 <span className=" text-sm">{option.name}</span>
 
                 {option.id !== "d0" && (
-  <div className="text-sm">
-    {option.id === "d2"
-      ? `${massageDetails.price}€/pers`
-      : option.id === "d3"
-      ? `${option.price}€`
-      : option.id === "d1"
-      ? `${isWeekendFor1hr ? option.weekendPrice : option.price}€`
-      : `${isWeekend ? option.weekendPrice : option.price}€`}
-    <span className="text-xs"> {option.extra}</span>
-    {option.info && (
-      <button
-        className="ml-2 p-1 text-white"
-        onClick={(e) => {
-          e.stopPropagation();
-          setSpaInfo(option.info);
-        }}
-      >
-        ⓘ
-      </button>
-    )}
-  </div>
-)}
-                {option.id === "d2" &&
-                  selectedOptions.includes("d2") && (
-                    <p className="text-xs mt-2">
-                      Durée sélectionnée: {massageDetails.duration} min
-                      </p>
-                  )}
+                  <div className="text-sm">
+                    {option.id === "d2"
+                      ? `${massageDetails.price}€/pers`
+                      : option.id === "d3"
+                      ? `${option.price}€`
+                      : option.id === "d1"
+                      ? `${
+                          isWeekendFor1hr ? option.weekendPrice : option.price
+                        }€`
+                      : `${isWeekend ? option.weekendPrice : option.price}€`}
+                    <span className="text-xs"> {option.extra}</span>
+                    {option.info && (
+                      <button
+                        className="ml-2 p-1 text-white"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSpaInfo(option.info);
+                        }}
+                      >
+                        ⓘ
+                      </button>
+                    )}
+                  </div>
+                )}
+                {option.id === "d2" && selectedOptions.includes("d2") && (
+                  <p className="text-xs mt-2">
+                    Durée sélectionnée: {massageDetails.duration} min
+                  </p>
+                )}
                 {option.id === "d1" &&
                   selectedOptions.includes("d1") &&
                   selectedTimeSlot && (
                     <p className="text-xs mt-2">
-                      Plage horaire: {selectedTimeSlot}
+                      Plage horaire: {selectedTimeSlot} 
                     </p>
                   )}
                 {selectedOptions.includes(option.id) &&
@@ -605,7 +615,9 @@ const calculateTotal = () => {
       {showModal && modalType === "d2" && (
         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm ">
           <div className="bg-white p-4 rounded-sm lg:w-1/2">
-            <h3 className="text-lg font-bold">À partir de {massageDetails.price}€</h3>
+            <h3 className="text-lg font-bold">
+              À partir de {massageDetails.price}€
+            </h3>
             <div className="mt-4">
               <label>Nombre de personnes :</label>
               <div className="flex items-center space-x-2 mt-2">
@@ -690,8 +702,7 @@ const calculateTotal = () => {
                   className="px-3 py-1 bg-primary text-white rounded-md"
                   onClick={() => {
                     const newCount =
-                      modalActiveOption === "d4" ||
-                      modalActiveOption === "d3"
+                      modalActiveOption === "d4" || modalActiveOption === "d3"
                         ? Math.max(2, modalCount - 1)
                         : Math.max(1, modalCount - 1);
                     setModalCount(newCount);
@@ -755,6 +766,13 @@ const calculateTotal = () => {
               onClick={() => handleCateringSelect(option.id)}
             >
               <div className="flex flex-col text-center items-center justify-center">
+              <Image
+                  src={option.iconImage}
+                  alt=""
+                  width={60}
+                  height={60}
+                  className="rounded-md mb-3"
+                />
                 <span className="text-sm">{option.name}</span>
                 {option.id !== "dc0" && (
                   <span className="text-sm">
