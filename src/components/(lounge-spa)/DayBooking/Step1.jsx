@@ -432,6 +432,7 @@ const Step1 = ({ onNext, setBookingDetails }) => {
           )}
         </div>
       </div>
+      
 
       {showModal.open && (
         <div className="fixed !mt-0 inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">

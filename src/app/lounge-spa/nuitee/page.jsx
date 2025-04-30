@@ -47,7 +47,7 @@ const Nuitee = () => {
   const [bookingDetails, setBookingDetails] = useState({});
   const [spaSelections, setSpaSelections] = useState([]);
   const [cateringSelections, setCateringSelections] = useState([]);
-
+  const [step2Details, setStep2Details] = useState({});
   // Define the icons array
   const icons = [
     <FaCalendarAlt key="calendar" />, // Icon for Step 1
@@ -75,20 +75,26 @@ const Nuitee = () => {
       )}
       {step === 2 && (
         <NightStep2
-          bookingDetails={bookingDetails}
-          onNext={nextStep}
-          onBack={prevStep}
-          setSpaSelections={(selections) => setSpaSelections(selections)}
-          setCateringSelections={(selections) => setCateringSelections(selections)}
+        bookingDetails={bookingDetails}
+        onNext={(details) => {
+          setStep2Details((prev) => ({ ...prev, ...details }));
+          nextStep();
+        }}
+        onBack={prevStep}
         />
       )}
       {step === 3 && (
         <NightStep3
-          bookingDetails={bookingDetails}
-          spaSelections={spaSelections}
-          cateringSelections={cateringSelections}
-          onNext={nextStep}
-          onBack={prevStep}
+        bookingDetails={{
+          ...bookingDetails,
+          ...step2Details,
+          spaSelections,
+          cateringSelections, // Pass spa and catering selections
+        }}
+        spaSelections={spaSelections}
+        cateringSelections={cateringSelections}
+        onBack={prevStep}
+        onNext={nextStep}
         />
       )}
       {step === 4 && (
