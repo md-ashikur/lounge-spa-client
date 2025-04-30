@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { loadStripe } from "@stripe/stripe-js";
 import Select from "react-select";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import countries from "world-countries";
 
 // Prepare country options for react-select
@@ -14,7 +16,7 @@ const countryOptions = countries.map((country) => ({
 
 const stripePromise = loadStripe("your-stripe-public-key-here");
 
-const Step4 = ({ onBack, onSubmit }) => {
+const Step4 = ({ bookingDetails, onBack, onSubmit }) => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -27,39 +29,67 @@ const Step4 = ({ onBack, onSubmit }) => {
   const onSubmitForm = async (data) => {
     setLoading(true);
 
-    // Send user data to Brevo
-    const brevoResponse = await fetch("/api/sendToBrevo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const finalData = {
+      ...bookingDetails, // Include all booking details
+      ...data, // Include additional user-provided details
+    };
 
-    if (!brevoResponse.ok) {
+    console.log("Final Data to Send:", finalData);
+
+    try {
+      // Step 1: Save booking data to MySQL database
+      const saveBookingResponse = await fetch("/api/saveBooking", {
+        method: "POST",
+        body: (() => {
+          const formData = new FormData();
+          Object.entries(finalData).forEach(([key, value]) => {
+            formData.append(key, value);
+          });
+          return formData;
+        })(),
+      });
+
+      if (!saveBookingResponse.ok) {
+        throw new Error("Failed to save booking in the database");
+      }
+
+      const saveBookingResult = await saveBookingResponse.json();
+      console.log("Booking saved successfully in MySQL:", saveBookingResult);
+
+      // Step 2: Send user data to Brevo
+      const brevoResponse = await fetch("/api/sendToBrevo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(finalData),
+      });
+
+      if (!brevoResponse.ok) {
+        throw new Error("Failed to send user data to Brevo");
+      } else {
+        console.log("User data sent to Brevo successfully");
+      }
+
+      // Step 3: Proceed with Stripe Checkout
+      const stripe = await stripePromise;
+      const stripeResponse = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      const session = await stripeResponse.json();
+
+      if (session.error) {
+        throw new Error("Failed to create Stripe session");
+      }
+
+      await stripe.redirectToCheckout({ sessionId: session.id });
+    } catch (error) {
+      console.error(error.message);
+      alert(error.message);
+    } finally {
       setLoading(false);
-      alert("Failed to send user data to Brevo");
-      return;
     }
-    else{
-      alert("User data Sent to Brevo successfully");
-    }
-
-    // Proceed with Stripe Checkout
-    const stripe = await stripePromise;
-    const stripeResponse = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data.email }),
-    });
-
-    const session = await stripeResponse.json();
-
-    if (session.error) {
-      setLoading(false);
-      alert("Failed to create Stripe session");
-      return;
-    }
-
-    await stripe.redirectToCheckout({ sessionId: session.id });
   };
 
   return (
@@ -176,20 +206,30 @@ const Step4 = ({ onBack, onSubmit }) => {
           </div>
 
           <div>
-            <input
-              type="tel"
-              {...register("phone", {
+            <Controller
+              name="phone"
+              control={control}
+              rules={{
                 required: "Numéro de téléphone est requis",
                 pattern: {
                   value: /^[0-9()+\s-]*$/,
                   message: "Invalid phone number format",
                 },
-              })}
-              placeholder="Numéro de téléphone"
-              className="block w-full p-2 border rounded outline-none"
-              onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^0-9()+\s-]/g, "");
               }}
+              render={({ field }) => (
+                <PhoneInput
+                  {...field}
+                  country={"us"} // Default country
+                  enableSearch
+                  placeholder="Numéro de téléphone"
+                  inputClass="block w-full p-2 border rounded outline-none"
+                  containerClass="w-full"
+                  inputProps={{
+                    required: true,
+                    autoFocus: false,
+                  }}
+                />
+              )}
             />
             {errors.phone && (
               <p className="text-red-500">{errors.phone.message}</p>

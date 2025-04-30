@@ -28,6 +28,26 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
 
   const messageTotalPrice = bookingDetails.massagePrice * bookingDetails.messagePeople;
 
+
+  const handleNext = () => {
+    const booked_slot = bookingDetails.selectedOptions.includes("d1")
+      ? bookingDetails.selectedTimeSlot
+      : bookingDetails.slot; // Default to bookingDetails.slot unless extra hours are selected
+  
+    const category = 'day';
+    const data = {
+      discount,
+      couponCode,
+      messageTotalPrice,
+      category,
+      bookedDate: bookingDetails.date,
+      booked_slot,
+      totalPrice: calculateTotal(),
+    };
+    onNext(data); // Pass additional data to the parent
+  };
+
+  
   return (
     <div className="lg:px-20 my-10 space-y-6 text-primary">
       <div className="flex justify-center">
@@ -119,14 +139,14 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
                 {/* Massage Option */}
                 {bookingDetails.selectedOptions.includes("d2") && (
                   <tr className="text-center">
-                    <td className="py-2 px-4 border text-left lg:text-base text-xs"> {
+                    <td className="py-2 px-2 border text-left lg:text-base text-xs"> {
                         bookingDetails.spaOptions.find(
                           (opt) => opt.id === "d2"
                         )?.name || "Massage"
                       }</td>
-                    <td className="py-2 px-4 border">{bookingDetails.messagePeople}</td>
+                    <td className="py-2 px-2 border">{bookingDetails.messagePeople}</td>
                     <td className="py-2 px-4 border">{bookingDetails.massageDuration} min x {bookingDetails.massagePrice}€</td>
-                    <td className="py-2 px-4 border">
+                    <td className="py-2 px-2 border">
 {messageTotalPrice}€
                     </td>
                   </tr>
@@ -134,7 +154,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
               </>
             ) : (
               <tr className="text-center">
-                <td className="py-2 px-4 border" colSpan="4">Aucune</td>
+                <td className="py-2 px-2 border" colSpan="4">Aucune</td>
               </tr>
             )}
           </tbody>
@@ -223,7 +243,7 @@ const Step3 = ({ bookingDetails, onBack, onNext }) => {
         </button>
         <button
           className="px-4 py-2 bg-primary text-white rounded-md"
-          onClick={onNext}
+          onClick={handleNext}
         >
           Suivant
         </button>
