@@ -22,29 +22,19 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
   const [price, setPrice] = useState(0);
   const [numAdults, setNumAdults] = useState(2);
 
-  const defaultSlots = useMemo(
-    () => ["19h – 10h"],
-    []
-  );
-
-
+  const defaultSlots = useMemo(() => ["19h – 10h"], []);
 
   const regularPrices = {
-    week: { base: 145, additional: 145 },
-    weekend: { base: 145, additional: 145 },
+    baseForTwo: 290, // Fixed price for up to 2 people
+    additional: 145, // Price per person for more than 2 people
   };
-  
+
   const calculatePrice = () => {
- if (selectedDate && selectedSlot) {
-      const day = selectedDate.getDay();
-      const isWeekend = day === 5 || day === 6 || day === 0; // Fri-Sun
-      const prices = isWeekend ? regularPrices.weekend : regularPrices.week;
-      const basePrice = prices.base;
-      const additionalPrice = prices.additional;
-      if (numAdults > 2) {
-        setPrice(numAdults * additionalPrice);
+    if (selectedDate && selectedSlot) {
+      if (numAdults <= 2) {
+        setPrice(regularPrices.baseForTwo); // Fixed price for up to 2 people
       } else {
-        setPrice(basePrice * numAdults);
+        setPrice(regularPrices.baseForTwo + (numAdults - 2) * regularPrices.additional); // Additional price for more than 2 people
       }
     } else {
       setPrice(0); // Default price when no selection
@@ -56,21 +46,14 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
   }, [selectedDate, selectedSlot, numAdults]);
 
   useEffect(() => {
-  
-      const slots = defaultSlots;
-      setTimeSlots(slots);
-      setSelectedSlot(null);
-    
-  }, [
-    selectedDate,
-    defaultSlots,
-  ]);
+    const slots = defaultSlots;
+    setTimeSlots(slots);
+    setSelectedSlot(null);
+  }, [selectedDate, defaultSlots]);
 
   const tileDisabled = ({ date }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-   
 
     const formattedDate = date.toISOString().split("T")[0];
     return (
@@ -88,7 +71,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
         date: selectedDate,
         slot: selectedSlot,
         price,
-        numAdults
+        numAdults,
       });
       onNext();
     }
@@ -129,10 +112,10 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
   return (
     <div className="lg:px-10 space-y-6 my-10 ">
       <div className="text-center">
-      <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
-      Nuitée
+        <span className="text-2xl text-white rounded-full px-4 py-1 bg-primary">
+          Nuitée
         </span>
-        <h2 className="text-xl font-bold  my-5 text-primary-800">
+        <h2 className="text-xl font-bold my-5 text-primary-800">
           Description de l’offre :
         </h2>
         <p className="text-primary">
@@ -145,111 +128,104 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
 
       <div className="grid lg:grid-cols-2 gap-5">
         {/* Left Side */}
-          <div>
-                <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
-                <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
-                  {/* row- 1 */}
-                  <div className="space-y-5">
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                        <Image src={stone} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                        <p>Sauna infra-rouge & pierres chaudes</p>
-                      </div>
-                    </div>
-      
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                        <Image src={jacuzzi} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                        <p>Jaccuzzi professionnel</p>
-                      </div>
-                    </div>
-      
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                        <Image src={drinks} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                        <p>Boissons chaudes & soft à volonté </p>
-                      </div>
-                    </div>
-      
-                    <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                        <Image src={breakfast} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                        <p>Petit déjeuner autonome</p>
-                      </div>
-                    </div>
-                  </div>
-                  {/* --------------- */}
-      
-                  <div className="space-y-5">
-                  <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                      <Image src={toiletries} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                       <p>
-                        nécéssaire de toilettes (Serviettes, peignoir, gel douche...)
-                      </p>
-                      </div>
-                    </div>
-      
-                  <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                      <Image src={sound} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                      <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
-                      </div>
-                    </div>
-      
-                  <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                      <Image src={terraces} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                      <p>Terrasses, jardins & parking privatifs</p>
-                      </div>
-                    </div>
-      
-                  <div className="grid grid-cols-4 gap-2">
-                      <div className="bg-primary p-2 rounded-xl w-14 h-14">
-                      <Image src={clean} alt="" />
-                      </div>
-                      <div className="col-span-3 flex items-center">
-                      <p>Nettoyage de fin de séjour & Vaisselle</p>
-                      </div>
-                    </div>
-      
-      
-                  </div>
-      
-                  {/* ---------- */}
-                  
+        <div>
+          <h3 className="font-bold mb-4 text-primary-800">Inclus</h3>
+          <div className="grid lg:grid-cols-2 gap-5 text-sm font-light my-5">
+            {/* row- 1 */}
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={stone} alt="" />
                 </div>
-               
-      
-              
-      
-                {/* ---------Tarifs------ */}
-                <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
-                <div className="font-light grid grid-cols-2 gap-2">
-                  <div>
-                    <p className="text-center font-normal my-2">
-                    Une nuit de 19h à 10h:
-                    </p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>290€ pour 2 pers</li>
-                    </ul>
-                  </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Sauna infra-rouge & pierres chaudes</p>
                 </div>
               </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={jacuzzi} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Jaccuzzi professionnel</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={drinks} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Boissons chaudes & soft à volonté </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={breakfast} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Petit déjeuner autonome</p>
+                </div>
+              </div>
+            </div>
+            {/* --------------- */}
+
+            <div className="space-y-5">
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={toiletries} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>
+                    Nécessaire de toilettes (Serviettes, peignoir, gel douche...)
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={sound} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Sound system, rétro projecteur, wifi et cuisine équipée</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={terraces} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Terrasses, jardins & parking privatifs</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                <div className="bg-primary p-2 rounded-xl w-14 h-14">
+                  <Image src={clean} alt="" />
+                </div>
+                <div className="col-span-3 flex items-center">
+                  <p>Nettoyage de fin de séjour & Vaisselle</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ---------Tarifs------ */}
+          <h3 className="font-bold mt-8 mb-4">Tarifs</h3>
+          <div className="font-light  gap-2">
+            <div>
+              <p className="font-normal my-2">
+                Une nuit de 19h à 10h:
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>290€ pour 2 pers</li>
+                <li>Offre valable pour 2 personnes uniquement (possible seul, tarif identique)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         {/* Right Side */}
         <div>
@@ -258,7 +234,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
             Indiquer le nombre de personnes :
           </h3>
           <div className="my-5">
-            <div className=" text-primary-800">
+            <div className="text-primary-800">
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => decrement("adult")}
@@ -290,50 +266,42 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
             value={selectedDate}
             tileDisabled={tileDisabled}
             minDate={new Date()}
-            className={`react-calendar my-5 ${
-              numAdults < 2 ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            disabled={numAdults < 1}
+            className="react-calendar my-5"
           />
 
-       
-
           {selectedDate && (
-              <div>
-                <h3 className="font-bold mt-4">
-                  Sélectionnez un créneau horaire
-                </h3>
-                <div className="flex gap-2 flex-wrap mt-2">
-                  {timeSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      className={`py-2 px-3 rounded-full text-white text-center text-sm ${
-                        bookedSlots[
-                          selectedDate?.toISOString().split("T")[0]
-                        ]?.includes(slot) || isSlotDisabled(slot)
-                          ? "bg-primary opacity-50 text-white cursor-not-allowed"
-                          : selectedSlot === slot
-                          ? "bg-green-500 text-white"
-                          : "bg-primary"
-                      }`}
-                      onClick={() => handleSlotClick(slot)}
-                      disabled={
-                        bookedSlots[
-                          selectedDate?.toISOString().split("T")[0]
-                        ]?.includes(slot) || isSlotDisabled(slot)
-                      }
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
+            <div>
+              <h3 className="font-bold mt-4">
+                Sélectionnez un créneau horaire
+              </h3>
+              <div className="flex gap-2 flex-wrap mt-2">
+                {timeSlots.map((slot) => (
+                  <button
+                    key={slot}
+                    className={`py-2 px-3 rounded-full text-white text-center text-sm ${
+                      bookedSlots[
+                        selectedDate?.toISOString().split("T")[0]
+                      ]?.includes(slot) || isSlotDisabled(slot)
+                        ? "bg-primary opacity-50 text-white cursor-not-allowed"
+                        : selectedSlot === slot
+                        ? "bg-green-500 text-white"
+                        : "bg-primary"
+                    }`}
+                    onClick={() => handleSlotClick(slot)}
+                    disabled={
+                      bookedSlots[
+                        selectedDate?.toISOString().split("T")[0]
+                      ]?.includes(slot) || isSlotDisabled(slot)
+                    }
+                  >
+                    {slot}
+                  </button>
+                ))}
               </div>
-            
+            </div>
           )}
         </div>
       </div>
-      
-
 
       <div className="text-right mt-6">
         <div className="font-bold text-lg text-primary-800">
@@ -342,7 +310,7 @@ const NightStep1 = ({ onNext, setBookingDetails }) => {
         </div>
         <button
           className={`px-4 py-2 rounded-full ${
-            (selectedDate && selectedSlot && numAdults > 0)
+            selectedDate && selectedSlot && numAdults > 0
               ? "bg-green-500 text-white"
               : "bg-primary-500 text-white cursor-not-allowed"
           }`}
